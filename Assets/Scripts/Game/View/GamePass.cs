@@ -28,7 +28,6 @@ namespace Game.View
                 ResKit.LoadSceneAsync("Game");
                 Time.timeScale = 1;
                 Hide();
-                // 
             });
         }
         
