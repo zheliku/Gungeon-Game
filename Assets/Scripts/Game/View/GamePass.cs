@@ -30,11 +30,13 @@ namespace Game.View
                 Hide();
             });
         }
-
+        
+        
         protected override void OnShow()
         {
             Time.timeScale = 0;
         }
+        
 
         protected override IArchitecture Architecture { get => Game.Interface; }
     }
