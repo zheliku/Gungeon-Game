@@ -31,6 +31,7 @@ namespace Game.View
             });
         }
 
+        
         protected override void OnShow()
         {
             Time.timeScale = 0;
