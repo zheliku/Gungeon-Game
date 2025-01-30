@@ -47,9 +47,8 @@ namespace Game
 
                 bullet.OnCollisionEnter2DEvent(collider2D =>
                 {
-                    if (collider2D.gameObject.name == "Enemy")
+                    if (collider2D.gameObject.GetComponent<Enemy>())
                     {
-                        UIKit.ShowPanelAsync<GamePass>();
                         collider2D.gameObject.Disable();
                     }
                 });

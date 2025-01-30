@@ -8,7 +8,6 @@
 
 namespace Game
 {
-    using System;
     using Framework.Core;
     using Framework.Core.View;
     using Framework.Toolkits.EventKit;
@@ -80,7 +79,7 @@ namespace Game
 
                     bullet.OnCollisionEnter2DEvent(collider2D =>
                     {
-                        if (collider2D.gameObject.name == "Player")
+                        if (collider2D.gameObject.CompareTag("Player"))
                         {
                             UIKit.ShowPanelAsync<GameOver>();
                             collider2D.gameObject.Disable();

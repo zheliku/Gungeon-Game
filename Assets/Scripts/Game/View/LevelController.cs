@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System.Collections.Generic;
     using Framework.Core;
     using Framework.Core.View;
     using Framework.Toolkits.FluentAPI;
@@ -22,6 +23,8 @@ namespace Game
 
         public Enemy Enemy;
 
+        public Final Final;
+
         private LevelModel _levelModel;
 
         private void Awake()
@@ -29,28 +32,35 @@ namespace Game
             _levelModel = this.GetModel<LevelModel>();
 
             Player.Instance = "Template/Player".GetComponentInHierarchy<Player>(transform);
-            Enemy = "Template/Enemy".GetComponentInHierarchy<Enemy>(transform);
-            
+            Enemy           = "Template/Enemy".GetComponentInHierarchy<Enemy>(transform);
+            Final           = "Template/Final".GetComponentInHierarchy<Final>(transform);
+
             Player.Instance.DisableGameObject();
             Enemy.DisableGameObject();
+            Final.DisableGameObject();
         }
 
         private void Start()
         {
-            Tilemap.SetTile(new Vector3Int(0, 0, 0), Tile);
-            Tilemap.SetTile(new Vector3Int(1, 0, 0), Tile);
-            Tilemap.SetTile(new Vector3Int(2, 0, 0), Tile);
+            var currentRoomStartPosX = 0;
+            GenerateRoom(_levelModel.InitRoom, ref currentRoomStartPosX);
+            currentRoomStartPosX += 2;
+            GenerateRoom(_levelModel.NormalRoom, ref currentRoomStartPosX);
+            currentRoomStartPosX += 2;
+            GenerateRoom(_levelModel.FinalRoom, ref currentRoomStartPosX);
+        }
 
-            var initRoom = _levelModel.InitRoom;
-            for (int i = 0; i < initRoom.Count; i++)
+        private void GenerateRoom(List<string> roomCode, ref int currentRoomStartPosX)
+        {
+            for (int i = 0; i < roomCode.Count; i++)
             {
-                var rowCode = initRoom[i];
+                var rowCode = roomCode[i];
                 for (int j = 0; j < rowCode.Length; j++)
                 {
                     var code = rowCode[j];
 
-                    var x = j;
-                    var y = initRoom.Count - i;
+                    var x = j + currentRoomStartPosX;
+                    var y = roomCode.Count - i;
 
                     if (code == '1')
                     {
@@ -59,18 +69,26 @@ namespace Game
                     else if (code == '@')
                     {
                         var player = Player.Instance.Instantiate(keepName: true)
-                           .EnableGameObject();
-                        player.SetPosition(x + 0.5f, y + 0.5f, 0);
+                           .EnableGameObject()
+                           .SetPosition(x + 0.5f, y + 0.5f, 0);
                         Player.Instance = player;
                     }
                     else if (code == 'e')
                     {
-                        var enemy = Enemy.Instantiate(keepName: true)
-                           .EnableGameObject();
-                        enemy.SetPosition(x + 0.5f, y + 0.5f, 0);
+                        Enemy.Instantiate(keepName: true)
+                           .EnableGameObject()
+                           .SetPosition(x + 0.5f, y + 0.5f, 0);
+                    }
+                    else if (code == '#')
+                    {
+                        Final.Instantiate(keepName: true)
+                           .EnableGameObject()
+                           .SetPosition(x + 0.5f, y + 0.5f, 0);
                     }
                 }
             }
+
+            currentRoomStartPosX += roomCode[0].Length;
         }
 
         protected override IArchitecture Architecture { get => Game.Interface; }

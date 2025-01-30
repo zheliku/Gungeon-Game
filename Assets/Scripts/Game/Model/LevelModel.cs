@@ -24,17 +24,51 @@ namespace Game
             "1        1",
             "1 @      1",
             "1        1",
-            "1        1",
-            "1        1",
+            "1         ",
+            "1         ",
             "1        1",
             "1     e  1",
             "1        1",
             "1111111111",
         };
         
-        protected override void OnInit()
+        /// <summary>
+        /// 1：地块
+        /// e：敌人
+        /// </summary>
+        public List<string> NormalRoom = new List<string>()
         {
-            
-        }
+            "1111111111",
+            "1        1",
+            "1 e      1",
+            "1        1",
+            "          ",
+            "          ",
+            "1        1",
+            "1     e  1",
+            "1        1",
+            "1111111111",
+        };
+        
+        /// <summary>
+        /// 1：地块
+        /// e：敌人
+        /// </summary>
+        public List<string> FinalRoom = new List<string>()
+        {
+            "1111111111",
+            "1        1",
+            "1        1",
+            "1        1",
+            "      #  1",
+            "         1",
+            "1        1",
+            "1        1",
+            "1        1",
+            "1111111111",
+        };
+
+        protected override void OnInit()
+        { }
     }
 }
