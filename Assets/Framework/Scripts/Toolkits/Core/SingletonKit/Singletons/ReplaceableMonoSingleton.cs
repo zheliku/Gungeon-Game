@@ -80,6 +80,5 @@ namespace Framework.Toolkits.SingletonKit
                 _Instance = this as TSingleton;
             }
         }
-
     }
 }

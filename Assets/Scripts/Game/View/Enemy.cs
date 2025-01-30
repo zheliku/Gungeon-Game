@@ -6,28 +6,26 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
-namespace Game.View
+namespace Game
 {
+    using System;
     using Framework.Core;
     using Framework.Core.View;
     using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.UIKit;
     using UnityEngine;
+    using Random = UnityEngine.Random;
 
     public class Enemy : AbstractView
     {
-        public Player Player;
-
-        public float MoveSpeed = 3;
-
-        public Bullet Bullet;
-
         public enum States
         {
             Follow,
             Shoot
         }
+
+        public Bullet Bullet;
 
         public States State;
 
@@ -35,8 +33,19 @@ namespace Game.View
 
         public float CurrentSeconds = 0;
 
+        private EnemyModel _enemyModel;
+        
+        private Property _Property { get => _enemyModel.Property; }
+
+        private void Awake()
+        {
+            _enemyModel = this.GetModel<EnemyModel>();
+        }
+
         private void Update()
         {
+            var player = Player.Instance;
+
             if (State == States.Follow)
             {
                 if (CurrentSeconds >= FollowSeconds)
@@ -45,7 +54,10 @@ namespace Game.View
                     CurrentSeconds = 0;
                 }
 
-                transform.Translate(Player.Direction2DFrom(transform) * (Time.deltaTime * MoveSpeed));
+                if (player)
+                {
+                    transform.Translate(player.Direction2DFrom(transform) * (Time.deltaTime * _Property.MoveSpeed));
+                }
 
                 CurrentSeconds += Time.deltaTime;
             }
@@ -60,12 +72,12 @@ namespace Game.View
                     CurrentSeconds = 0;
                 }
 
-                if (Time.frameCount % 20 == 0)
+                if (Time.frameCount % 20 == 0 && player)
                 {
                     var bullet = Bullet.Instantiate(transform.position)
                        .EnableGameObject();
-                    bullet.Direction = Player.Direction2DFrom(bullet);
-                    
+                    bullet.Direction = player.Direction2DFrom(bullet);
+
                     bullet.OnCollisionEnter2DEvent(collider2D =>
                     {
                         if (collider2D.gameObject.name == "Player")

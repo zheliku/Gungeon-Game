@@ -6,7 +6,7 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
-namespace Game.View
+namespace Game
 {
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;

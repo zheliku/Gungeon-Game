@@ -6,24 +6,35 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
-namespace Game.View
+namespace Game
 {
+    using System;
     using Framework.Core;
     using Framework.Core.View;
     using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
+    using Framework.Toolkits.SingletonKit;
     using Framework.Toolkits.UIKit;
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    public class Player : AbstractView
+    public class Player : AbstractView, ISingleton
     {
-        public float MoveSpeed = 5;
-
         public Bullet Bullet;
 
         private InputAction _moveAction;
+
+        private PlayerModel _playerModel;
+
+        private Property _Property { get => _playerModel.Property; }
+
+        public static Player Instance { get; set; }
+
+        private void Awake()
+        {
+            _playerModel = this.GetModel<PlayerModel>();
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -49,9 +60,11 @@ namespace Game.View
         void Update()
         {
             _moveAction = InputKit.GetInputAction("Move");
-            transform.Translate(_moveAction.ReadValue<Vector2>() * (MoveSpeed * Time.deltaTime));
+            transform.Translate(_moveAction.ReadValue<Vector2>() * (_Property.MoveSpeed * Time.deltaTime));
         }
 
         protected override IArchitecture Architecture { get => Game.Interface; }
+
+        public void OnSingletonInit() { }
     }
 }

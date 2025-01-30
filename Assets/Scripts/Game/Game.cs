@@ -14,7 +14,9 @@ namespace Game
     {
         protected override void Init()
         {
-            
+            RegisterModel(new PlayerModel());
+            RegisterModel(new EnemyModel());
+            RegisterModel(new LevelModel());
         }
     }
 }

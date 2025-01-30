@@ -6,7 +6,7 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
-namespace Game.View
+namespace Game
 {
     using System;
     using Framework.Core;
@@ -16,7 +16,7 @@ namespace Game.View
     public class Bullet : AbstractView
     {
         public Vector2 Direction;
-        
+
         public float Speed = 5f;
 
         private void Update()
