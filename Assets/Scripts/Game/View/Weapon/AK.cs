@@ -1,8 +1,8 @@
 // ------------------------------------------------------------
-// @file       ShotGun.cs
+// @file       AK.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-01-31 21:01:30
+// @Modified   2025-01-31 21:01:13
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
@@ -10,37 +10,41 @@ namespace Game
 {
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.EventKit;
-    using UnityEngine;
     using Framework.Toolkits.FluentAPI;
+    using UnityEngine;
 
-    public class ShotGun : Gun
+    public class AK : Gun
     {
-        protected override float _BulletSpeed   { get; } = 10;
-        
-        protected override float _ShootInterval { get; } = 0.5f;
+        protected override float _BulletSpeed { get; } = 10;
 
-        public float IntervalAngle = 10;
-        
-        public int BulletCount = 5;
+        protected override float _ShootInterval { get; } = 0.1f;
+
+        private AudioPlayer _audioPlayer;
 
         public override void ShootDown(Vector2 direction)
         {
             if (_CanShoot)
             {
-                for (int i = 0; i < BulletCount; i++)
-                {
-                    var angle = (i - (BulletCount - 1) / 2f) * IntervalAngle;
-                    Shoot(direction.Rotate(angle));
-                }
-                
-                AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.4f);
+                Shoot(direction);
+            }
+
+            _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
+        }
+
+        public override void Shooting(Vector2 direction)
+        {
+            if (_CanShoot)
+            {
+                Shoot(direction);
             }
         }
 
-        public override void Shooting(Vector2 direction) { }
+        public override void ShootUp(Vector2 direction)
+        {
+            _audioPlayer.Stop();
+            AudioKit.PlaySound(ShootSounds[1], volume: 0.3f);
+        }
 
-        public override void ShootUp(Vector2 direction) { }
-        
         private void Shoot(Vector2 direction)
         {
             var bullet = Bullet.Instantiate(Bullet.transform.position)

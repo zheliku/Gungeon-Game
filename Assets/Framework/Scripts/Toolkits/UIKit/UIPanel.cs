@@ -44,8 +44,8 @@ namespace Framework.Toolkits.UIKit
         void IPanel.Load() // 对自己隐藏
         {
             State = PanelState.Opened;
-            OnLoad();
             this.BindHierarchyComponent();
+            OnLoad();
             gameObject.SetActive(false);
         }
 

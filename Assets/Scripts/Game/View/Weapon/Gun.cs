@@ -23,7 +23,7 @@ namespace Game
         public GameObject Bullet;
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
-        
+
         protected bool _isShooting = false;
 
         protected float _shootTime = 0;
@@ -71,7 +71,7 @@ namespace Game
             {
                 ShootUp(_ShootDirection);
                 _isShooting = false;
-            }).UnBindAllPerformedWhenGameObjectDestroyed(gameObject);
+            }).UnBindAllWhenGameObjectDestroyed(gameObject);
         }
 
         private void Update()
