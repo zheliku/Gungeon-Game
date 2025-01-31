@@ -226,8 +226,9 @@ namespace Framework.Toolkits.AudioKit
 
             ClearResources();
 
-            IsLoop    = loop;
-            AudioClip = clip;
+            IsLoop        = loop;
+            AudioClipName = clip.name;
+            AudioClip     = clip;
 
             PlayInternal();
         }

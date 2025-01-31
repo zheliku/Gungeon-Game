@@ -9,7 +9,6 @@
 namespace Game
 {
     using Framework.Core;
-    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
     using Framework.Toolkits.SingletonKit;
@@ -19,29 +18,30 @@ namespace Game
 
     public class Player : Role, ISingleton
     {
-        public GameObject Bullet;
+        public Transform Weapon;
+
+        public Pistol Pistol;
 
         private InputAction _moveAction;
 
         private PlayerModel _playerModel;
-
-        private Rigidbody2D _rigidbody2D;
-
+        
         private Property _Property { get => _playerModel.Property; }
+
+        private Vector3 _MousePosition { get => Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).Set(z: 0); }
 
         public static Player Instance { get; set; }
 
         protected override void Awake()
         {
             base.Awake();
-            
+
             _playerModel = this.GetModel<PlayerModel>();
 
-            Bullet         = "Bullet".GetGameObjectInHierarchy(transform);
-            SpriteRenderer = "Sprite".GetComponentInHierarchy<SpriteRenderer>(transform);
+            Weapon         = "Weapon".GetComponentInHierarchy<Transform>(transform);
+            Pistol         = "Weapon/Pistol".GetComponentInHierarchy<Pistol>(transform);
 
             _moveAction  = InputKit.GetInputAction("Move");
-            _rigidbody2D = GetComponent<Rigidbody2D>();
 
             _Property.Hp.Register((oldValue, value) =>
             {
@@ -53,8 +53,6 @@ namespace Game
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
             UIKit.ShowPanelAsync<GamePlay>();
-
-            Bullet.Disable();
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -62,7 +60,9 @@ namespace Game
         {
             InputKit.BindPerformed("Attack", context =>
             {
-                Fire();
+                var shootDirection = (_MousePosition - transform.position).normalized;
+
+                Pistol.ShootDown(shootDirection);
             }).UnBindAllPerformedWhenGameObjectDestroyed(gameObject);
         }
 
@@ -70,7 +70,7 @@ namespace Game
         void Update()
         {
             var moveDirection = _moveAction.ReadValue<Vector2>();
-            _rigidbody2D.linearVelocity = moveDirection * _Property.MoveSpeed;
+            Rigidbody2D.linearVelocity = moveDirection * _Property.MoveSpeed;
 
             if (moveDirection.x < 0)
             {
@@ -80,36 +80,16 @@ namespace Game
             {
                 SpriteRenderer.flipX = false;
             }
+
+            var shootDirection = (_MousePosition - transform.position).ToVector2().normalized;
+            var angle          = Mathf.Atan2(shootDirection.y, shootDirection.x).Rad2Deg();
+            Weapon.SetLocalEulerAngles(z: angle);             // 使 Weapon 方向跟手
+            Weapon.SetLocalScale(y: shootDirection.x.Sign()); // 使 Weapon 随鼠标左右翻转
         }
-        
+
         public override void Hurt(float damage)
         {
             _Property.Hp.Value -= damage;
-        }
-
-        public void Fire()
-        {
-            var bullet = Bullet.Instantiate(transform.position)
-               .Enable();
-
-            var mouse          = Mouse.current.position;
-            var mousePosition  = Camera.main.ScreenToWorldPoint(mouse.ReadValue());
-            var shootDirection = (mousePosition - transform.position).ToVector2().normalized;
-
-            bullet.OnUpdateEvent(() =>
-            {
-                bullet.transform.Translate(shootDirection * (Time.deltaTime * 5));
-            });
-
-            bullet.OnCollisionEnter2DEvent(collider2D =>
-            {
-                if (collider2D.gameObject.GetComponent<Enemy>())
-                {
-                    collider2D.gameObject.Destroy();
-                }
-                
-                bullet.Destroy();
-            });
         }
 
         protected override IArchitecture Architecture { get => Game.Interface; }

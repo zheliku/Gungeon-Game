@@ -15,10 +15,14 @@ namespace Game
     public abstract class Role : AbstractView
     {
         public SpriteRenderer SpriteRenderer;
+        
+        public Rigidbody2D Rigidbody2D;
+
 
         protected virtual void Awake()
         {
             SpriteRenderer = "Sprite".GetComponentInHierarchy<SpriteRenderer>(transform);
+            Rigidbody2D    = GetComponent<Rigidbody2D>();
         }
 
         public abstract void Hurt(float damage);

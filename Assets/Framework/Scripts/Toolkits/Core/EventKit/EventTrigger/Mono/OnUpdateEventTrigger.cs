@@ -15,7 +15,7 @@
         }
     }
 
-    public static class UpdateEventTriggerExtension
+    public static class OnUpdateEventTriggerExtension
     {
         public static IUnRegister OnUpdateEvent<T>(this T self, Action update)
             where T : Component

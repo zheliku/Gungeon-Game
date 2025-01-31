@@ -8,7 +8,10 @@
 
 namespace Game
 {
+    using System;
+    using System.Collections.Generic;
     using Framework.Core;
+    using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
@@ -29,6 +32,8 @@ namespace Game
         public float FollowSeconds = 3;
 
         public float CurrentSeconds = 0;
+        
+        public List<AudioClip> ShootSounds = new List<AudioClip>();
 
         private EnemyModel _enemyModel;
 
@@ -67,11 +72,6 @@ namespace Game
                     CurrentSeconds = 0;
                 }
 
-                if (player)
-                {
-                    transform.Translate(directionToPlayer * (Time.deltaTime * _Property.MoveSpeed));
-                }
-
                 CurrentSeconds += Time.deltaTime;
             }
             else if (State == States.Shoot)
@@ -92,16 +92,27 @@ namespace Game
             }
         }
 
+        private void FixedUpdate()
+        {
+            var player = Player.Instance;
+            
+            if (State == States.Follow)
+            {
+                if (player)
+                {
+                    Rigidbody2D.linearVelocity = player.Direction2DFrom(transform) * _Property.MoveSpeed;
+                }
+            }
+        }
+
         public void Fire()
         {
             var bullet = Bullet.Instantiate(transform.position)
                .Enable();
-            var direction = Player.Instance.Direction2DFrom(bullet);
-
-            bullet.OnUpdateEvent(() =>
-            {
-                bullet.transform.Translate(direction * (Time.deltaTime * 5));
-            });
+            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
+            
+            rigidbody2D.linearVelocity = Player.Instance.Direction2DFrom(bullet) * 3;
+            bullet.OnFixedUpdateEvent(() => { }); // todo: 需要写在这里吗？
 
             bullet.OnCollisionEnter2DEvent(collider2D =>
             {
@@ -114,6 +125,8 @@ namespace Game
 
                 bullet.Destroy();
             });
+            
+            AudioKit.PlaySound(ShootSounds.RandomChoose());
         }
 
         public override void Hurt(float damage)
