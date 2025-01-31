@@ -10,14 +10,18 @@ namespace Game
 {
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
+    using UnityEngine;
 
     public class CameraController : MonoSingleton<CameraController>
     {
         protected override void Update()
         {
-            if (Player.Instance != null)
+            var player = Player.Instance;
+            
+            if (player)
             {
-                transform.position = Player.Instance.GetPosition().Set(z: -1);
+                var targetPos = player.GetPosition().Set(z: -10);
+                transform.position = transform.position.LerpWithSpeed(targetPos, 5);
             }
             
             base.Update();

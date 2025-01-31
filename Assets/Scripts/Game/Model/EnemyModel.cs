@@ -16,7 +16,7 @@ namespace Game
         
         protected override void OnInit()
         {
-            Property.MoveSpeed = 3;
+            Property.MoveSpeed = 2;
         }
     }
 }

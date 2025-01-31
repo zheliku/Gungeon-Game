@@ -53,11 +53,8 @@ namespace Game
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
             UIKit.ShowPanelAsync<GamePlay>();
-        }
 
-        public override void Hurt(float damage)
-        {
-            _Property.Hp.Value -= damage;
+            Bullet.Disable();
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -65,25 +62,7 @@ namespace Game
         {
             InputKit.BindPerformed("Attack", context =>
             {
-                var bullet = Bullet.Instantiate(transform.position)
-                   .Enable();
-
-                var mouse          = Mouse.current.position;
-                var mousePosition  = Camera.main.ScreenToWorldPoint(mouse.ReadValue());
-                var shootDirection = (mousePosition - transform.position).ToVector2().normalized;
-
-                bullet.OnUpdateEvent(() =>
-                {
-                    bullet.transform.Translate(shootDirection * (Time.deltaTime * 5));
-                });
-
-                bullet.OnCollisionEnter2DEvent(collider2D =>
-                {
-                    if (collider2D.gameObject.GetComponent<Enemy>())
-                    {
-                        collider2D.gameObject.Disable();
-                    }
-                });
+                Fire();
             }).UnBindAllPerformedWhenGameObjectDestroyed(gameObject);
         }
 
@@ -101,6 +80,36 @@ namespace Game
             {
                 SpriteRenderer.flipX = false;
             }
+        }
+        
+        public override void Hurt(float damage)
+        {
+            _Property.Hp.Value -= damage;
+        }
+
+        public void Fire()
+        {
+            var bullet = Bullet.Instantiate(transform.position)
+               .Enable();
+
+            var mouse          = Mouse.current.position;
+            var mousePosition  = Camera.main.ScreenToWorldPoint(mouse.ReadValue());
+            var shootDirection = (mousePosition - transform.position).ToVector2().normalized;
+
+            bullet.OnUpdateEvent(() =>
+            {
+                bullet.transform.Translate(shootDirection * (Time.deltaTime * 5));
+            });
+
+            bullet.OnCollisionEnter2DEvent(collider2D =>
+            {
+                if (collider2D.gameObject.GetComponent<Enemy>())
+                {
+                    collider2D.gameObject.Destroy();
+                }
+                
+                bullet.Destroy();
+            });
         }
 
         protected override IArchitecture Architecture { get => Game.Interface; }

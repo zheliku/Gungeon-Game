@@ -434,5 +434,25 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Vector2.Distance(self.GetPosition(), other);
         }
+
+        public static Vector2 Lerp(this Vector2 self, Vector2 target, float t)
+        {
+            return Vector2.Lerp(self, target, t);
+        }
+        
+        public static Vector2 LerpWithSpeed(this Vector2 self, Vector2 target, float speed)
+        {
+            return Vector2.Lerp(self, target, 1 - Mathf.Exp(-speed * Time.deltaTime));
+        }
+        
+        public static Vector3 Lerp(this Vector3 self, Vector3 target, float t)
+        {
+            return Vector3.Lerp(self, target, t);
+        }
+        
+        public static Vector3 LerpWithSpeed(this Vector3 self, Vector3 target, float speed)
+        {
+            return Vector3.Lerp(self, target, 1 - Mathf.Exp(-speed * Time.deltaTime));
+        }
     }
 }

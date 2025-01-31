@@ -16,9 +16,11 @@ namespace Game
 
     public class LevelController : AbstractView
     {
-        public TileBase Tile;
+        public TileBase WallTile;
+        public TileBase FloorTile;
 
-        public Tilemap Tilemap;
+        public Tilemap WallTilemap;
+        public Tilemap FloorTilemap;
 
         public Enemy Enemy;
 
@@ -30,13 +32,16 @@ namespace Game
         {
             _levelModel = this.GetModel<LevelModel>();
 
-            Player.Instance = "Template/Player".GetComponentInHierarchy<Player>(transform);
-            Enemy           = "Template/Enemy".GetComponentInHierarchy<Enemy>(transform);
-            Final           = "Template/Final".GetComponentInHierarchy<Final>(transform);
+            WallTilemap  = "Grid/Wall".GetComponentInHierarchy<Tilemap>(transform);
+            FloorTilemap = "Grid/Floor".GetComponentInHierarchy<Tilemap>(transform);
+            Enemy        = "Template/Enemy".GetComponentInHierarchy<Enemy>();
+            Final        = "Template/Final".GetComponentInHierarchy<Final>();
 
-            Player.Instance.DisableGameObject();
             Enemy.DisableGameObject();
             Final.DisableGameObject();
+
+            Player.Instance = "Template/Player".GetComponentInHierarchy<Player>();
+            Player.Instance.DisableGameObject();
         }
 
         private void Start()
@@ -60,29 +65,31 @@ namespace Game
 
                     var x = j + currentRoomStartPosX;
                     var y = roomCode.Count - i;
+                    
+                    FloorTilemap.SetTile(new Vector3Int(x, y, 0), FloorTile);
 
                     if (code == '1')
                     {
-                        Tilemap.SetTile(new Vector3Int(x, y, 0), Tile);
+                        WallTilemap.SetTile(new Vector3Int(x, y, 0), WallTile);
                     }
                     else if (code == '@')
                     {
                         var player = Player.Instance.Instantiate(keepName: true)
                            .EnableGameObject()
-                           .SetPosition(x + 0.5f, y + 0.5f, 0);
+                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                         Player.Instance = player;
                     }
                     else if (code == 'e')
                     {
                         Enemy.Instantiate(keepName: true)
                            .EnableGameObject()
-                           .SetPosition(x + 0.5f, y + 0.5f, 0);
+                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                     }
                     else if (code == '#')
                     {
                         Final.Instantiate(keepName: true)
                            .EnableGameObject()
-                           .SetPosition(x + 0.5f, y + 0.5f, 0);
+                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                     }
                 }
             }

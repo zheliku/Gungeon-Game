@@ -40,15 +40,25 @@ namespace Game
 
             Bullet      = "Bullet".GetGameObjectInHierarchy(transform);
             _enemyModel = this.GetModel<EnemyModel>();
-        }
 
-        public override void Hurt(float damage)
-        { }
+            Bullet.Disable();
+        }
 
         private void Update()
         {
             var player = Player.Instance;
 
+            var directionToPlayer = player.Direction2DFrom(transform);
+
+            if (directionToPlayer.x > 0)
+            {
+                SpriteRenderer.flipX = false;
+            }
+            else if (directionToPlayer.x < 0)
+            {
+                SpriteRenderer.flipX = true;
+            }
+            
             if (State == States.Follow)
             {
                 if (CurrentSeconds >= FollowSeconds)
@@ -59,7 +69,7 @@ namespace Game
 
                 if (player)
                 {
-                    transform.Translate(player.Direction2DFrom(transform) * (Time.deltaTime * _Property.MoveSpeed));
+                    transform.Translate(directionToPlayer * (Time.deltaTime * _Property.MoveSpeed));
                 }
 
                 CurrentSeconds += Time.deltaTime;
@@ -77,27 +87,37 @@ namespace Game
 
                 if (Time.frameCount % 20 == 0 && player)
                 {
-                    var bullet = Bullet.Instantiate(transform.position)
-                       .Enable();
-                    var direction = player.Direction2DFrom(bullet);
-
-                    bullet.OnUpdateEvent(() =>
-                    {
-                        bullet.transform.Translate(direction * (Time.deltaTime * 5));
-                    });
-
-                    bullet.OnCollisionEnter2DEvent(collider2D =>
-                    {
-                        var player = collider2D.gameObject.GetComponent<Player>();
-                        if (player)
-                        {
-                            player.Hurt(1);
-                            bullet.Destroy();
-                        }
-                    });
+                    Fire();
                 }
             }
         }
+
+        public void Fire()
+        {
+            var bullet = Bullet.Instantiate(transform.position)
+               .Enable();
+            var direction = Player.Instance.Direction2DFrom(bullet);
+
+            bullet.OnUpdateEvent(() =>
+            {
+                bullet.transform.Translate(direction * (Time.deltaTime * 5));
+            });
+
+            bullet.OnCollisionEnter2DEvent(collider2D =>
+            {
+                var player = collider2D.gameObject.GetComponent<Player>();
+                if (player)
+                {
+                    player.Hurt(1);
+                    bullet.Destroy();
+                }
+
+                bullet.Destroy();
+            });
+        }
+
+        public override void Hurt(float damage)
+        { }
 
         protected override IArchitecture Architecture { get => Game.Interface; }
     }
