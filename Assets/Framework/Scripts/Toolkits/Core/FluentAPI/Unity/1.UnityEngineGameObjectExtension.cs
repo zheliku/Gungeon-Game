@@ -87,7 +87,7 @@ namespace Framework.Toolkits.FluentAPI
         /// </summary>
         /// <example> <code>
         /// <![CDATA[
-        /// GetComponent<MyScript>().Enable();
+        /// GetComponent<MyScript>().EnableGameObject();
         /// ]]>
         /// </code> </example>
         public static T EnableGameObject<T>(this T selfComponent) where T : Component

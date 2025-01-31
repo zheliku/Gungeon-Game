@@ -44,7 +44,9 @@ namespace Game
         private void Shoot(Vector2 direction)
         {
             var bullet = Bullet.Instantiate(Bullet.transform.position)
-               .Enable();
+               .Enable()
+               .SetLocalEulerAngles(z: Mathf.Atan2(direction.y, direction.x).Rad2Deg());
+            
             var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
 
             rigidbody2D.linearVelocity = direction * _BulletSpeed;
