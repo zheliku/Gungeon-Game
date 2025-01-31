@@ -9,14 +9,12 @@
 namespace Game
 {
     using Framework.Core;
-    using Framework.Core.View;
     using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
-    using Framework.Toolkits.UIKit;
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class Enemy : AbstractView
+    public class Enemy : Role
     {
         public enum States
         {
@@ -24,7 +22,7 @@ namespace Game
             Shoot
         }
 
-        public Bullet Bullet;
+        public GameObject Bullet;
 
         public States State;
 
@@ -33,13 +31,19 @@ namespace Game
         public float CurrentSeconds = 0;
 
         private EnemyModel _enemyModel;
-        
+
         private Property _Property { get => _enemyModel.Property; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
+            Bullet      = "Bullet".GetGameObjectInHierarchy(transform);
             _enemyModel = this.GetModel<EnemyModel>();
         }
+
+        public override void Hurt(float damage)
+        { }
 
         private void Update()
         {
@@ -74,15 +78,21 @@ namespace Game
                 if (Time.frameCount % 20 == 0 && player)
                 {
                     var bullet = Bullet.Instantiate(transform.position)
-                       .EnableGameObject();
-                    bullet.Direction = player.Direction2DFrom(bullet);
+                       .Enable();
+                    var direction = player.Direction2DFrom(bullet);
+
+                    bullet.OnUpdateEvent(() =>
+                    {
+                        bullet.transform.Translate(direction * (Time.deltaTime * 5));
+                    });
 
                     bullet.OnCollisionEnter2DEvent(collider2D =>
                     {
-                        if (collider2D.gameObject.CompareTag("Player"))
+                        var player = collider2D.gameObject.GetComponent<Player>();
+                        if (player)
                         {
-                            UIKit.ShowPanelAsync<GameOver>();
-                            collider2D.gameObject.Disable();
+                            player.Hurt(1);
+                            bullet.Destroy();
                         }
                     });
                 }

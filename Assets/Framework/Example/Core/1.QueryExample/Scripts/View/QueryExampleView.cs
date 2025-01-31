@@ -8,7 +8,7 @@
 
 namespace Framework.Core.Example._1.QueryExample.Scripts.View
 {
-    using Core.View;
+    using Core;
     using Query;
     using UnityEngine;
 

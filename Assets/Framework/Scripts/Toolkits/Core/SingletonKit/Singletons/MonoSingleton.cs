@@ -8,7 +8,6 @@
 
 namespace Framework.Toolkits.SingletonKit
 {
-    using Core.View;
     using UnityEngine;
 
     public abstract class MonoSingleton<TMonoSingleton> : MonoBehaviour, ISingleton where TMonoSingleton : MonoSingleton<TMonoSingleton>

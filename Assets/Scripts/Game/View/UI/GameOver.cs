@@ -10,7 +10,6 @@ namespace Game
 {
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
-    using Framework.Toolkits.ResKit;
     using Framework.Toolkits.UIKit;
     using UnityEngine;
     using UnityEngine.UI;
@@ -25,8 +24,7 @@ namespace Game
             
             _btnRestart.onClick.AddListener(() =>
             {
-                ResKit.LoadSceneAsync("Game");
-                Time.timeScale = 1;
+                this.SendCommand<StartGameCommand>();
                 Hide();
             });
         }

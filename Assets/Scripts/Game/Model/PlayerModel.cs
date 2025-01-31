@@ -16,6 +16,7 @@ namespace Game
         
         protected override void OnInit()
         {
+            Property.Hp.SetValueWithoutEvent(3);
             Property.MoveSpeed = 5;
         }
     }

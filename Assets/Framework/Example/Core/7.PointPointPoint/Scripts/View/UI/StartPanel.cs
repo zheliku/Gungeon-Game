@@ -6,14 +6,11 @@
 // @Copyright  Copyright (c) 2024, zheliku
 // ------------------------------------------------------------
 
-using NotImplementedException = System.NotImplementedException;
-
 namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 {
     using Command;
-    using Core.View;
+    using Core;
     using Model;
-    using Sirenix.OdinInspector;
     using TMPro;
     using UnityEngine.UI;
 

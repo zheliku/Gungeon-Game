@@ -10,7 +10,6 @@ namespace Game
 {
     using System.Collections.Generic;
     using Framework.Core;
-    using Framework.Core.View;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
     using UnityEngine.Tilemaps;

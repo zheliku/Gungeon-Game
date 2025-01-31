@@ -8,10 +8,9 @@
 
 namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 {
-    using System;
     using System.CountSownSystem;
     using Command;
-    using Core.View;
+    using Core;
     using Model;
     using TMPro;
     using UnityEngine.UI;

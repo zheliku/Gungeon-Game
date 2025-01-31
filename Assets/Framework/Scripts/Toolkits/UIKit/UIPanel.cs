@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Framework.Toolkits.UIKit
 {
     using System;
-    using Core.View;
+    using Core;
     using Sirenix.OdinInspector;
 
     public abstract class UIPanel : AbstractView, IPanel

@@ -1,27 +1,27 @@
 // ------------------------------------------------------------
-// @file       Final.cs
+// @file       Role.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-01-30 21:01:25
+// @Modified   2025-01-31 14:01:01
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
 namespace Game
 {
-    using System;
     using Framework.Core;
-    using Framework.Toolkits.UIKit;
+    using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class Final : AbstractView
+    public abstract class Role : AbstractView
     {
-        private void OnTriggerEnter2D(Collider2D other)
+        public SpriteRenderer SpriteRenderer;
+
+        protected virtual void Awake()
         {
-            if (other.CompareTag("Player"))
-            {
-                UIKit.ShowPanel<GamePass>();
-            }
+            SpriteRenderer = "Sprite".GetComponentInHierarchy<SpriteRenderer>(transform);
         }
+
+        public abstract void Hurt(float damage);
 
         protected override IArchitecture Architecture { get => Game.Interface; }
     }

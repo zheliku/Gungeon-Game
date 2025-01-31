@@ -9,7 +9,7 @@
 namespace Framework.Core.Example._0.CounterApp.Scripts.View
 {
     using Command;
-    using Core.View;
+    using Core;
     using Model;
     using Sirenix.OdinInspector;
     using UnityEngine;

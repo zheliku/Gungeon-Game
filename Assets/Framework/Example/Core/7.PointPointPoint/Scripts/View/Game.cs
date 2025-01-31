@@ -8,7 +8,7 @@
 
 namespace Framework.Core.Example._7.PointPointPoint.Scripts.View
 {
-    using Core.View;
+    using Core;
     using UnityEngine;
 
     public class Game : AbstractView

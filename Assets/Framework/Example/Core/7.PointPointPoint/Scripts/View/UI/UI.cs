@@ -8,7 +8,7 @@
 
 namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 {
-    using Core.View;
+    using Core;
 
     public class UI : AbstractView
     {

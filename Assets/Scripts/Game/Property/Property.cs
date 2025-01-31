@@ -8,8 +8,12 @@
 
 namespace Game
 {
+    using Framework.Core;
+
     public class Property
     {
+        public BindableProperty<float> Hp = new BindableProperty<float>();
+        
         public float MoveSpeed = 3;
     }
 }

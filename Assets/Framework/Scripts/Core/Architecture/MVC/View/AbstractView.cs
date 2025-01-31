@@ -6,7 +6,7 @@
 // @Copyright  Copyright (c) 2024, zheliku
 // ------------------------------------------------------------
 
-namespace Framework.Core.View
+namespace Framework.Core
 {
     using Sirenix.OdinInspector;
     using UnityEngine;
