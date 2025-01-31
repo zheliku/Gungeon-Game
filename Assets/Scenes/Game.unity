@@ -168,6 +168,7 @@ MonoBehaviour:
   Bullet: {fileID: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 57e4f38a45afb774393b90b8db67ef0c, type: 3}
+  CurrentBulletCount: 0
 --- !u!1 &81602584
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +484,7 @@ Transform:
   m_GameObject: {fileID: 488817832}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.05, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1724,8 +1725,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 31efd9b4233a4f4428206209e60a688f, type: 3}
   - {fileID: 8300000, guid: 502315ed3ca790241984ee5733571d59, type: 3}
   - {fileID: 8300000, guid: 6f4267c35e02c064fb363fbbbd6a6fc7, type: 3}
+  CurrentBulletCount: 0
   IntervalAngle: 10
-  BulletCount: 5
+  OneShootCount: 5
 --- !u!1 &1110434580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,7 +1757,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2087522719}
   - {fileID: 1993017172}
   - {fileID: 1884801010}
   m_Father: {fileID: 0}
@@ -1787,8 +1788,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1993017172}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1897,6 +1898,7 @@ MonoBehaviour:
   ShootSounds:
   - {fileID: 8300000, guid: 080b1a17117d81e4c995dc006ee2f8d7, type: 3}
   - {fileID: 8300000, guid: ae8bac6bb5da2cc4cb26766837d1a12b, type: 3}
+  CurrentBulletCount: 0
 --- !u!1 &1194887375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1923,9 +1925,9 @@ Transform:
   m_GameObject: {fileID: 1194887375}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2087522719}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2434,6 +2436,7 @@ MonoBehaviour:
   Bullet: {fileID: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 93a1bef0ad509814fa0f31544497eda5, type: 3}
+  CurrentBulletCount: 0
 --- !u!1 &1601129801
 GameObject:
   m_ObjectHideFlags: 0
@@ -2485,6 +2488,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 768f31e19a030314eb54ad81462a2b1d, type: 3}
   - {fileID: 8300000, guid: f240793c78fc5e2479b7b77278f0572a, type: 3}
   - {fileID: 8300000, guid: f16761a6e5e413e46872a38be53cd912, type: 3}
+  CurrentBulletCount: 0
 --- !u!1 &1697428090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2580,6 +2584,7 @@ MonoBehaviour:
   Bullet: {fileID: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 9aac8173d24c75243851480ae074adee, type: 3}
+  CurrentBulletCount: 0
   Distance: 10
   LineRenderer: {fileID: 0}
 --- !u!1 &1778728562
@@ -3074,7 +3079,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.673, y: 0.071, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1993017172}
@@ -3300,7 +3305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1975038560
 Transform:
   m_ObjectHideFlags: 0
@@ -3341,6 +3346,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 47c27052e0b8d3645918275c0b721226, type: 3}
   - {fileID: 8300000, guid: 85b45158359b5144db03a2ae9892adaf, type: 3}
   - {fileID: 8300000, guid: 116b0bb3e861b864cae5ed82c6fdecd1, type: 3}
+  CurrentBulletCount: 0
 --- !u!1 &1980597813
 GameObject:
   m_ObjectHideFlags: 0
@@ -3496,8 +3502,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1930633242}
   - {fileID: 1154151054}
+  - {fileID: 1930633242}
   m_Father: {fileID: 1110434581}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1993017173
@@ -3557,7 +3563,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.45
+  m_Radius: 0.5
 --- !u!50 &1993017175
 Rigidbody2D:
   serializedVersion: 5
@@ -3601,7 +3607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2015030332
 Transform:
   m_ObjectHideFlags: 0
@@ -3635,6 +3641,7 @@ MonoBehaviour:
   ShootSounds:
   - {fileID: 8300000, guid: f7afcff92badcd44db265c75a05b9945, type: 3}
   - {fileID: 8300000, guid: 1b74b47061aa65744a6db5c4dc263403, type: 3}
+  CurrentBulletCount: 0
 --- !u!1 &2028686166
 GameObject:
   m_ObjectHideFlags: 0
@@ -3821,7 +3828,8 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   WeaponTransform: {fileID: 0}
-  CurrentGun: {fileID: 0}
+  CurrentGunIndex: 0
+  Guns: []
 --- !u!4 &2087522719
 Transform:
   m_ObjectHideFlags: 0
@@ -3837,7 +3845,7 @@ Transform:
   m_Children:
   - {fileID: 1194887376}
   - {fileID: 488817833}
-  m_Father: {fileID: 1110434581}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &2087522720
 CircleCollider2D:
@@ -3874,7 +3882,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.45
+  m_Radius: 0.6
 --- !u!50 &2087522721
 Rigidbody2D:
   serializedVersion: 5
@@ -3997,3 +4005,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 276840417}
   - {fileID: 1110434581}
+  - {fileID: 2087522719}

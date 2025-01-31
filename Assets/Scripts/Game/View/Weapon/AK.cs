@@ -9,8 +9,6 @@
 namespace Game
 {
     using Framework.Toolkits.AudioKit;
-    using Framework.Toolkits.EventKit;
-    using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
     public class AK : Gun
@@ -19,23 +17,25 @@ namespace Game
 
         protected override float _ShootInterval { get; } = 0.1f;
 
+        public override int BulletCount { get; } = 50;
+
         private AudioPlayer _audioPlayer;
 
         public override void ShootDown(Vector2 direction)
         {
             if (_CanShoot)
             {
-                Shoot(direction);
+                ShootOnce(direction);
+                
+                _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
             }
-
-            _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
         }
 
         public override void Shooting(Vector2 direction)
         {
             if (_CanShoot)
             {
-                Shoot(direction);
+                ShootOnce(direction);
             }
         }
 
@@ -43,27 +43,6 @@ namespace Game
         {
             _audioPlayer.Stop();
             AudioKit.PlaySound(ShootSounds[1], volume: 0.3f);
-        }
-
-        private void Shoot(Vector2 direction)
-        {
-            var bullet = Bullet.Instantiate(Bullet.transform.position)
-               .Enable()
-               .SetLocalEulerAngles(z: Mathf.Atan2(direction.y, direction.x).Rad2Deg());
-            
-            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-
-            rigidbody2D.linearVelocity = direction * _BulletSpeed;
-
-            bullet.OnCollisionEnter2DEvent(collider2D =>
-            {
-                if (collider2D.gameObject.GetComponent<Enemy>())
-                {
-                    collider2D.gameObject.Destroy();
-                }
-
-                bullet.Destroy();
-            });
         }
     }
 }

@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using Framework.Core;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.EventKit;
     using UnityEngine;
@@ -15,24 +16,22 @@ namespace Game
 
     public class ShotGun : Gun
     {
-        protected override float _BulletSpeed   { get; } = 10;
-        
+        protected override float _BulletSpeed { get; } = 10;
+
         protected override float _ShootInterval { get; } = 0.5f;
 
+        public override int BulletCount { get; } = 6;
+
         public float IntervalAngle = 10;
-        
-        public int BulletCount = 5;
+
+        public int OneShootCount = 5;
 
         public override void ShootDown(Vector2 direction)
         {
             if (_CanShoot)
             {
-                for (int i = 0; i < BulletCount; i++)
-                {
-                    var angle = (i - (BulletCount - 1) / 2f) * IntervalAngle;
-                    Shoot(direction.Rotate(angle));
-                }
-                
+                ShootOnce(direction);
+
                 AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.4f);
             }
         }
@@ -40,26 +39,44 @@ namespace Game
         public override void Shooting(Vector2 direction) { }
 
         public override void ShootUp(Vector2 direction) { }
-        
-        private void Shoot(Vector2 direction)
+
+        public override void ShootOnce(Vector2 direction)
         {
-            var bullet = Bullet.Instantiate(Bullet.transform.position)
-               .Enable()
-               .SetLocalEulerAngles(z: Mathf.Atan2(direction.y, direction.x).Rad2Deg());
-            
-            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
+            CurrentBulletCount--;
 
-            rigidbody2D.linearVelocity = direction * _BulletSpeed;
-
-            bullet.OnCollisionEnter2DEvent(collider2D =>
+            for (int i = 0; i < OneShootCount; i++)
             {
-                if (collider2D.gameObject.GetComponent<Enemy>())
-                {
-                    collider2D.gameObject.Destroy();
-                }
+                var angle         = (i - (OneShootCount - 1) / 2f) * IntervalAngle;
+                var eachDirection = direction.Rotate(angle);
 
-                bullet.Destroy();
-            });
+                var bullet = Bullet.Instantiate(Bullet.transform.position)
+                   .Enable()
+                   .SetTransformRight(direction);
+
+                var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
+
+                rigidbody2D.linearVelocity = eachDirection * _BulletSpeed;
+
+                bullet.OnCollisionEnter2DEvent(collider2D =>
+                {
+                    var enemy = collider2D.gameObject.GetComponent<Enemy>();
+                    if (enemy)
+                    {
+                        enemy.Hurt(1);
+                    }
+
+                    bullet.Destroy();
+                });
+            }
+
+            TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
+
+            // 没有子弹，则抬枪
+            if (!_HaveBullet)
+            {
+                ShootUp(direction);
+                IsShooting = false;
+            }
         }
     }
 }

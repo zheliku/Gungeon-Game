@@ -349,5 +349,41 @@ namespace Framework.Toolkits.FluentAPI
             selfComponent.transform.SetSiblingIndex(index);
             return selfComponent;
         }
+
+        public static GameObject SetTransformRight(this GameObject self, Vector3 right)
+        {
+            self.transform.right = right;
+            return self;
+        }
+        
+        public static T SetTransformRight<T>(this T self, Vector3 right) where T : Component
+        {
+            self.transform.right = right;
+            return self;
+        }
+        
+        public static GameObject SetTransformUp(this GameObject self, Vector3 up)
+        {
+            self.transform.up = up;
+            return self;
+        }
+        
+        public static T SetTransformUp<T>(this T self, Vector3 up) where T : Component
+        {
+            self.transform.up = up;
+            return self;
+        }
+        
+        public static GameObject SetTransformForward(this GameObject self, Vector3 forward)
+        {
+            self.transform.forward = forward;
+            return self;
+        }
+        
+        public static T SetTransformForward<T>(this T self, Vector3 forward) where T : Component
+        {
+            self.transform.forward = forward;
+            return self;
+        }
     }
 }

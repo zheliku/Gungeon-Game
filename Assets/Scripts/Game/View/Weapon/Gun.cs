@@ -8,9 +8,9 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using Framework.Core;
+    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
     using Sirenix.OdinInspector;
@@ -24,7 +24,7 @@ namespace Game
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
-        protected bool _isShooting = false;
+        public bool IsShooting { get; protected set; }
 
         protected float _shootTime = 0;
 
@@ -34,7 +34,24 @@ namespace Game
         [ShowInInspector]
         protected abstract float _ShootInterval { get; }
 
+        [ShowInInspector]
+        public abstract int BulletCount { get; }
+
+        [ShowInInspector]
+        public float CurrentBulletCount;
+
+        /// <summary>
+        /// 是否可以射击
+        /// </summary>
         protected bool _CanShoot
+        {
+            get => _HaveBullet && _ReachCooling;
+        }
+
+        /// <summary>
+        /// 达到冷却时间
+        /// </summary>
+        protected bool _ReachCooling
         {
             get
             {
@@ -45,6 +62,11 @@ namespace Game
                 }
                 return false;
             }
+        }
+
+        protected bool _HaveBullet
+        {
+            get => CurrentBulletCount > 0;
         }
 
         protected Vector3 _MousePosition
@@ -63,20 +85,35 @@ namespace Game
 
             Bullet.Disable();
 
+            CurrentBulletCount = BulletCount;
+        }
+
+        private void OnEnable()
+        {
             InputKit.BindPerformed("Attack", context =>
             {
                 ShootDown(_ShootDirection);
-                _isShooting = true;
+                IsShooting = true;
             }).BindCanceled(context =>
             {
-                ShootUp(_ShootDirection);
-                _isShooting = false;
-            }).UnBindAllWhenGameObjectDestroyed(gameObject);
+                // 松手时检查是否还在射击，如果还在射击，则抬枪
+                if (IsShooting)
+                {
+                    ShootUp(_ShootDirection);
+                    IsShooting = false;
+                }
+            }).UnBindAllWhenGameObjectDisabled(gameObject);
+            
+            InputKit.BindPerformed("LoadBullet", context =>
+            {
+                CurrentBulletCount = BulletCount;
+                TypeEventSystem.GLOBAL.Send(new GunLoadBulletEvent(this));
+            }).UnBindAllWhenGameObjectDisabled(gameObject);
         }
 
         private void Update()
         {
-            if (_isShooting)
+            if (IsShooting)
             {
                 Shooting(_ShootDirection);
             }
@@ -93,6 +130,39 @@ namespace Game
         public abstract void Shooting(Vector2 direction);
 
         public abstract void ShootUp(Vector2 direction);
+
+        public virtual void ShootOnce(Vector2 direction)
+        {
+            CurrentBulletCount--;
+
+            var bullet = Bullet.Instantiate(Bullet.transform.position)
+               .Enable()
+               .SetTransformRight(direction);
+
+            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
+
+            rigidbody2D.linearVelocity = direction * _BulletSpeed;
+
+            bullet.OnCollisionEnter2DEvent(collider2D =>
+            {
+                var enemy = collider2D.gameObject.GetComponent<Enemy>();
+                if (enemy)
+                {
+                    enemy.Hurt(1);
+                }
+
+                bullet.Destroy();
+            });
+
+            TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
+
+            // 没有子弹，则抬枪
+            if (!_HaveBullet)
+            {
+                ShootUp(direction);
+                IsShooting = false;
+            }
+        }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }
     }

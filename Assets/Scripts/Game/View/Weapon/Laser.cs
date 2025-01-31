@@ -18,7 +18,9 @@ namespace Game
     {
         protected override float _BulletSpeed { get; } = 10;
 
-        protected override float _ShootInterval { get; } = 0.1f;
+        protected override float _ShootInterval { get; } = 0.2f;
+        
+        public override int BulletCount { get; } = 50;
 
         public float Distance = 10;
 
@@ -39,6 +41,15 @@ namespace Game
             var hit    = Physics2D.Raycast(Bullet.GetPosition(), direction, Distance, layers);
             var hitPoint = hit ? hit.point : Bullet.GetPosition().ToVector2() + direction * Distance;
             LineRenderer.SetPositions(new Vector3[] { Bullet.GetPosition(), hitPoint });
+
+            if (hit && _CanShoot)
+            {
+                var enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                if (enemy)
+                {
+                    enemy.Hurt(1);
+                }
+            }
         }
 
         public override void ShootUp(Vector2 direction)

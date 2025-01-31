@@ -19,6 +19,8 @@ namespace Game
         protected override float _BulletSpeed { get; } = 10;
 
         protected override float _ShootInterval { get; } = 0.75f;
+        
+        public override int BulletCount { get; } = 8;
 
         [HierarchyPath("ArrowPrepare")]
         private GameObject _arrowPrepare;
@@ -49,23 +51,7 @@ namespace Game
             {
                 _arrowPrepare.Disable();
                 
-                var arrow = Bullet.Instantiate(Bullet.transform.position)
-                   .Enable()
-                   .SetLocalEulerAngles(z: Mathf.Atan2(direction.y, direction.x).Rad2Deg());
-
-                var rigidbody2D = arrow.GetComponent<Rigidbody2D>();
-
-                rigidbody2D.linearVelocity = direction * _BulletSpeed;
-                
-                arrow.OnCollisionEnter2DEvent(collider2D =>
-                {
-                    if (collider2D.gameObject.GetComponent<Enemy>())
-                    {
-                        collider2D.gameObject.Destroy();
-                    }
-
-                    arrow.Destroy();
-                });
+                ShootOnce(direction);
 
                 AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.8f);
             }

@@ -41,9 +41,6 @@ namespace Game
 
             Enemy.DisableGameObject();
             Final.DisableGameObject();
-
-            Player.Instance = "Template/Player".GetComponentInHierarchy<Player>();
-            Player.Instance.DisableGameObject();
         }
 
         private void Start()
@@ -76,10 +73,7 @@ namespace Game
                     }
                     else if (code == '@')
                     {
-                        var player = Player.Instance.Instantiate(keepName: true)
-                           .EnableGameObject()
-                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
-                        Player.Instance = player;
+                        Player.Instance.SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                     }
                     else if (code == 'e')
                     {

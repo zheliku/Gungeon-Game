@@ -8,6 +8,8 @@
 
 namespace Game
 {
+    using System;
+    using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
@@ -15,23 +17,23 @@ namespace Game
     using Framework.Toolkits.UIKit;
     using UnityEngine;
     using UnityEngine.InputSystem;
-    using UnityEngine.Serialization;
 
     public class Player : AbstractRole, ISingleton
     {
+        public static Player Instance { get => SingletonProperty<Player>.Instance; }
+
         [HierarchyPath("Weapon")]
         public Transform WeaponTransform;
 
-        [HierarchyPath("Weapon/MP5")]
-        public Gun CurrentGun;
+        public int CurrentGunIndex;
 
         private InputAction _moveAction;
-        
+
         private PlayerModel _playerModel;
-        
+
         private Property _Property { get => _playerModel.Property; }
-        
-        public static Player Instance { get; set; }
+
+        public List<Gun> Guns = new List<Gun>();
 
         protected override void Awake()
         {
@@ -39,7 +41,7 @@ namespace Game
 
             _playerModel = this.GetModel<PlayerModel>();
 
-            _moveAction  = InputKit.GetInputAction("Move");
+            _moveAction = InputKit.GetInputAction("Move");
 
             _Property.Hp.Register((oldValue, value) =>
             {
@@ -51,12 +53,46 @@ namespace Game
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
             UIKit.ShowPanelAsync<GamePlay>();
+
+            for (int i = 0; i < WeaponTransform.childCount; i++)
+            {
+                var gun = WeaponTransform.GetChild(i).GetComponent<Gun>();
+                if (gun)
+                {
+                    Guns.Add(gun);
+                }
+
+                // 寻找激活的 Gun，设置为初始 Gun
+                if (gun.gameObject.IsEnabled())
+                {
+                    CurrentGunIndex = i;
+                }
+            }
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void OnEnable()
         {
-            
+            InputKit.BindPerformed("ChangeGun", context =>
+            {
+                var currentGun = Guns[CurrentGunIndex];
+                
+                // 射击时不可切换 Gun
+                if (currentGun.IsShooting)
+                {
+                    return;
+                }
+                
+                var newIndex = CurrentGunIndex + (int) context.ReadValue<float>();
+                if (newIndex < 0)
+                {
+                    newIndex = Guns.Count - 1;
+                }
+                else if (newIndex >= Guns.Count)
+                {
+                    newIndex = 0;
+                }
+                UseGun(newIndex);
+            }).UnBindAllWhenGameObjectDisabled(gameObject);
         }
 
         // Update is called once per frame
@@ -78,6 +114,23 @@ namespace Game
         public override void Hurt(float damage)
         {
             _Property.Hp.Value -= damage;
+        }
+
+        public void UseGun(int gunIndex)
+        {
+            var gunChange = CurrentGunIndex != gunIndex;
+
+            var oldGun = Guns[CurrentGunIndex];
+            oldGun.DisableGameObject();
+
+            CurrentGunIndex = gunIndex;
+            var newGun = Guns[CurrentGunIndex];
+            newGun.EnableGameObject();
+
+            if (gunChange)
+            {
+                TypeEventSystem.GLOBAL.Send(new GunChangeEvent(oldGun, newGun));
+            }
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

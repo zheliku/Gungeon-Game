@@ -8,15 +8,16 @@
 
 namespace Game
 {
+    using System.Collections.Generic;
     using Framework.Core.Model;
 
     public class EnemyModel : AbstractModel
     {
-        public Property Property = new Property();
+        public List<Enemy> Enemies = new List<Enemy>();
         
         protected override void OnInit()
         {
-            Property.MoveSpeed = 2;
+            
         }
     }
 }

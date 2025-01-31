@@ -38,7 +38,7 @@ namespace Framework.Toolkits.AudioKit
 
         public static AudioPlayer NarrationPlayer { get => AudioManager.Instance.NarrationPlayer; }
 
-        public static SoundMode SoundMode { get; set; } = SoundMode.EveryOne;
+        public static SoundMode SoundMode { get; set; } = SoundMode.IgnoreSameSoundInGlobalTimes;
 
         public static int GlobalFrameCountForIgnoreSameSound = 10; // 每相邻 GlobalFrameCountForIgnoreSameSound 帧内进行检查，不播放相同音效
         public static int SoundFrameCountForIgnoreSameSound  = 10; // 相同音效在各自记录的 SoundFrameCountForIgnoreSameSound 内，不连续播放
