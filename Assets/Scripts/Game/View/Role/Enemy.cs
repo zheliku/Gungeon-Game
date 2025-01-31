@@ -17,7 +17,7 @@ namespace Game
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class Enemy : Role
+    public class Enemy : AbstractRole
     {
         public enum States
         {

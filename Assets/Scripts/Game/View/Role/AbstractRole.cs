@@ -12,7 +12,7 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public abstract class Role : AbstractView
+    public abstract class AbstractRole : AbstractView
     {
         public SpriteRenderer SpriteRenderer;
         

@@ -16,7 +16,7 @@ namespace Game
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    public class Player : Role, ISingleton
+    public class Player : AbstractRole, ISingleton
     {
         public Transform Weapon;
 

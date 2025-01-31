@@ -15,26 +15,14 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class Pistol : AbstractView
+    public class Pistol : AbstractWeapon
     {
-        public GameObject Bullet;
-
-        public List<AudioClip> ShootSounds = new List<AudioClip>();
-
-        public float BulletSpeed = 10;
-
-        private void Awake()
-        {
-            Bullet = "Bullet".GetGameObjectInHierarchy(transform);
-            Bullet.Disable();
-        }
-
-        public void ShootDown(Vector2 direction)
+        public override void ShootDown(Vector2 direction)
         {
             var bullet = Bullet.Instantiate(Bullet.transform.position)
                .Enable();
             var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-            
+
             rigidbody2D.linearVelocity = direction * BulletSpeed;
             bullet.OnFixedUpdateEvent(() => { }); // todo: 需要写在这里吗？
 
@@ -51,12 +39,8 @@ namespace Game
             AudioKit.PlaySound(ShootSounds.RandomChoose());
         }
 
-        public void Shooting(Vector2 direction)
-        { }
+        public override void Shooting(Vector2 direction) { }
 
-        public void ShootUp(Vector2 direction)
-        { }
-
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        public override void ShootUp(Vector2 direction) { }
     }
 }
