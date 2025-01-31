@@ -15,7 +15,7 @@ namespace Framework.Toolkits.UIKit.Example._0.SyncUse
 
     public class AsyncUseExamplePanel : UIPanel
     {
-        private void Awake()
+        protected void Awake()
         {
             "BtnHide".GetComponentInHierarchy<Button>(gameObject).onClick.AddListener(() =>
             {
@@ -28,6 +28,6 @@ namespace Framework.Toolkits.UIKit.Example._0.SyncUse
             });
         }
 
-        protected override IArchitecture Architecture { get; }
+        protected override IArchitecture _Architecture { get; }
     }
 }

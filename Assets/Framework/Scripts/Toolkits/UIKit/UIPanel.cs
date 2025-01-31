@@ -45,6 +45,7 @@ namespace Framework.Toolkits.UIKit
         {
             State = PanelState.Opened;
             OnLoad();
+            this.BindHierarchyComponent();
             gameObject.SetActive(false);
         }
 

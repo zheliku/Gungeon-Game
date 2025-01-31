@@ -12,14 +12,14 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class UI : AbstractView
     {
-        protected override IArchitecture Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Interface;
 
         private AbstractView _startPanel;
         private AbstractView _gamePanel;
         private AbstractView _winPanel;
         private AbstractView _losePanel;
 
-        private void Awake()
+        protected void Awake()
         {
             _startPanel = transform.Find("Canvas/StartPanel").GetComponent<StartPanel>();
             _gamePanel  = transform.Find("Canvas/GamePanel").GetComponent<GamePanel>();

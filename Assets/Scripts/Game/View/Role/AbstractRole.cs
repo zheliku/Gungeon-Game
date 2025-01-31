@@ -9,24 +9,23 @@
 namespace Game
 {
     using Framework.Core;
-    using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
     public abstract class AbstractRole : AbstractView
     {
+        [HierarchyPath("Sprite")]
         public SpriteRenderer SpriteRenderer;
         
+        [HierarchyPath]
         public Rigidbody2D Rigidbody2D;
-
 
         protected virtual void Awake()
         {
-            SpriteRenderer = "Sprite".GetComponentInHierarchy<SpriteRenderer>(transform);
-            Rigidbody2D    = GetComponent<Rigidbody2D>();
+            this.BindHierarchyComponent();
         }
 
         public abstract void Hurt(float damage);
 
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

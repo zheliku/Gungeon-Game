@@ -13,7 +13,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.Object
 
     public class Enemy : AbstractView
     {
-        protected override IArchitecture Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Interface;
 
         private void OnMouseDown()
         {

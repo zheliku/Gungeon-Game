@@ -14,7 +14,7 @@ namespace Framework.Core.Example._1.QueryExample.Scripts.View
 
     public class QueryExampleView : AbstractView
     {
-        protected override IArchitecture Architecture => QueryExampleApp.Interface;
+        protected override IArchitecture _Architecture => QueryExampleApp.Interface;
 
         private int _allPersonCount = 0;
 

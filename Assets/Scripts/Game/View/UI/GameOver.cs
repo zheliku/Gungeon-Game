@@ -16,11 +16,12 @@ namespace Game
 
     public class GameOver : UIPanel
     {
+        [HierarchyPath("btnRestart")]
         private Button _btnRestart;
         
         protected override void OnLoad()
         {
-            _btnRestart = "btnRestart".GetComponentInHierarchy<Button>(transform);
+            // _btnRestart = "btnRestart".GetComponentInHierarchy<Button>(transform);
             
             _btnRestart.onClick.AddListener(() =>
             {
@@ -34,6 +35,6 @@ namespace Game
             Time.timeScale = 0;
         }
         
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

@@ -32,7 +32,7 @@ namespace Framework.Toolkits.FluentAPI
                 }
                 else
                 {
-                    obj = objNames[1..].Join("/").GetGameObjectInHierarchy(parent?.transform, true, false);
+                    obj = objNames[1..].Join("/").GetGameObjectInHierarchy(parent.transform, true, false);
                 }
             }
             else

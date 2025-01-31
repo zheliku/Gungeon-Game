@@ -15,12 +15,8 @@ namespace Game
 
     public class GamePlay : UIPanel
     {
+        [HierarchyPath("txtHp")]
         private TextMeshProUGUI _txtHp;
-
-        protected override void OnLoad()
-        {
-            _txtHp = "txtHp".GetComponentInHierarchy<TextMeshProUGUI>(transform);
-        }
 
         protected override void OnShow()
         {
@@ -30,6 +26,6 @@ namespace Game
             }).UnRegisterWhenGameObjectDisabled(gameObject);
         }
 
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

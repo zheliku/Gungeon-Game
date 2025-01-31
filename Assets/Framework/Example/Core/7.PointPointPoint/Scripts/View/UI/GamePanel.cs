@@ -16,7 +16,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class GamePanel : AbstractView
     {
-        protected override IArchitecture Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Interface;
 
         private ICountDownSystem _countDownSystem;
         private IGameModel       _gameModel;
@@ -26,7 +26,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
         private TextMeshProUGUI _txtGoldValue;
         private TextMeshProUGUI _txtCountDownValue;
 
-        private void Awake()
+        protected void Awake()
         {
             _countDownSystem = this.GetSystem<ICountDownSystem>();
             _gameModel       = this.GetModel<IGameModel>();

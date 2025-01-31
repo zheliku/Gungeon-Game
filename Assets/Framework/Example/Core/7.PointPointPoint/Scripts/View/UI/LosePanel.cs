@@ -14,11 +14,11 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class LosePanel : AbstractView
     {
-        protected override IArchitecture Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Interface;
 
         private Button _btnBack;
 
-        private void Awake()
+        protected void Awake()
         {
             _btnBack = transform.Find("btnBack").GetComponent<Button>();
 

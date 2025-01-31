@@ -17,7 +17,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class WinPanel : AbstractView
     {
-        protected override IArchitecture Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Interface;
 
         private ICountDownSystem _countDownSystem;
         private IGameModel       _gameModel;
@@ -28,7 +28,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
         private Button _btnBack;
 
-        private void Awake()
+        protected void Awake()
         {
             _countDownSystem = this.GetSystem<ICountDownSystem>();
             _gameModel       = this.GetModel<IGameModel>();

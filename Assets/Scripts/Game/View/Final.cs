@@ -8,7 +8,6 @@
 
 namespace Game
 {
-    using System;
     using Framework.Core;
     using Framework.Toolkits.UIKit;
     using UnityEngine;
@@ -23,6 +22,6 @@ namespace Game
             }
         }
 
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

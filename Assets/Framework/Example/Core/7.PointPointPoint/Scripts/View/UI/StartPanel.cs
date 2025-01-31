@@ -16,7 +16,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class StartPanel : AbstractView
     {
-        protected override IArchitecture Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Interface;
 
         private IGameModel _gameModel;
 
@@ -27,7 +27,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
         private TextMeshProUGUI _txtLifeValue;
         private TextMeshProUGUI _txtGoldValue;
 
-        private void Awake()
+        protected void Awake()
         {
             _gameModel = this.GetModel<IGameModel>();
 

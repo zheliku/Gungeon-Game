@@ -8,7 +8,6 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
@@ -25,6 +24,7 @@ namespace Game
             Shoot
         }
 
+        [HierarchyPath("Bullet")]
         public GameObject Bullet;
 
         public States State;
@@ -43,7 +43,6 @@ namespace Game
         {
             base.Awake();
 
-            Bullet      = "Bullet".GetGameObjectInHierarchy(transform);
             _enemyModel = this.GetModel<EnemyModel>();
 
             Bullet.Disable();
@@ -132,6 +131,6 @@ namespace Game
         public override void Hurt(float damage)
         { }
 
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

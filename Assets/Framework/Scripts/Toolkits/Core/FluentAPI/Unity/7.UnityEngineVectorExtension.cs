@@ -454,5 +454,10 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Vector3.Lerp(self, target, 1 - Mathf.Exp(-speed * Time.deltaTime));
         }
+
+        public static Vector2 Rotate(this Vector2 self, float angle)
+        {
+            return Quaternion.Euler(0, 0, angle) * self;
+        }
     }
 }

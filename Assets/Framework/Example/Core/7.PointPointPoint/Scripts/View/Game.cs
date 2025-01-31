@@ -13,11 +13,11 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View
 
     public class Game : AbstractView
     {
-        protected override IArchitecture Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Interface;
 
         private Transform _enemies;
 
-        private void Awake()
+        protected void Awake()
         {
             _enemies = transform.Find("Enemies");
 

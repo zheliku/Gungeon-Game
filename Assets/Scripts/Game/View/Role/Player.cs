@@ -15,21 +15,22 @@ namespace Game
     using Framework.Toolkits.UIKit;
     using UnityEngine;
     using UnityEngine.InputSystem;
+    using UnityEngine.Serialization;
 
     public class Player : AbstractRole, ISingleton
     {
-        public Transform Weapon;
+        [HierarchyPath("Weapon")]
+        public Transform WeaponTransform;
 
-        public Pistol Pistol;
+        [HierarchyPath("Weapon/MP5")]
+        public Gun CurrentGun;
 
         private InputAction _moveAction;
-
+        
         private PlayerModel _playerModel;
         
         private Property _Property { get => _playerModel.Property; }
-
-        private Vector3 _MousePosition { get => Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).Set(z: 0); }
-
+        
         public static Player Instance { get; set; }
 
         protected override void Awake()
@@ -37,9 +38,6 @@ namespace Game
             base.Awake();
 
             _playerModel = this.GetModel<PlayerModel>();
-
-            Weapon         = "Weapon".GetComponentInHierarchy<Transform>(transform);
-            Pistol         = "Weapon/Pistol".GetComponentInHierarchy<Pistol>(transform);
 
             _moveAction  = InputKit.GetInputAction("Move");
 
@@ -58,12 +56,7 @@ namespace Game
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            InputKit.BindPerformed("Attack", context =>
-            {
-                var shootDirection = (_MousePosition - transform.position).normalized;
-
-                Pistol.ShootDown(shootDirection);
-            }).UnBindAllPerformedWhenGameObjectDestroyed(gameObject);
+            
         }
 
         // Update is called once per frame
@@ -80,11 +73,6 @@ namespace Game
             {
                 SpriteRenderer.flipX = false;
             }
-
-            var shootDirection = (_MousePosition - transform.position).ToVector2().normalized;
-            var angle          = Mathf.Atan2(shootDirection.y, shootDirection.x).Rad2Deg();
-            Weapon.SetLocalEulerAngles(z: angle);             // 使 Weapon 方向跟手
-            Weapon.SetLocalScale(y: shootDirection.x.Sign()); // 使 Weapon 随鼠标左右翻转
         }
 
         public override void Hurt(float damage)
@@ -92,7 +80,7 @@ namespace Game
             _Property.Hp.Value -= damage;
         }
 
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Interface; }
 
         public void OnSingletonInit() { }
     }

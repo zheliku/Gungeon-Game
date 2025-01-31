@@ -19,23 +19,25 @@ namespace Game
         public TileBase WallTile;
         public TileBase FloorTile;
 
+        [HierarchyPath("Grid/Wall")]
         public Tilemap WallTilemap;
+
+        [HierarchyPath("Grid/Floor")]
         public Tilemap FloorTilemap;
 
+        [HierarchyPath("/Template/Enemy")]
         public Enemy Enemy;
 
+        [HierarchyPath("/Template/Final")]
         public Final Final;
 
         private LevelModel _levelModel;
 
-        private void Awake()
+        protected void Awake()
         {
+            this.BindHierarchyComponent();
+            
             _levelModel = this.GetModel<LevelModel>();
-
-            WallTilemap  = "Grid/Wall".GetComponentInHierarchy<Tilemap>(transform);
-            FloorTilemap = "Grid/Floor".GetComponentInHierarchy<Tilemap>(transform);
-            Enemy        = "Template/Enemy".GetComponentInHierarchy<Enemy>();
-            Final        = "Template/Final".GetComponentInHierarchy<Final>();
 
             Enemy.DisableGameObject();
             Final.DisableGameObject();
@@ -65,7 +67,7 @@ namespace Game
 
                     var x = j + currentRoomStartPosX;
                     var y = roomCode.Count - i;
-                    
+
                     FloorTilemap.SetTile(new Vector3Int(x, y, 0), FloorTile);
 
                     if (code == '1')
@@ -97,6 +99,6 @@ namespace Game
             currentRoomStartPosX += roomCode[0].Length;
         }
 
-        protected override IArchitecture Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }
