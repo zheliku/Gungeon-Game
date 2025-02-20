@@ -11,17 +11,10 @@ namespace Game
     using Framework.Core;
     using UnityEngine;
     using Framework.Toolkits.AudioKit;
-    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
 
     public class Laser : Gun
     {
-        protected override float _BulletSpeed { get; } = 10;
-
-        protected override float _ShootInterval { get; } = 0.2f;
-        
-        public override int BulletCount { get; } = 50;
-
         public float Distance = 10;
 
         [HierarchyPath("Bullet")]
@@ -33,6 +26,7 @@ namespace Game
         {
             _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.6f, loop: true);
             LineRenderer.EnableGameObject();
+            IsShooting = true;
         }
 
         public override void Shooting(Vector2 direction)
@@ -48,6 +42,7 @@ namespace Game
                 if (enemy)
                 {
                     enemy.Hurt(1);
+                    _ShootInterval.Reset();
                 }
             }
         }
@@ -56,6 +51,7 @@ namespace Game
         {
             _audioPlayer.Stop();
             LineRenderer.DisableGameObject();
+            IsShooting = false;
         }
     }
 }

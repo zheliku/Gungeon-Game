@@ -10,6 +10,7 @@ namespace Game
 {
     using System.Collections.Generic;
     using Framework.Core;
+    using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
     using Framework.Toolkits.SingletonKit;
@@ -33,6 +34,13 @@ namespace Game
         private Property _Property { get => _playerModel.Property; }
 
         public List<Gun> Guns = new List<Gun>();
+        
+        public List<AudioClip> GunTakeOutSounds = new List<AudioClip>();
+        
+        public Gun CurrentGun
+        {
+            get => Guns[CurrentGunIndex];
+        }
 
         protected override void Awake()
         {
@@ -66,7 +74,7 @@ namespace Game
                 // 寻找激活的 Gun，设置为初始 Gun
                 if (gun.gameObject.IsEnabled())
                 {
-                    CurrentGunIndex = i;
+                    UseGun(i);
                 }
             }
         }
@@ -78,7 +86,7 @@ namespace Game
                 var currentGun = Guns[CurrentGunIndex];
 
                 // 射击、切枪时不可切换 Gun
-                if (currentGun.IsShooting || currentGun.IsReloading)
+                if (currentGun.IsShooting || currentGun.Clip.IsReloading)
                 {
                     return;
                 }
@@ -102,13 +110,16 @@ namespace Game
             var moveDirection = _moveAction.ReadValue<Vector2>();
             Rigidbody2D.linearVelocity = moveDirection * _Property.MoveSpeed;
 
-            if (moveDirection.x < 0)
+            if (CurrentGun)
             {
-                SpriteRenderer.flipX = true;
-            }
-            else if (moveDirection.x > 0)
-            {
-                SpriteRenderer.flipX = false;
+                if (CurrentGun.ShootDirection.x > 0)
+                {
+                    SpriteRenderer.flipX = false;
+                }
+                else if (CurrentGun.ShootDirection.x < 0)
+                {
+                    SpriteRenderer.flipX = true;
+                }
             }
         }
 
@@ -130,6 +141,7 @@ namespace Game
 
             if (gunChange)
             {
+                AudioKit.PlaySound(GunTakeOutSounds.RandomChoose());
                 TypeEventSystem.GLOBAL.Send(new GunChangeEvent(oldGun, newGun));
             }
         }

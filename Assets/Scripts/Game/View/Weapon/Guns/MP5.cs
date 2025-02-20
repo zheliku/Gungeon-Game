@@ -8,20 +8,12 @@
 
 namespace Game
 {
-    using Framework.Core;
     using UnityEngine;
     using Framework.Toolkits.AudioKit;
-    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
 
     public class MP5 : Gun
     {
-        protected override float _BulletSpeed { get; } = 10;
-
-        protected override float _ShootInterval { get; } = 0.1f;
-
-        public override int BulletCount { get; } = 50;
-
         private AudioPlayer _audioPlayer;
 
         public override void ShootDown(Vector2 direction)
@@ -29,8 +21,8 @@ namespace Game
             if (_CanShoot)
             {
                 ShootOnce(direction);
-                
                 _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.3f, loop: true);
+                IsShooting   = true;
             }
         }
 
@@ -45,6 +37,7 @@ namespace Game
         public override void ShootUp(Vector2 direction)
         {
             _audioPlayer.Stop();
+            IsShooting = false;
         }
     }
 }

@@ -16,12 +16,6 @@ namespace Game
 
     public class ShotGun : Gun
     {
-        protected override float _BulletSpeed { get; } = 10;
-
-        protected override float _ShootInterval { get; } = 0.5f;
-
-        public override int BulletCount { get; } = 6;
-
         public float IntervalAngle = 10;
 
         public int OneShootCount = 5;
@@ -31,18 +25,22 @@ namespace Game
             if (_CanShoot)
             {
                 ShootOnce(direction);
-
                 AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.4f);
+                IsShooting = true;
             }
         }
 
         public override void Shooting(Vector2 direction) { }
 
-        public override void ShootUp(Vector2 direction) { }
+        public override void ShootUp(Vector2 direction)
+        {
+            IsShooting = false;
+        }
 
         public override void ShootOnce(Vector2 direction)
         {
-            CurrentBulletCount--;
+            Clip.Use();             // 弹夹使用子弹
+            _ShootInterval.Reset(); // 射击间隔重置
 
             for (int i = 0; i < OneShootCount; i++)
             {
@@ -68,13 +66,13 @@ namespace Game
                     bullet.Destroy();
                 });
             }
-            
+
             ShowGunShootLight(direction);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
 
             // 没有子弹，则抬枪
-            if (!_HaveBullet)
+            if (Clip.IsEmpty)
             {
                 ShootUp(direction);
                 IsShooting = false;

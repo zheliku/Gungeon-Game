@@ -13,12 +13,6 @@ namespace Game
 
     public class AK : Gun
     {
-        protected override float _BulletSpeed { get; } = 10;
-
-        protected override float _ShootInterval { get; } = 0.1f;
-
-        public override int BulletCount { get; } = 50;
-
         private AudioPlayer _audioPlayer;
 
         public override void ShootDown(Vector2 direction)
@@ -26,8 +20,8 @@ namespace Game
             if (_CanShoot)
             {
                 ShootOnce(direction);
-                
                 _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
+                IsShooting   = true;
             }
         }
 
@@ -43,6 +37,7 @@ namespace Game
         {
             _audioPlayer.Stop();
             AudioKit.PlaySound(ShootSounds[1], volume: 0.3f);
+            IsShooting = false;
         }
     }
 }

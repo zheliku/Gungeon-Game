@@ -3934,6 +3934,12 @@ MonoBehaviour:
   WeaponTransform: {fileID: 0}
   CurrentGunIndex: 0
   Guns: []
+  GunTakeOutSounds:
+  - {fileID: 8300000, guid: 954d1dc550fbd97458e5f59480c1b15d, type: 3}
+  - {fileID: 8300000, guid: 91270be57d2456844977e668909ecc3d, type: 3}
+  - {fileID: 8300000, guid: 2774a66aaf5a9f240b03902fe0d5dabb, type: 3}
+  - {fileID: 8300000, guid: db1dc6fe7c14d2249a12e9fa5fa02d50, type: 3}
+  - {fileID: 8300000, guid: cb527cb7d9eceb94ea96001493a881e6, type: 3}
 --- !u!4 &2087522719
 Transform:
   m_ObjectHideFlags: 0

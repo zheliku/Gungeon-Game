@@ -83,6 +83,14 @@ namespace Framework.Toolkits.FluentAPI
         {
             return args[Random.Range(0, args.Count)];
         }
+        
+        /// <summary>
+        /// 从区间 [vec2.x, vec2.y] 随机选择一个数
+        /// </summary>
+        public static float RandomSelect(this Vector2 vec2)
+        {
+            return Random.Range(vec2.x, vec2.y);
+        }
 
         public static float RandomTo0(this float x)
         {

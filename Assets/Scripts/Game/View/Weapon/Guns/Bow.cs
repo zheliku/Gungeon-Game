@@ -10,18 +10,11 @@ namespace Game
 {
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
-    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
     public class Bow : Gun
     {
-        protected override float _BulletSpeed { get; } = 10;
-
-        protected override float _ShootInterval { get; } = 0.75f;
-        
-        public override int BulletCount { get; } = 8;
-
         [HierarchyPath("ArrowPrepare")]
         private GameObject _arrowPrepare;
         
@@ -34,12 +27,14 @@ namespace Game
 
         public override void ShootDown(Vector2 direction)
         {
-            _shootTime = _ShootInterval;
+            _ShootInterval.Reset();
+            IsShooting = true;
         }
 
         public override void Shooting(Vector2 direction)
         {
-            if (_shootTime <= 0 && _arrowPrepare.IsDisabled())
+            // 满足射击条件，则显示箭头
+            if (_CanShoot && _arrowPrepare.IsDisabled())
             {
                 _arrowPrepare.Enable();
             }
@@ -55,6 +50,8 @@ namespace Game
 
                 AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.8f);
             }
+            
+            IsShooting = false;
         }
     }
 }

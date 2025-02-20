@@ -16,10 +16,10 @@ namespace Game
     {
         [HierarchyPath("txtHp")]
         private TextMeshProUGUI _txtHp;
-        
+
         [HierarchyPath("txtGun")]
         private TextMeshProUGUI _txtGun;
-        
+
         protected override void OnShow()
         {
             this.GetModel<PlayerModel>().Property.Hp.RegisterWithInitValue((oldValue, value) =>
@@ -29,21 +29,25 @@ namespace Game
 
             TypeEventSystem.GLOBAL.Register<GunShootEvent>(e =>
             {
-                var gun = e.Gun;
-                _txtGun.text = $"Bullet: {gun.CurrentBulletCount}/{gun.BulletCount} R Reload!";
-            });
-            
+                UpdateGunInfo(e.Gun);
+            }).UnRegisterWhenGameObjectDisabled(this);
+
             TypeEventSystem.GLOBAL.Register<GunChangeEvent>(e =>
             {
-                var gun = e.NewGun;
-                _txtGun.text = $"Bullet: {gun.CurrentBulletCount}/{gun.BulletCount} R Reload!";
-            });
-            
+                UpdateGunInfo(e.NewGun);
+            }).UnRegisterWhenGameObjectDisabled(this);
+
             TypeEventSystem.GLOBAL.Register<GunLoadBulletEvent>(e =>
             {
-                var gun = e.Gun;
-                _txtGun.text = $"Bullet: {gun.CurrentBulletCount}/{gun.BulletCount} R Reload!";
-            });
+                UpdateGunInfo(e.Gun);
+            }).UnRegisterWhenGameObjectDisabled(this);
+        }
+
+        private void UpdateGunInfo(Gun gun)
+        {
+            var clipInfo = $"{gun.Clip.CurrentBulletCount}/{gun.Clip.ClipBulletCount}";
+            var bagInfo  = gun.Bag.RemainBulletCount < 0 ? "(\u221e)" : $"({gun.Bag.RemainBulletCount}/{gun.Bag.MaxBulletCount})";
+            _txtGun.text = $"Bullet: {clipInfo} {bagInfo} R Reload!";
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }
