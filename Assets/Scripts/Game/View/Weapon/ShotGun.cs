@@ -68,6 +68,8 @@ namespace Game
                     bullet.Destroy();
                 });
             }
+            
+            ShowGunShootLight(direction);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
 

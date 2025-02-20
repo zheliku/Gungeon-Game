@@ -8,7 +8,6 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
@@ -20,7 +19,7 @@ namespace Game
 
     public class Player : AbstractRole, ISingleton
     {
-        public static Player Instance { get => SingletonProperty<Player>.Instance; }
+        public static Player Instance { get => MonoSingletonProperty<Player>.Instance; }
 
         [HierarchyPath("Weapon")]
         public Transform WeaponTransform;
@@ -57,10 +56,12 @@ namespace Game
             for (int i = 0; i < WeaponTransform.childCount; i++)
             {
                 var gun = WeaponTransform.GetChild(i).GetComponent<Gun>();
-                if (gun)
+                if (!gun)
                 {
-                    Guns.Add(gun);
+                    continue;
                 }
+
+                Guns.Add(gun);
 
                 // 寻找激活的 Gun，设置为初始 Gun
                 if (gun.gameObject.IsEnabled())
@@ -75,13 +76,13 @@ namespace Game
             InputKit.BindPerformed("ChangeGun", context =>
             {
                 var currentGun = Guns[CurrentGunIndex];
-                
-                // 射击时不可切换 Gun
-                if (currentGun.IsShooting)
+
+                // 射击、切枪时不可切换 Gun
+                if (currentGun.IsShooting || currentGun.IsReloading)
                 {
                     return;
                 }
-                
+
                 var newIndex = CurrentGunIndex + (int) context.ReadValue<float>();
                 if (newIndex < 0)
                 {

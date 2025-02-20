@@ -24,7 +24,7 @@ namespace Game
 
         [HierarchyPath("ArrowPrepare")]
         private GameObject _arrowPrepare;
-
+        
         protected override void Awake()
         {
             base.Awake();

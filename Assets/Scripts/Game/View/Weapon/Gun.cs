@@ -10,12 +10,15 @@ namespace Game
 {
     using System.Collections.Generic;
     using Framework.Core;
+    using Framework.Toolkits.ActionKit;
+    using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
     using Sirenix.OdinInspector;
     using UnityEngine;
     using UnityEngine.InputSystem;
+    using UnityEngine.Serialization;
 
     public abstract class Gun : AbstractView
     {
@@ -24,7 +27,14 @@ namespace Game
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
+        public AudioClip ReloadSound;
+
+        [HierarchyPath("/Player/Weapon/GunShootLight")]
+        public SpriteRenderer GunShootLight;
+
         public bool IsShooting { get; protected set; }
+
+        public bool IsReloading { get; protected set; }
 
         protected float _shootTime = 0;
 
@@ -38,14 +48,14 @@ namespace Game
         public abstract int BulletCount { get; }
 
         [ShowInInspector]
-        public float CurrentBulletCount;
+        public int CurrentBulletCount;
 
         /// <summary>
         /// 是否可以射击
         /// </summary>
         protected bool _CanShoot
         {
-            get => _HaveBullet && _ReachCooling;
+            get => _HaveBullet && _ReachCooling && !IsReloading;
         }
 
         /// <summary>
@@ -84,6 +94,7 @@ namespace Game
             this.BindHierarchyComponent();
 
             Bullet.Disable();
+            GunShootLight.DisableGameObject();
 
             CurrentBulletCount = BulletCount;
         }
@@ -103,11 +114,10 @@ namespace Game
                     IsShooting = false;
                 }
             }).UnBindAllWhenGameObjectDisabled(gameObject);
-            
+
             InputKit.BindPerformed("LoadBullet", context =>
             {
-                CurrentBulletCount = BulletCount;
-                TypeEventSystem.GLOBAL.Send(new GunLoadBulletEvent(this));
+                Reload();
             }).UnBindAllWhenGameObjectDisabled(gameObject);
         }
 
@@ -135,7 +145,7 @@ namespace Game
         {
             CurrentBulletCount--;
 
-            var bullet = Bullet.Instantiate(Bullet.transform.position)
+            var bullet = Bullet.Instantiate(Bullet.GetPosition())
                .Enable()
                .SetTransformRight(direction);
 
@@ -154,6 +164,8 @@ namespace Game
                 bullet.Destroy();
             });
 
+            ShowGunShootLight(direction);
+
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
 
             // 没有子弹，则抬枪
@@ -162,6 +174,39 @@ namespace Game
                 ShootUp(direction);
                 IsShooting = false;
             }
+        }
+
+        protected void ShowGunShootLight(Vector2 direction)
+        {
+            GunShootLight.SetPosition(Bullet.GetPosition())
+               .SetTransformRight(direction)
+               .EnableGameObject();
+
+            ActionKit.DelayFrame(3, () =>
+            {
+                GunShootLight.DisableGameObject();
+            }).StartCurrentScene();
+        }
+
+        protected void Reload()
+        {
+            // 没有子弹，则不重载
+            if (CurrentBulletCount == BulletCount)
+            {
+                return;
+            }
+            
+            // 重装子弹前首先抬枪
+            ShootUp(_ShootDirection);
+            
+            IsShooting = false;
+            IsReloading = true;
+            AudioKit.PlaySound(ReloadSound, onPlayFinish: (player) =>
+            {
+                IsReloading        = false;
+                CurrentBulletCount = BulletCount;
+                TypeEventSystem.GLOBAL.Send(new GunLoadBulletEvent(this));
+            });
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }
