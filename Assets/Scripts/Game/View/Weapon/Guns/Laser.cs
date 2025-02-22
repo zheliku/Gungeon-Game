@@ -31,7 +31,7 @@ namespace Game
 
         public override void Shooting(Vector2 direction)
         {
-            var layers = LayerMask.GetMask("Default", "Enemy");
+            var layers = LayerMask.GetMask("Wall", "Enemy");
             var hit    = Physics2D.Raycast(Bullet.GetPosition(), direction, Distance, layers);
             var hitPoint = hit ? hit.point : Bullet.GetPosition().ToVector2() + direction * Distance;
             LineRenderer.SetPositions(new Vector3[] { Bullet.GetPosition(), hitPoint });
@@ -41,7 +41,8 @@ namespace Game
                 var enemy = hit.collider.gameObject.GetComponent<Enemy>();
                 if (enemy)
                 {
-                    enemy.Hurt(1);
+                    var damage = _gunData.DamageRange.RandomSelect();
+                    enemy.Hurt(damage);
                     _ShootInterval.Reset();
                 }
             }

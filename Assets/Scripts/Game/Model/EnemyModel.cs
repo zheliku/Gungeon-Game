@@ -9,6 +9,7 @@
 namespace Game
 {
     using System.Collections.Generic;
+    using Framework.Core;
     using Framework.Core.Model;
 
     public class EnemyModel : AbstractModel
@@ -17,7 +18,15 @@ namespace Game
         
         protected override void OnInit()
         {
-            
+            TypeEventSystem.GLOBAL.Register<EnemyCreateEvent>(e =>
+            {
+                Enemies.Add(e.Enemy);
+            });
+
+            TypeEventSystem.GLOBAL.Register<EnemyDieEvent>(e =>
+            {
+                Enemies.Remove(e.Enemy);
+            });
         }
     }
 }

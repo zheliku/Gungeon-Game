@@ -8,9 +8,9 @@
 
 namespace Framework.Toolkits.SingletonKit
 {
-    using UnityEngine;
+    using Core;
 
-    public abstract class MonoSingleton<TMonoSingleton> : MonoBehaviour, ISingleton where TMonoSingleton : MonoSingleton<TMonoSingleton>
+    public abstract class MonoSingleton<TMonoSingleton> : AbstractView, ISingleton where TMonoSingleton : MonoSingleton<TMonoSingleton>
     {
         /// <summary>
         /// 静态实例
@@ -75,5 +75,10 @@ namespace Framework.Toolkits.SingletonKit
         {
             _Instance = null;
         }
+        
+        /// <summary>
+        /// 默认没有 _Architecture
+        /// </summary>
+        protected override IArchitecture _Architecture { get => null; }
     }
 }

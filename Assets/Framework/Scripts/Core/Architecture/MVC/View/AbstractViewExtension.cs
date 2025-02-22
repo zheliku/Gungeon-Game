@@ -24,8 +24,10 @@ namespace Framework.Core
         {
             if (view == null) return;
 
+            var fields = view.GetType().GetFields(_FIELD_BINDING_FLAGS);
+
             // 获取所有合格字段
-            var targetFields = view.GetType().GetFields(_FIELD_BINDING_FLAGS)
+            var targetFields = fields
                .Where(f => f.GetCustomAttribute<HierarchyPathAttribute>() != null)                                // 必须拥有 HierarchyPathAttribute 特性
                .Where(f => f.FieldType == typeof(GameObject) || typeof(Component).IsAssignableFrom(f.FieldType)); // 类型必须是 GameObject 或 Component 的派生类
 

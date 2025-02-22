@@ -11,10 +11,12 @@ namespace Game
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
+    using Framework.Toolkits.SingletonKit;
     using UnityEngine;
+    using UnityEngine.Serialization;
     using UnityEngine.Tilemaps;
 
-    public class LevelController : AbstractView
+    public class LevelController : MonoSingleton<LevelController>
     {
         public TileBase WallTile;
         public TileBase FloorTile;
@@ -28,8 +30,14 @@ namespace Game
         [HierarchyPath("/Template/Enemy")]
         public Enemy Enemy;
 
-        [HierarchyPath("/Template/Final")]
-        public Final Final;
+        [HierarchyPath("/LevelController/Template/Final")]
+        public Final FinalTemplate;
+
+        [HierarchyPath("/LevelController/Template/Room")]
+        public Room RoomTemplate;
+
+        [HierarchyPath("/LevelController/Template/Door")]
+        public Door DoorTemplate;
 
         private LevelModel _levelModel;
 
@@ -40,7 +48,9 @@ namespace Game
             _levelModel = this.GetModel<LevelModel>();
 
             Enemy.DisableGameObject();
-            Final.DisableGameObject();
+            FinalTemplate.DisableGameObject();
+            RoomTemplate.DisableGameObject();
+            DoorTemplate.DisableGameObject();
         }
 
         private void Start()
@@ -53,17 +63,28 @@ namespace Game
             GenerateRoom(_levelModel.FinalRoom, ref currentRoomStartPosX);
         }
 
-        private void GenerateRoom(List<string> roomCode, ref int currentRoomStartPosX)
+        private void GenerateRoom(RoomConfig roomConfig, ref int currentRoomStartPosX)
         {
-            for (int i = 0; i < roomCode.Count; i++)
+            var grid       = roomConfig.Grid;
+            var roomWidth  = grid.Column;
+            var roomHeight = grid.Row;
+            
+            var room = RoomTemplate.Instantiate(this)
+               .SetConfig(roomConfig)
+               .SetPosition(x: currentRoomStartPosX + roomWidth / 2f, y: roomHeight / 2f)
+               .EnableGameObject();
+            
+            var roomTrigger = room.GetComponent<BoxCollider2D>();
+            roomTrigger.size = new Vector2(roomWidth - 4, roomHeight - 4); // 减去 4 是为了防止玩家卡在墙壁上
+            
+            for (int i = 0; i < roomHeight; i++)
             {
-                var rowCode = roomCode[i];
-                for (int j = 0; j < rowCode.Length; j++)
+                for (int j = 0; j < roomWidth; j++)
                 {
-                    var code = rowCode[j];
+                    var code = grid[i, j];
 
                     var x = j + currentRoomStartPosX;
-                    var y = roomCode.Count - i;
+                    var y = roomHeight - i - 1;
 
                     FloorTilemap.SetTile(new Vector3Int(x, y, 0), FloorTile);
 
@@ -77,22 +98,29 @@ namespace Game
                     }
                     else if (code == 'e')
                     {
-                        Enemy.Instantiate(keepName: true)
-                           .EnableGameObject()
-                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+                        var generatePos = new Vector3(x + 0.5f, y + 0.5f, 0);
+                        room.AddEnemyGeneratePos(generatePos);
                     }
                     else if (code == '#')
                     {
-                        Final.Instantiate(keepName: true)
+                        FinalTemplate.Instantiate(keepName: true)
                            .EnableGameObject()
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+                    }
+                    else if (code == 'd')
+                    {
+                        var door = DoorTemplate.Instantiate(parent: room)
+                           .DisableGameObject()
+                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+
+                        room.AddDoor(door);
                     }
                 }
             }
 
-            currentRoomStartPosX += roomCode[0].Length;
+            currentRoomStartPosX += roomWidth;
         }
-
+        
         protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

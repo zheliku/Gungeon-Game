@@ -295,7 +295,7 @@ namespace Framework.Toolkits.FluentAPI
         ) where T : Component
         {
             var position = selfComponent.transform.position;
-            selfComponent.transform.localPosition = new Vector3(x ?? position.x, y ?? position.y, z ?? position.z);
+            selfComponent.transform.position = new Vector3(x ?? position.x, y ?? position.y, z ?? position.z);
             return selfComponent;
         }
 
@@ -317,7 +317,7 @@ namespace Framework.Toolkits.FluentAPI
             float?          z = null)
         {
             var position = self.transform.position;
-            self.transform.localPosition = new Vector3(x ?? position.x, y ?? position.y, z ?? position.z);
+            self.transform.position = new Vector3(x ?? position.x, y ?? position.y, z ?? position.z);
             return self;
         }
 

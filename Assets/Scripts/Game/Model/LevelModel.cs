@@ -17,8 +17,9 @@ namespace Game
         /// 1：地块
         /// @：主角
         /// e：敌人
+        /// d: 门
         /// </summary>
-        public List<string> InitRoom = new List<string>()
+        public RoomConfig InitRoom = new RoomConfig(RoomType.Init).Set(new List<string>()
         {
             "1111111111111111111",
             "1                 1",
@@ -28,9 +29,9 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "1                  ",
-            "1                  ",
-            "1                  ",
+            "1                 d",
+            "1                 d",
+            "1                 d",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -39,13 +40,14 @@ namespace Game
             "1                 1",
             "1                 1",
             "1111111111111111111",
-        };
-        
+        });
+
+
         /// <summary>
         /// 1：地块
         /// e：敌人
         /// </summary>
-        public List<string> NormalRoom = new List<string>()
+        public RoomConfig NormalRoom = new RoomConfig(RoomType.Normal).Set(new List<string>()
         {
             "1111111111111111111",
             "1                 1",
@@ -55,9 +57,9 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "         e         ",
-            "       e 1 e       ",
-            "         e         ",
+            "d        e        d",
+            "d      e 1 e      d",
+            "d        e        d",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -66,13 +68,13 @@ namespace Game
             "1 e             e 1",
             "1                 1",
             "1111111111111111111",
-        };
-        
+        });
+
         /// <summary>
         /// 1：地块
         /// e：敌人
         /// </summary>
-        public List<string> FinalRoom = new List<string>()
+        public RoomConfig FinalRoom = new RoomConfig(RoomType.Final).Set(new List<string>()
         {
             "1111111111111111111",
             "1                 1",
@@ -82,9 +84,9 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "                  1",
-            "             #    1",
-            "                  1",
+            "d                 1",
+            "d            #    1",
+            "d                 1",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -93,7 +95,7 @@ namespace Game
             "1                 1",
             "1                 1",
             "1111111111111111111",
-        };
+        });
 
         protected override void OnInit()
         { }

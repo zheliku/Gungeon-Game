@@ -44,10 +44,6 @@ namespace Game
         {
             base.Awake();
 
-            _enemyModel = this.GetModel<EnemyModel>();
-            
-            _enemyModel.Enemies.Add(this);
-
             Bullet.Disable();
 
             _Property.Hp.Register((oldValue, value) =>
@@ -57,6 +53,9 @@ namespace Game
                     this.DestroyGameObject();
                 }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
+            
+            // 生成时发送生成事件
+            TypeEventSystem.GLOBAL.Send(new EnemyCreateEvent(this));
         }
 
         private void Update()
@@ -117,7 +116,8 @@ namespace Game
 
         private void OnDestroy()
         {
-            _enemyModel.Enemies.Remove(this);
+            // 死亡时发送死亡事件
+            TypeEventSystem.GLOBAL.Send(new EnemyDieEvent(this));
         }
 
         public void Fire()

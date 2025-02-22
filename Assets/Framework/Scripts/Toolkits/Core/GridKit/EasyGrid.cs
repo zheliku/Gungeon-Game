@@ -24,36 +24,40 @@ namespace Framework.Toolkits.GridKit
         {
             _grid = new TValue[row, column];
         }
+        
+        public int Row { get => _grid.GetLength(0); }
+        
+        public int Column { get => _grid.GetLength(1); }
 
         public TValue this[int row, int column]
         {
             get
             {
-                if (row >= 0 && row < _grid.GetLength(0) && column >= 0 && column < _grid.GetLength(1))
+                if (row >= 0 && row < Row && column >= 0 && column < Column)
                 {
                     return _grid[row, column];
                 }
 
-                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({_grid.GetLength(0)}, {_grid.GetLength(1)}");
+                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({Row}, {Column}");
             }
 
             set
             {
-                if (row >= 0 && row < _grid.GetLength(0) && column >= 0 && column < _grid.GetLength(1))
+                if (row >= 0 && row < Row && column >= 0 && column < Column)
                 {
                     _grid[row, column] = value;
                     return;
                 }
                 
-                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({_grid.GetLength(0)}, {_grid.GetLength(1)}");
+                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({Row}, {Column}");
             }
         }
 
         public void Fill(TValue value)
         {
-            for (var i = 0; i < _grid.GetLength(0); i++)
+            for (var i = 0; i < Row; i++)
             {
-                for (var j = 0; j < _grid.GetLength(1); j++)
+                for (var j = 0; j < Column; j++)
                 {
                     _grid[i, j] = value;
                 }
@@ -62,9 +66,9 @@ namespace Framework.Toolkits.GridKit
         
         public void Fill(Func<int, int, TValue> onFill)
         {
-            for (var i = 0; i < _grid.GetLength(0); i++)
+            for (var i = 0; i < Row; i++)
             {
-                for (var j = 0; j < _grid.GetLength(1); j++)
+                for (var j = 0; j < Column; j++)
                 {
                     _grid[i, j] = onFill(i, j);
                 }
@@ -75,8 +79,8 @@ namespace Framework.Toolkits.GridKit
         {
             var newGrid = new TValue[row, column];
 
-            var minRow    = Mathf.Min(_grid.GetLength(0), row);
-            var minColumn = Mathf.Min(_grid.GetLength(1), column);
+            var minRow    = Mathf.Min(Row, row);
+            var minColumn = Mathf.Min(Column, column);
             
             for (var i = 0; i < minRow; i++)
             {
@@ -109,9 +113,9 @@ namespace Framework.Toolkits.GridKit
         
         public void ForEach(Action<int, int, TValue> each)
         {
-            for (var i = 0; i < _grid.GetLength(0); i++)
+            for (var i = 0; i < Row; i++)
             {
-                for (var j = 0; j < _grid.GetLength(1); j++)
+                for (var j = 0; j < Column; j++)
                 {
                     each(i, j, _grid[i, j]);
                 }
@@ -120,9 +124,9 @@ namespace Framework.Toolkits.GridKit
 
         public void ForEach(Action<TValue> each)
         {
-            for (var i = 0; i < _grid.GetLength(0); i++)
+            for (var i = 0; i < Row; i++)
             {
-                for (var j = 0; j < _grid.GetLength(1); j++)
+                for (var j = 0; j < Column; j++)
                 {
                     each(_grid[i, j]);
                 }
@@ -131,9 +135,9 @@ namespace Framework.Toolkits.GridKit
 
         public void Clear(Action<TValue> cleanUpItem = null)
         {
-            for (var i = 0; i < _grid.GetLength(0); i++)
+            for (var i = 0; i < Row; i++)
             {
-                for (var j = 0; j < _grid.GetLength(1); j++)
+                for (var j = 0; j < Column; j++)
                 {
                     cleanUpItem?.Invoke(_grid[i, j]);
                     _grid[i, j] = default(TValue);

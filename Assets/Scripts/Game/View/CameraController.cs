@@ -8,9 +8,9 @@
 
 namespace Game
 {
+    using Framework.Core;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
-    using UnityEngine;
 
     public class CameraController : MonoSingleton<CameraController>
     {
@@ -26,5 +26,7 @@ namespace Game
             
             base.Update();
         }
+
+        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

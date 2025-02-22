@@ -125,23 +125,14 @@ namespace Game
 
             var bullet = Bullet.Instantiate(Bullet.GetPosition())
                .Enable()
-               .SetTransformRight(direction);
+               .SetTransformRight(direction)
+               .GetComponent<Bullet>();
 
             var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
 
             rigidbody2D.linearVelocity = direction * _BulletSpeed;
 
-            bullet.OnCollisionEnter2DEvent(collider2D =>
-            {
-                var enemy = collider2D.gameObject.GetComponent<Enemy>();
-                if (enemy)
-                {
-                    var damage = _gunData.DamageRange.RandomSelect();
-                    enemy.Hurt(damage);
-                }
-
-                bullet.Destroy();
-            });
+            bullet.Damage = _gunData.DamageRange.RandomSelect();
 
             ShowGunShootLight(direction);
 
