@@ -141,7 +141,7 @@ namespace Game
                 bullet.Destroy();
             });
 
-            AudioKit.PlaySound(ShootSounds.RandomChoose());
+            AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
 
         public override void Hurt(float damage)

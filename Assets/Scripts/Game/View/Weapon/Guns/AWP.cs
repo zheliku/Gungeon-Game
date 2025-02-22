@@ -19,8 +19,12 @@ namespace Game
             if (_CanShoot)
             {
                 ShootOnce(direction);
-                AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.4f);
-                IsShooting = true;
+                AudioKit.PlaySound(ShootSounds[0], volume: 0.4f);
+                IsShooting   = true;
+            }
+            else if (Clip.IsEmpty) // 自动装填
+            {
+                Reload();
             }
         }
 

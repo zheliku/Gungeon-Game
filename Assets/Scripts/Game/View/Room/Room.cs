@@ -38,6 +38,15 @@ namespace Game
 
         private List<Enemy> _enemiesInRoom = new List<Enemy>();
 
+        private List<EnemyWaveConfig> _enemyWaves = new List<EnemyWaveConfig>()
+        {
+            new EnemyWaveConfig(),
+            new EnemyWaveConfig(),
+            new EnemyWaveConfig()
+        };
+
+        private EnemyWaveConfig _currentWave;
+
         public RoomState State { get; private set; } = RoomState.Closed;
 
         private void Awake()
@@ -49,11 +58,18 @@ namespace Game
                 // 检测房间内敌人数量是否为 0
                 if (_enemiesInRoom.Count == 0)
                 {
-                    State = RoomState.Unlocked; // 房间内没有敌人，状态变为 Unlocked
-
-                    foreach (var door in _doors) // 开门
+                    if (_enemyWaves.Count > 0) // 还有下一波敌人
                     {
-                        door.DisableGameObject();
+                        GenerateEnemies();
+                    }
+                    else // 没有下一波敌人，房间状态变为 Unlocked
+                    {
+                        State = RoomState.Unlocked;
+
+                        foreach (var door in _doors) // 开门
+                        {
+                            door.DisableGameObject();
+                        }
                     }
                 }
             });
@@ -69,14 +85,7 @@ namespace Game
                     {
                         State = RoomState.PlayerIn;
 
-                        foreach (var generatePos in _enemyGeneratePoses)
-                        {
-                            var enemy = LevelController.Instance.Enemy.Instantiate(keepName: true)
-                               .EnableGameObject()
-                               .SetPosition(generatePos); // +0.5f to the center grid
-
-                            _enemiesInRoom.Add(enemy);
-                        }
+                        GenerateEnemies();
 
                         foreach (var door in _doors)
                         {
@@ -90,6 +99,20 @@ namespace Game
         public void AddEnemyGeneratePos(Vector3 generatePos)
         {
             _enemyGeneratePoses.Add(generatePos);
+        }
+
+        public void GenerateEnemies()
+        {
+            _enemyWaves.RemoveAt(0);
+
+            foreach (var generatePos in _enemyGeneratePoses)
+            {
+                var enemy = LevelController.Instance.Enemy.Instantiate(keepName: true)
+                   .EnableGameObject()
+                   .SetPosition(generatePos); // +0.5f to the center grid
+
+                _enemiesInRoom.Add(enemy);
+            }
         }
 
         public Room AddDoor(Door door)

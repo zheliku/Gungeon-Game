@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace Game
             RemainBulletCount = maxBulletCount;
         }
 
-        public void Reload(GunClip clip, AudioClip reloadSound)
+        public void Reload(GunClip clip, AudioClip reloadSound, Action finishCallback = null)
         {
             if (clip.IsFull)
             {
@@ -45,13 +46,16 @@ namespace Game
 
             if (MaxBulletCount < 0) // 无限子弹
             {
-                clip.Reload(reloadSound, clip.UsedBulletCount);
+                clip.Reload(reloadSound, clip.UsedBulletCount, finishCallback: finishCallback);
             }
             else // 有限子弹
             {
-                var reloadCount = RemainBulletCount.MinWith(clip.UsedBulletCount);
-                clip.Reload(reloadSound, reloadCount);
-                RemainBulletCount -= reloadCount;
+                var currentCount = RemainBulletCount;
+                var reloadCount  = RemainBulletCount.MinWith(clip.UsedBulletCount);
+                clip.Reload(reloadSound, reloadCount, loadingCallback: reloadBulletCount =>
+                {
+                    RemainBulletCount = currentCount - reloadBulletCount;
+                }, finishCallback: finishCallback);
             }
         }
     }

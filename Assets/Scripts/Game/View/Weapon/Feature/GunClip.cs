@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
@@ -54,9 +55,25 @@ namespace Game
         public void Use()
         {
             CurrentBulletCount--;
+            
+            if (CurrentBulletCount == 0)
+            {
+                Player.DisplayText("子弹用完了", 2f);
+            }
         }
 
-        public void Reload(AudioClip reloadSound, int reloadBulletCount)
+        /// <summary>
+        /// 重装子弹
+        /// </summary>
+        /// <param name="reloadSound">音效</param>
+        /// <param name="reloadBulletCount">需要重装多少子弹</param>
+        /// <param name="loadingCallback">重装时的回调函数，参数为已装好的子弹</param>
+        /// <param name="finishCallback">重装完毕的回调函数</param>
+        public void Reload(
+            AudioClip   reloadSound,
+            int         reloadBulletCount,
+            Action<int> loadingCallback = null,
+            Action      finishCallback  = null)
         {
             // 重装子弹前首先抬枪
             Gun.ShootUp(Gun.ShootDirection);
@@ -69,14 +86,16 @@ namespace Game
             ActionKit.Lerp(CurrentBulletCount, targetCount, reloadSound.length, f =>
             {
                 CurrentBulletCount = (int) f;
+                loadingCallback?.Invoke(reloadBulletCount + CurrentBulletCount - targetCount); // 补充了多少子弹
                 TypeEventSystem.GLOBAL.Send(new GunLoadBulletEvent(Gun));
             }).StartCurrentScene();
 
             AudioKit.PlaySound(reloadSound, onPlayFinish: (player) =>
             {
-                IsReloading        =  false;
-                CurrentBulletCount = targetCount;
+                IsReloading = false;
                 TypeEventSystem.GLOBAL.Send(new GunLoadBulletEvent(Gun));
+
+                finishCallback?.Invoke(); // 装弹完毕，执行回调函数
             });
         }
     }

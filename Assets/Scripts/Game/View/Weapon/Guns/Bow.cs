@@ -17,7 +17,7 @@ namespace Game
     {
         [HierarchyPath("ArrowPrepare")]
         private GameObject _arrowPrepare;
-        
+
         protected override void Awake()
         {
             base.Awake();
@@ -27,8 +27,19 @@ namespace Game
 
         public override void ShootDown(Vector2 direction)
         {
-            _ShootInterval.Reset();
-            IsShooting = true;
+            if (!Clip.IsEmpty)
+            {
+                _ShootInterval.Reset();
+                IsShooting = true;
+            }
+            else // 自动装填
+            {
+                Reload(() =>
+                {
+                    _ShootInterval.Reset();
+                    IsShooting = true;
+                });
+            }
         }
 
         public override void Shooting(Vector2 direction)
@@ -45,12 +56,12 @@ namespace Game
             if (_CanShoot && _arrowPrepare.IsEnabled())
             {
                 _arrowPrepare.Disable();
-                
+
                 ShootOnce(direction);
 
-                AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.8f);
+                AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.8f);
             }
-            
+
             IsShooting = false;
         }
     }

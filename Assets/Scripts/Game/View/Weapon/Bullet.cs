@@ -17,12 +17,9 @@ namespace Game
     {
         public float Damage;
 
-        [HierarchyPath]
-        public Rigidbody2D Rigidbody2D;
-
         private void Awake()
         {
-            this.BindHierarchyComponent();
+            
         }
 
         private void OnCollisionEnter2D(Collision2D other)

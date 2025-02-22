@@ -23,6 +23,17 @@ namespace Game
                 _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
                 IsShooting   = true;
             }
+            else if (Clip.IsEmpty) // 自动装填
+            {
+                Reload(() =>
+                {
+                    if (IsMouseLeftButtonDown)
+                    {
+                        _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
+                        IsShooting   = true;
+                    }
+                });
+            }
         }
 
         public override void Shooting(Vector2 direction)

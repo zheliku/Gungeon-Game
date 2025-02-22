@@ -24,15 +24,30 @@ namespace Game
 
         public override void ShootDown(Vector2 direction)
         {
-            _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.6f, loop: true);
-            LineRenderer.EnableGameObject();
-            IsShooting = true;
+            if (_CanShoot)
+            {
+                _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.6f, loop: true);
+                LineRenderer.EnableGameObject();
+                IsShooting = true;
+            }
+            else if (Clip.IsEmpty) // 自动装填
+            {
+                Reload(() =>
+                {
+                    if (IsMouseLeftButtonDown)
+                    {
+                        _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.6f, loop: true);
+                        LineRenderer.EnableGameObject();
+                        IsShooting = true;
+                    }
+                });
+            }
         }
 
         public override void Shooting(Vector2 direction)
         {
-            var layers = LayerMask.GetMask("Wall", "Enemy");
-            var hit    = Physics2D.Raycast(Bullet.GetPosition(), direction, Distance, layers);
+            var layers   = LayerMask.GetMask("Wall", "Enemy");
+            var hit      = Physics2D.Raycast(Bullet.GetPosition(), direction, Distance, layers);
             var hitPoint = hit ? hit.point : Bullet.GetPosition().ToVector2() + direction * Distance;
             LineRenderer.SetPositions(new Vector3[] { Bullet.GetPosition(), hitPoint });
 

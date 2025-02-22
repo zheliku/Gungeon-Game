@@ -58,7 +58,11 @@ namespace Game
             var currentRoomStartPosX = 0;
             GenerateRoom(_levelModel.InitRoom, ref currentRoomStartPosX);
             currentRoomStartPosX += 2;
-            GenerateRoom(_levelModel.NormalRoom, ref currentRoomStartPosX);
+            GenerateRoom(_levelModel.NormalRoom.RandomTakeOne(), ref currentRoomStartPosX);
+            currentRoomStartPosX += 2;
+            GenerateRoom(_levelModel.NormalRoom.RandomTakeOne(), ref currentRoomStartPosX);
+            currentRoomStartPosX += 2;
+            GenerateRoom(_levelModel.NormalRoom.RandomTakeOne(), ref currentRoomStartPosX);
             currentRoomStartPosX += 2;
             GenerateRoom(_levelModel.FinalRoom, ref currentRoomStartPosX);
         }

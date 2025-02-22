@@ -10,20 +10,58 @@ namespace Game
 {
     using System.Collections.Generic;
     using Framework.Core;
+    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
     using Framework.Toolkits.SingletonKit;
     using Framework.Toolkits.UIKit;
+    using TMPro;
     using UnityEngine;
     using UnityEngine.InputSystem;
+    using ISingleton = Framework.Toolkits.SingletonKit.ISingleton;
 
     public class Player : AbstractRole, ISingleton
     {
         public static Player Instance { get => MonoSingletonProperty<Player>.Instance; }
 
+        public static void DisplayText(string text, float duration)
+        {
+            var textLocalScale = Instance.FloatingText.GetLocalScale();
+            var textLocalPos   = Instance.FloatingText.GetLocalPosition();
+
+            var floatingText = Instance.FloatingText.Instantiate(Instance)
+               .EnableGameObject();
+            
+            ActionKit.Sequence()
+               .Callback(() =>
+                {
+                    floatingText.text = text;
+                })
+               .Lerp01(0.5f, f =>
+                {
+                    floatingText.SetLocalScale(textLocalScale * f);
+                    floatingText.SetLocalPosition(textLocalPos + Vector3.up * f);
+                })
+               .Delay(duration)
+               .Lerp01(0.5f, f =>
+                {
+                    f = 1 - f;
+                    floatingText.SetLocalScale(textLocalScale * f);
+                    floatingText.SetLocalPosition(textLocalPos + Vector3.up * f);
+                })
+               .Callback(() =>
+                {
+                    floatingText.DestroyGameObject();
+                })
+               .Start(Instance);
+        }
+
         [HierarchyPath("Weapon")]
         public Transform WeaponTransform;
+
+        [HierarchyPath("FloatingText")]
+        public TextMeshPro FloatingText;
 
         public int CurrentGunIndex;
 
@@ -34,9 +72,9 @@ namespace Game
         private Property _Property { get => _playerModel.Property; }
 
         public List<Gun> Guns = new List<Gun>();
-        
+
         public List<AudioClip> GunTakeOutSounds = new List<AudioClip>();
-        
+
         public Gun CurrentGun
         {
             get => Guns[CurrentGunIndex];
@@ -45,6 +83,8 @@ namespace Game
         protected override void Awake()
         {
             base.Awake();
+
+            FloatingText.DisableGameObject();
 
             _playerModel = this.GetModel<PlayerModel>();
 
@@ -141,7 +181,7 @@ namespace Game
 
             if (gunChange)
             {
-                AudioKit.PlaySound(GunTakeOutSounds.RandomChoose());
+                AudioKit.PlaySound(GunTakeOutSounds.RandomTakeOne());
                 TypeEventSystem.GLOBAL.Send(new GunChangeEvent(oldGun, newGun));
             }
         }

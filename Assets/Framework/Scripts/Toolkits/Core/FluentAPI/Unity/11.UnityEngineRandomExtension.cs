@@ -17,17 +17,17 @@ namespace Framework.Toolkits.FluentAPI
 
     public static class UnityEngineRandomExtension
     {
-        public static T TakeOne<T>(this IList<T> list)
+        public static T RandomTakeOne<T>(this IList<T> list)
         {
             return list[Random.Range(0, list.Count)];
         }
 
-        public static T TakeOne<T>(this IEnumerable<T> enumerable)
+        public static T RandomTakeOne<T>(this IEnumerable<T> enumerable)
         {
-            return enumerable.ToList().TakeOne();
+            return enumerable.ToList().RandomTakeOne();
         }
 
-        public static T TakeOneAndRemove<T>(this IList<T> list)
+        public static T RandomTakeOneAndRemove<T>(this IList<T> list)
         {
             var randomIndex = Random.Range(0, list.Count);
             var randomItem  = list[randomIndex];
@@ -35,7 +35,7 @@ namespace Framework.Toolkits.FluentAPI
             return randomItem;
         }
 
-        public static IList<T> TakeRandom<T>(this IList<T> list, int count)
+        public static IList<T> RandomTakeRange<T>(this IList<T> list, int count)
         {
             // 如果要求的数量超过了总元素数量，则返回全部元素
             count = Math.Min(count, list.Count);
@@ -45,13 +45,13 @@ namespace Framework.Toolkits.FluentAPI
             // 随机移除元素，直到剩余元素数量等于 count
             for (int i = 0; i < list.Count - count; i++)
             {
-                newList.TakeOneAndRemove();
+                newList.RandomTakeOneAndRemove();
             }
 
             return newList;
         }
 
-        public static IEnumerable<T> TakeRandom<T>(this IEnumerable<T> enumerable, int count)
+        public static IEnumerable<T> RandomTakeRange<T>(this IEnumerable<T> enumerable, int count)
         {
             var list = enumerable.ToList(); // 将源转换为列表
 
@@ -60,11 +60,11 @@ namespace Framework.Toolkits.FluentAPI
 
             for (int i = 0; i < count; i++)
             {
-                yield return list.TakeOneAndRemove();
+                yield return list.RandomTakeOneAndRemove();
             }
         }
 
-        public static IList<T> TakeRandomAndRemove<T>(this IList<T> list, int count)
+        public static IList<T> RandomTakeRangeAndRemove<T>(this IList<T> list, int count)
         {
             // 如果要求的数量超过了总元素数量，则返回全部元素
             count = Math.Min(count, list.Count);
@@ -73,15 +73,10 @@ namespace Framework.Toolkits.FluentAPI
 
             for (int i = 0; i < count; i++)
             {
-                newList.Add(list.TakeOneAndRemove());
+                newList.Add(list.RandomTakeOneAndRemove());
             }
 
             return newList;
-        }
-
-        public static T RandomChoose<T>(this IList<T> args)
-        {
-            return args[Random.Range(0, args.Count)];
         }
         
         /// <summary>
@@ -92,22 +87,34 @@ namespace Framework.Toolkits.FluentAPI
             return Random.Range(vec2.x, vec2.y);
         }
 
+        /// <summary>
+        /// 从区间 [0, x] 随机选择一个数
+        /// </summary>
         public static float RandomTo0(this float x)
         {
             return Random.Range(0, x);
         }
 
+        /// <summary>
+        /// 从区间 [x, y] 随机选择一个数
+        /// </summary>
         public static float RandomToY(this float x, float y)
         {
             return Random.Range(x, y);
         }
         
+        /// <summary>
+        /// 从区间 [-x, x] 随机选择一个数
+        /// </summary>
         public static float RandomToNeg(this float x)
         {
             return Random.Range(-x, x);
         }
 
-        public static bool WithInRandom01(this float value)
+        /// <summary>
+        /// 从区间 [0, 1] 随机选择一个数
+        /// </summary>
+        public static bool Random0To1(this float value)
         {
             return Random.Range(0f, 1f) <= value;
         }
@@ -124,7 +131,7 @@ namespace Framework.Toolkits.FluentAPI
                 throw new FrameworkException("RandomUtility.Range: ranges is empty");
             }
 
-            var item = list.TakeOne();
+            var item = list.RandomTakeOne();
             return Random.Range(item.a, item.b);
         }
 

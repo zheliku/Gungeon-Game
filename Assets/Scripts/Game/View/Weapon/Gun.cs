@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System;
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
@@ -21,7 +22,7 @@ namespace Game
     public abstract class Gun : AbstractView
     {
         protected BG_GunData _gunData;
-        
+
         [HierarchyPath("Bullet")]
         public GameObject Bullet;
 
@@ -31,6 +32,8 @@ namespace Game
 
         [HierarchyPath("/Player/Weapon/GunShootLight")]
         public SpriteRenderer GunShootLight;
+
+        public InputAction AttackAction { get; private set; }
 
         public bool IsShooting { get; protected set; }
 
@@ -58,6 +61,11 @@ namespace Game
             get => Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).Set(z: 0);
         }
 
+        public bool IsMouseLeftButtonDown
+        {
+            get => AttackAction.ReadValue<float>().Approximately(1);
+        }
+
         public Vector3 ShootDirection
         {
             get => (MousePosition - transform.position).normalized;
@@ -81,7 +89,7 @@ namespace Game
 
         private void OnEnable()
         {
-            InputKit.BindPerformed("Attack", context =>
+            AttackAction = InputKit.BindPerformed("Attack", context =>
             {
                 ShootDown(ShootDirection);
             }).BindCanceled(context =>
@@ -96,7 +104,7 @@ namespace Game
             InputKit.BindPerformed("LoadBullet", context =>
             {
                 // 重装子弹
-                Bag.Reload(Clip, ReloadSound);
+                Reload();
             }).UnBindAllWhenGameObjectDisabled(gameObject);
         }
 
@@ -155,6 +163,11 @@ namespace Game
             {
                 GunShootLight.DisableGameObject();
             }).StartCurrentScene();
+        }
+
+        public void Reload(Action finishCallback = null)
+        {
+            Bag.Reload(Clip, ReloadSound, finishCallback); // 重装子弹
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

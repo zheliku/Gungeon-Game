@@ -21,8 +21,19 @@ namespace Game
             if (_CanShoot)
             {
                 ShootOnce(direction);
-                _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomChoose(), volume: 0.3f, loop: true);
+                _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.3f, loop: true);
                 IsShooting   = true;
+            }
+            else if (Clip.IsEmpty) // 自动装填
+            {
+                Reload(() =>
+                {
+                    if (IsMouseLeftButtonDown)
+                    {
+                        _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.3f, loop: true);
+                        IsShooting   = true;
+                    }
+                });
             }
         }
 
