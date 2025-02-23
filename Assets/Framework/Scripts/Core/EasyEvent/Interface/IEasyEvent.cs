@@ -19,8 +19,9 @@ namespace Framework.Core
         /// 注册事件
         /// </summary>
         /// <param name="onEvent">事件方法</param>
+        /// <param name="priority">事件优先级</param>
         /// <returns>注销器</returns>
-        IUnRegister Register(Action onEvent);
+        IUnRegister Register(Action onEvent, int priority = 0);
 
         /// <summary>
         /// 注销所有事件

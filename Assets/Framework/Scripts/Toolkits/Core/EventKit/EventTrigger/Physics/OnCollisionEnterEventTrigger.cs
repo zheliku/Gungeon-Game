@@ -25,17 +25,17 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnCollisionEnterEventTriggerExtension
     {
-        public static IUnRegister OnCollisionEnterEvent<T>(this T self, Action<Collision> onCollisionEnter)
+        public static IUnRegister OnCollisionEnterEvent<T>(this T self, Action<Collision> onCollisionEnter, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnCollisionEnterEventTrigger>().OnCollisionEnterEvent
-                       .Register(onCollisionEnter);
+                       .Register(onCollisionEnter, priority);
         }
 
-        public static IUnRegister OnCollisionEnterEvent(this GameObject self, Action<Collision> onCollisionEnter)
+        public static IUnRegister OnCollisionEnterEvent(this GameObject self, Action<Collision> onCollisionEnter, int priority = 0)
         {
             return self.GetOrAddComponent<OnCollisionEnterEventTrigger>().OnCollisionEnterEvent
-                       .Register(onCollisionEnter);
+                       .Register(onCollisionEnter, priority);
         }
     }
 }

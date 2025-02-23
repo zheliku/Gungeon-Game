@@ -21,63 +21,63 @@ namespace Framework.Toolkits.EventKit
         [ShowInInspector]
         private readonly Dictionary<string, IEasyEvent> _events = new Dictionary<string, IEasyEvent>(50);
 
-        public IUnRegister Register(string key, Action onEvent)
+        public IUnRegister Register(string key, Action onEvent, int priority = 0)
         {
             if (_events.TryGetValue(key, out var e))
             {
                 var easyEvent = e.As<EasyEvent>();
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
             else
             {
                 var easyEvent = new EasyEvent();
                 _events.Add(key, easyEvent);
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
         }
 
-        public IUnRegister Register<TArg>(string key, Action<TArg> onEvent)
+        public IUnRegister Register<TArg>(string key, Action<TArg> onEvent, int priority = 0)
         {
             if (_events.TryGetValue(key, out var e))
             {
                 var easyEvent = e.As<EasyEvent<TArg>>();
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
             else
             {
                 var easyEvent = new EasyEvent<TArg>();
                 _events.Add(key, easyEvent);
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
         }
         
-        public IUnRegister Register<TArg1, TArg2>(string key, Action<TArg1, TArg2> onEvent)
+        public IUnRegister Register<TArg1, TArg2>(string key, Action<TArg1, TArg2> onEvent, int priority = 0)
         {
             if (_events.TryGetValue(key, out var e))
             {
                 var easyEvent = e.As<EasyEvent<TArg1, TArg2>>();
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
             else
             {
                 var easyEvent = new EasyEvent<TArg1, TArg2>();
                 _events.Add(key, easyEvent);
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
         }
         
-        public IUnRegister Register<TArg1, TArg2, TArg3>(string key, Action<TArg1, TArg2, TArg3> onEvent)
+        public IUnRegister Register<TArg1, TArg2, TArg3>(string key, Action<TArg1, TArg2, TArg3> onEvent, int priority = 0)
         {
             if (_events.TryGetValue(key, out var e))
             {
                 var easyEvent = e.As<EasyEvent<TArg1, TArg2, TArg3>>();
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
             else
             {
                 var easyEvent = new EasyEvent<TArg1, TArg2, TArg3>();
                 _events.Add(key, easyEvent);
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
         }
 

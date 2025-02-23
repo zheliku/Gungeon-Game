@@ -43,30 +43,30 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnApplicationFocusEventTriggerExtension
     {
-        public static IUnRegister OnApplicationFocusEvent<T>(this T self, Action onApplicationFocus)
+        public static IUnRegister OnApplicationFocusEvent<T>(this T self, Action onApplicationFocus, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnApplicationFocusEventTrigger>().OnApplicationFocusEvent
-               .Register(onApplicationFocus);
+               .Register(onApplicationFocus, priority);
         }
 
-        public static IUnRegister OnApplicationFocusEvent(this GameObject self, Action onApplicationFocus)
+        public static IUnRegister OnApplicationFocusEvent(this GameObject self, Action onApplicationFocus, int priority = 0)
         {
             return self.GetOrAddComponent<OnApplicationFocusEventTrigger>().OnApplicationFocusEvent
-               .Register(onApplicationFocus);
+               .Register(onApplicationFocus, priority);
         }
         
-        public static IUnRegister OnApplicationUnFocusEvent<T>(this T self, Action onApplicationUnFocus)
+        public static IUnRegister OnApplicationUnFocusEvent<T>(this T self, Action onApplicationUnFocus, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnApplicationFocusEventTrigger>().OnApplicationUnFocusEvent
-               .Register(onApplicationUnFocus);
+               .Register(onApplicationUnFocus, priority);
         }
 
-        public static IUnRegister OnApplicationUnFocusEvent(this GameObject self, Action onApplicationUnFocus)
+        public static IUnRegister OnApplicationUnFocusEvent(this GameObject self, Action onApplicationUnFocus, int priority = 0)
         {
             return self.GetOrAddComponent<OnApplicationFocusEventTrigger>().OnApplicationUnFocusEvent
-               .Register(onApplicationUnFocus);
+               .Register(onApplicationUnFocus, priority);
         }
     }
 }

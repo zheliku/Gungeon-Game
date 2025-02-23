@@ -8,7 +8,7 @@
 
 namespace Framework.Core
 {
-    using global::System;
+    using System;
 
     /// <summary>
     /// 可绑定事件监听的只读 Property 接口
@@ -25,15 +25,17 @@ namespace Framework.Core
         /// 注册绑定事件
         /// </summary>
         /// <param name="onValueChanged">Property 变化时触发的监听事件</param>
+        /// <param name="priority">事件优先级</param>
         /// <returns>注销器</returns>
-        IUnRegister Register(Action<TProperty, TProperty> onValueChanged);
+        IUnRegister Register(Action<TProperty, TProperty> onValueChanged, int priority = 0);
 
         /// <summary>
         /// 注册绑定事件并立即触发一次
         /// </summary>
         /// <param name="onValueChanged">Property 变化时触发的监听事件</param>
+        /// <param name="priority">事件优先级</param>
         /// <returns>注销器</returns>
-        IUnRegister RegisterWithInitValue(Action<TProperty, TProperty> onValueChanged);
+        IUnRegister RegisterWithInitValue(Action<TProperty, TProperty> onValueChanged, int priority = 0);
 
         /// <summary>
         /// 注销绑定事件

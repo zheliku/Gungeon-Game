@@ -26,15 +26,15 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnScrollEventTriggerExtension
     {
-        public static IUnRegister OnScrollEvent<T>(this T self, Action<PointerEventData> onScroll)
+        public static IUnRegister OnScrollEvent<T>(this T self, Action<PointerEventData> onScroll, int priority = 0)
             where T : Component
         {
-            return self.GetOrAddComponent<OnScrollEventTrigger>().OnScrollEvent.Register(onScroll);
+            return self.GetOrAddComponent<OnScrollEventTrigger>().OnScrollEvent.Register(onScroll, priority);
         }
 
-        public static IUnRegister OnScrollEvent(this GameObject self, Action<PointerEventData> onScroll)
+        public static IUnRegister OnScrollEvent(this GameObject self, Action<PointerEventData> onScroll, int priority = 0)
         {
-            return self.GetOrAddComponent<OnScrollEventTrigger>().OnScrollEvent.Register(onScroll);
+            return self.GetOrAddComponent<OnScrollEventTrigger>().OnScrollEvent.Register(onScroll, priority);
         }
     }
 }

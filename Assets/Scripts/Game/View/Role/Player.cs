@@ -33,6 +33,7 @@ namespace Game
             var floatingText = Instance.FloatingText.Instantiate(Instance)
                .EnableGameObject();
             
+            // 播放显示动画
             ActionKit.Sequence()
                .Callback(() =>
                 {

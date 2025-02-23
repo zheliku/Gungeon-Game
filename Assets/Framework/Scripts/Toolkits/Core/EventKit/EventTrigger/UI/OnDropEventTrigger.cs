@@ -26,15 +26,15 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnDropEventTriggerExtension
     {
-        public static IUnRegister OnDropEvent<T>(this T self, Action<PointerEventData> onDrop)
+        public static IUnRegister OnDropEvent<T>(this T self, Action<PointerEventData> onDrop, int priority = 0)
             where T : Component
         {
-            return self.GetOrAddComponent<OnDropEventTrigger>().OnDropEvent.Register(onDrop);
+            return self.GetOrAddComponent<OnDropEventTrigger>().OnDropEvent.Register(onDrop, priority);
         }
 
-        public static IUnRegister OnDropEvent(this GameObject self, Action<PointerEventData> onDrop)
+        public static IUnRegister OnDropEvent(this GameObject self, Action<PointerEventData> onDrop, int priority = 0)
         {
-            return self.GetOrAddComponent<OnDropEventTrigger>().OnDropEvent.Register(onDrop);
+            return self.GetOrAddComponent<OnDropEventTrigger>().OnDropEvent.Register(onDrop, priority);
         }
     }
 }

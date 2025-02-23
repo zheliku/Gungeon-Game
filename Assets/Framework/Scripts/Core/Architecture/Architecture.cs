@@ -157,9 +157,9 @@ namespace Framework.Core
             _typeEventSystem.Send<TEvent>(e);
         }
 
-        public IUnRegister RegisterEvent<TEvent>(Action<TEvent> onEvent)
+        public IUnRegister RegisterEvent<TEvent>(Action<TEvent> onEvent, int priority)
         {
-            return _typeEventSystem.Register<TEvent>(onEvent);
+            return _typeEventSystem.Register<TEvent>(onEvent, priority);
         }
 
         public void UnRegisterEvent<TEvent>(Action<TEvent> onEvent)

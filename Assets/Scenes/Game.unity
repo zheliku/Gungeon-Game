@@ -462,7 +462,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &283729170
 MonoBehaviour:
@@ -898,7 +898,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &651060847
 CircleCollider2D:
@@ -1389,7 +1389,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &846635865
 CircleCollider2D:
@@ -2463,7 +2463,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!212 &1434489171
 SpriteRenderer:
@@ -2639,7 +2639,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &1447213244
 CircleCollider2D:
@@ -3358,7 +3358,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &1871027657
 CircleCollider2D:
@@ -4269,7 +4269,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &2028686169
 CircleCollider2D:
@@ -4409,6 +4409,7 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   WeaponTransform: {fileID: 0}
+  FloatingText: {fileID: 0}
   CurrentGunIndex: 0
   Guns: []
   GunTakeOutSounds:

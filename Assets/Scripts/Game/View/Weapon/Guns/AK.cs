@@ -8,12 +8,37 @@
 
 namespace Game
 {
+    using Framework.Core;
     using Framework.Toolkits.AudioKit;
     using UnityEngine;
 
     public class AK : Gun
     {
         private AudioPlayer _audioPlayer;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            // 子弹空时，停止播放音效
+            TypeEventSystem.GLOBAL.Register<GunBulletEnmptyEvent>(e =>
+            {
+                if (e.Gun == this)
+                {
+                    _audioPlayer.Stop();
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
+            
+            // 子弹装填完成时，若仍按下鼠标，则直接开始发射
+            TypeEventSystem.GLOBAL.Register<GunBulletLoadedEvent>(e =>
+            {
+                if (IsMouseLeftButtonDown && e.Gun == this)
+                {
+                    _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
+                    IsShooting   = true;
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
+        }
 
         public override void ShootDown(Vector2 direction)
         {
@@ -23,16 +48,9 @@ namespace Game
                 _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
                 IsShooting   = true;
             }
-            else if (Clip.IsEmpty) // 自动装填
+            else if (Clip.IsEmpty)
             {
-                Reload(() =>
-                {
-                    if (IsMouseLeftButtonDown)
-                    {
-                        _audioPlayer = AudioKit.PlaySound(ShootSounds[0], volume: 0.3f, loop: true);
-                        IsShooting   = true;
-                    }
-                });
+                TryAutoReload();
             }
         }
 
@@ -41,6 +59,10 @@ namespace Game
             if (_CanShoot)
             {
                 ShootOnce(direction);
+            }
+            else if (Clip.IsEmpty) // 子弹空时，播放空夹音效
+            {
+                PlayBulletEmptySound();
             }
         }
 

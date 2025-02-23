@@ -26,15 +26,15 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnPointerEnterEventTriggerExtension
     {
-        public static IUnRegister OnPointerEnterEvent<T>(this T self, Action<PointerEventData> onPointerEnter)
+        public static IUnRegister OnPointerEnterEvent<T>(this T self, Action<PointerEventData> onPointerEnter, int priority = 0)
             where T : Component
         {
-            return self.GetOrAddComponent<OnPointerEnterEventTrigger>().OnPointerEnterEvent.Register(onPointerEnter);
+            return self.GetOrAddComponent<OnPointerEnterEventTrigger>().OnPointerEnterEvent.Register(onPointerEnter, priority);
         }
 
-        public static IUnRegister OnPointerEnterEvent(this GameObject self, Action<PointerEventData> onPointerEnter)
+        public static IUnRegister OnPointerEnterEvent(this GameObject self, Action<PointerEventData> onPointerEnter, int priority = 0)
         {
-            return self.GetOrAddComponent<OnPointerEnterEventTrigger>().OnPointerEnterEvent.Register(onPointerEnter);
+            return self.GetOrAddComponent<OnPointerEnterEventTrigger>().OnPointerEnterEvent.Register(onPointerEnter, priority);
         }
     }
 }

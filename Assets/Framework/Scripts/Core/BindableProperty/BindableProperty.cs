@@ -114,20 +114,23 @@ namespace Framework.Core
 
         public void SetValueWithoutEvent(TProperty newValue) { _value = newValue; }
 
-        public IUnRegister RegisterWithInitValue(Action<TProperty, TProperty> onValueChanged)
+        public IUnRegister RegisterWithInitValue(Action<TProperty, TProperty> onValueChanged, int priority = 0)
         {
             onValueChanged(_value, _value);
-            return Register(onValueChanged);
+            return Register(onValueChanged, priority);
         }
 
         public void UnRegister(Action<TProperty, TProperty> onValueChanged) { _onValueChanged.UnRegister(onValueChanged); }
 
         public void UnRegisterAll() { _onValueChanged.UnRegisterAll(); }
 
-        public IUnRegister Register(Action<TProperty, TProperty> onValueChanged) { return _onValueChanged.Register(onValueChanged); }
+        public IUnRegister Register(Action<TProperty, TProperty> onValueChanged, int priority = 0)
+        {
+            return _onValueChanged.Register(onValueChanged, priority);
+        }
 
         // 仅能通过 IEasyEvent 接口使用 Register(Action onEvent) 方法
-        IUnRegister IEasyEvent.Register(Action onEvent) { return Register((_, _) => onEvent()); }
+        IUnRegister IEasyEvent.Register(Action onEvent, int priority) { return Register((_, _) => onEvent()); }
 
     #endregion
 

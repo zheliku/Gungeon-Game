@@ -37,7 +37,7 @@ namespace Game
                 UpdateGunInfo(e.NewGun);
             }).UnRegisterWhenGameObjectDisabled(this);
 
-            TypeEventSystem.GLOBAL.Register<GunLoadBulletEvent>(e =>
+            TypeEventSystem.GLOBAL.Register<GunBulletLoadingEvent>(e =>
             {
                 UpdateGunInfo(e.Gun);
             }).UnRegisterWhenGameObjectDisabled(this);

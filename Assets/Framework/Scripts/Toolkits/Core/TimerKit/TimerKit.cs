@@ -9,6 +9,7 @@
 namespace Framework.Toolkits.TimerKit
 {
     using System;
+    using UnityEngine;
 
     public static class TimerKit
     {
@@ -25,6 +26,28 @@ namespace Framework.Toolkits.TimerKit
         public static Timer Create(Action<Timer> onTick, float duration, int repeat = 1, TimerType timerType = TimerType.Scaled)
         {
             return TimerManager.Instance.CreateTimer(onTick, duration, repeat, timerType);
+        }
+
+        public static bool HasPassedInterval(string id, float interval)
+        {
+            var timeDict = TimerManager.Instance.TimeDict;
+            if (timeDict.TryGetValue(id, out var time))
+            {
+                if (time + interval <= Time.time)
+                {
+                    timeDict[id] = Time.time;
+                    return true;
+                }
+                return false;
+            }
+            
+            timeDict[id] = Time.time;
+            return false;
+        }
+
+        public static bool HasPassedInterval(object id, float interval)
+        {
+            return HasPassedInterval(id.ToString(), interval);
         }
     }
 }

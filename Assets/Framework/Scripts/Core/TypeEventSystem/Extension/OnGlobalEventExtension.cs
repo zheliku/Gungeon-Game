@@ -17,11 +17,12 @@ namespace Framework.Core
         /// 注册事件
         /// </summary>
         /// <param name="self">IOnEvent 实例</param>
+        /// <param name="priority">事件优先级</param>
         /// <typeparam name="TEvent">Event 类型</typeparam>
         /// <returns>注销器</returns>
-        public static IUnRegister RegisterEvent<TEvent>(this IOnEvent<TEvent> self)
+        public static IUnRegister RegisterEvent<TEvent>(this IOnEvent<TEvent> self, int priority = 0)
         {
-            return TypeEventSystem.GLOBAL.Register<TEvent>(self.OnEvent);
+            return TypeEventSystem.GLOBAL.Register<TEvent>(self.OnEvent, priority);
         }
 
         /// <summary>

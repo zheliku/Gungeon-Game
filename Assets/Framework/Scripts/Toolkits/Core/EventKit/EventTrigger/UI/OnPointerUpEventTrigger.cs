@@ -26,17 +26,17 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnPointerUpEventTriggerExtension
     {
-        public static IUnRegister OnPointerUpEvent<T>(this T self, Action<PointerEventData> onPointerUpEvent)
+        public static IUnRegister OnPointerUpEvent<T>(this T self, Action<PointerEventData> onPointerUpEvent, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnPointerUpEventTrigger>().OnPointerUpEvent
-                       .Register(onPointerUpEvent);
+                       .Register(onPointerUpEvent, priority);
         }
 
-        public static IUnRegister OnPointerUpEvent(this GameObject self, Action<PointerEventData> onPointerUpEvent)
+        public static IUnRegister OnPointerUpEvent(this GameObject self, Action<PointerEventData> onPointerUpEvent, int priority = 0)
         {
             return self.GetOrAddComponent<OnPointerUpEventTrigger>().OnPointerUpEvent
-                       .Register(onPointerUpEvent);
+                       .Register(onPointerUpEvent, priority);
         }
     }
 }

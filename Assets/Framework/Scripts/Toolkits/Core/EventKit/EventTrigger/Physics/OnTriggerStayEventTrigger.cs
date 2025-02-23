@@ -25,17 +25,17 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnTriggerStayEventTriggerExtension
     {
-        public static IUnRegister OnTriggerStayEvent<T>(this T self, Action<Collider> onTriggerStay)
+        public static IUnRegister OnTriggerStayEvent<T>(this T self, Action<Collider> onTriggerStay, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnTriggerStayEventTrigger>().OnTriggerStayEvent
-                       .Register(onTriggerStay);
+                       .Register(onTriggerStay, priority);
         }
 
-        public static IUnRegister OnTriggerStayEvent(this GameObject self, Action<Collider> onTriggerStay)
+        public static IUnRegister OnTriggerStayEvent(this GameObject self, Action<Collider> onTriggerStay, int priority = 0)
         {
             return self.GetOrAddComponent<OnTriggerStayEventTrigger>().OnTriggerStayEvent
-                       .Register(onTriggerStay);
+                       .Register(onTriggerStay, priority);
         }
     }
 }

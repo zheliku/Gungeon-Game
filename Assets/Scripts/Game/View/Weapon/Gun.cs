@@ -12,9 +12,10 @@ namespace Game
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
-    using Framework.Toolkits.EventKit;
+    using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
+    using Framework.Toolkits.TimerKit;
     using Sirenix.OdinInspector;
     using UnityEngine;
     using UnityEngine.InputSystem;
@@ -29,6 +30,8 @@ namespace Game
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
         public AudioClip ReloadSound;
+
+        // public AudioClip EmptyBulletSound;
 
         [HierarchyPath("/Player/Weapon/GunShootLight")]
         public SpriteRenderer GunShootLight;
@@ -106,6 +109,9 @@ namespace Game
                 // 重装子弹
                 Reload();
             }).UnBindAllWhenGameObjectDisabled(gameObject);
+
+            InputKit.BindPerformed("Move", context =>
+                                   { });
         }
 
         private void Update()
@@ -145,12 +151,6 @@ namespace Game
             ShowGunShootLight(direction);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
-
-            // 没有子弹，则抬枪
-            if (Clip.IsEmpty)
-            {
-                ShootUp(direction);
-            }
         }
 
         protected void ShowGunShootLight(Vector2 direction)
@@ -165,9 +165,32 @@ namespace Game
             }).StartCurrentScene();
         }
 
-        public void Reload(Action finishCallback = null)
+        public void Reload()
         {
-            Bag.Reload(Clip, ReloadSound, finishCallback); // 重装子弹
+            Bag.Reload(Clip, ReloadSound); // 重装子弹
+        }
+
+        protected void PlayBulletEmptySound()
+        {
+            if (TimerKit.HasPassedInterval(this, 0.3f)) // 每隔 2 倍冷却间隔播放空弹夹音效
+            {
+                AudioKit.PlaySound(Config.Sound.EMPTY_BULLET);
+            }
+        }
+
+        /// <summary>
+        /// 尝试自动装填
+        /// </summary>
+        protected void TryAutoReload()
+        {
+            if (_ShootInterval.CanShoot) // 射击间隔冷却完成
+            {
+                Reload(); // 自动装填
+            }
+            else
+            {
+                PlayBulletEmptySound(); // 播放空弹夹音效
+            }
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

@@ -37,7 +37,7 @@ namespace Game
             RemainBulletCount = maxBulletCount;
         }
 
-        public void Reload(GunClip clip, AudioClip reloadSound, Action finishCallback = null)
+        public void Reload(GunClip clip, AudioClip reloadSound)
         {
             if (clip.IsFull)
             {
@@ -46,16 +46,12 @@ namespace Game
 
             if (MaxBulletCount < 0) // 无限子弹
             {
-                clip.Reload(reloadSound, clip.UsedBulletCount, finishCallback: finishCallback);
+                clip.Reload(reloadSound, clip.UsedBulletCount);
             }
             else // 有限子弹
             {
-                var currentCount = RemainBulletCount;
                 var reloadCount  = RemainBulletCount.MinWith(clip.UsedBulletCount);
-                clip.Reload(reloadSound, reloadCount, loadingCallback: reloadBulletCount =>
-                {
-                    RemainBulletCount = currentCount - reloadBulletCount;
-                }, finishCallback: finishCallback);
+                clip.Reload(reloadSound, reloadCount);
             }
         }
     }

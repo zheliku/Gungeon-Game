@@ -100,8 +100,9 @@ namespace Framework.Core
         /// </summary>
         /// <typeparam name="TEvent">事件类型</typeparam>
         /// <param name="onEvent">事件触发时的回调函数</param>
+        /// <param name="priority">事件优先级</param>
         /// <returns>IUnRegister 接口，用于取消注册</returns>
-        IUnRegister RegisterEvent<TEvent>(Action<TEvent> onEvent);
+        IUnRegister RegisterEvent<TEvent>(Action<TEvent> onEvent, int priority);
 
         /// <summary>
         /// 注销事件监听

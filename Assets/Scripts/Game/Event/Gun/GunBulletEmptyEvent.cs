@@ -8,11 +8,11 @@
 
 namespace Game
 {
-    public struct GunLoadBulletEvent
+    public struct GunBulletEnmptyEvent
     {
         public Gun Gun;
 
-        public GunLoadBulletEvent(Gun gun)
+        public GunBulletEnmptyEvent(Gun gun)
         {
             Gun = gun;
         }

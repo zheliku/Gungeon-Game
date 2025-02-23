@@ -12,6 +12,7 @@ namespace Game
     using UnityEngine;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
+    using Framework.Toolkits.TimerKit;
 
     public class Laser : Gun
     {
@@ -21,6 +22,32 @@ namespace Game
         public LineRenderer LineRenderer;
 
         private AudioPlayer _audioPlayer;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+
+            // 子弹空时，停止播放音效
+            TypeEventSystem.GLOBAL.Register<GunBulletEnmptyEvent>(e =>
+            {
+                if (e.Gun == this)
+                {
+                    _audioPlayer.Stop();
+                    LineRenderer.DisableGameObject();
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
+            
+            // 子弹装填完成时，若仍按下鼠标，则直接开始发射
+            TypeEventSystem.GLOBAL.Register<GunBulletLoadedEvent>(e =>
+            {
+                if (IsMouseLeftButtonDown && e.Gun == this)
+                {
+                    _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.6f, loop: true);
+                    LineRenderer.EnableGameObject();
+                    IsShooting = true;
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
+        }
 
         public override void ShootDown(Vector2 direction)
         {
@@ -30,36 +57,42 @@ namespace Game
                 LineRenderer.EnableGameObject();
                 IsShooting = true;
             }
-            else if (Clip.IsEmpty) // 自动装填
+            else if (Clip.IsEmpty)
             {
-                Reload(() =>
-                {
-                    if (IsMouseLeftButtonDown)
-                    {
-                        _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.6f, loop: true);
-                        LineRenderer.EnableGameObject();
-                        IsShooting = true;
-                    }
-                });
+                TryAutoReload();
             }
         }
 
         public override void Shooting(Vector2 direction)
         {
+            if (Clip.IsEmpty)
+            {
+                PlayBulletEmptySound();
+                return;
+            }
+
+            // 有子弹，才更新激光位置
             var layers   = LayerMask.GetMask("Wall", "Enemy");
             var hit      = Physics2D.Raycast(Bullet.GetPosition(), direction, Distance, layers);
             var hitPoint = hit ? hit.point : Bullet.GetPosition().ToVector2() + direction * Distance;
             LineRenderer.SetPositions(new Vector3[] { Bullet.GetPosition(), hitPoint });
 
-            if (hit && _CanShoot)
+            if (_CanShoot)
             {
-                var enemy = hit.collider.gameObject.GetComponent<Enemy>();
-                if (enemy)
+                Clip.Use();             // 弹夹使用子弹
+                _ShootInterval.Reset(); // 射击间隔重置
+
+                if (hit)
                 {
-                    var damage = _gunData.DamageRange.RandomSelect();
-                    enemy.Hurt(damage);
-                    _ShootInterval.Reset();
+                    var enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                    if (enemy)
+                    {
+                        var damage = _gunData.DamageRange.RandomSelect();
+                        enemy.Hurt(damage);
+                    }
                 }
+
+                TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
             }
         }
 

@@ -17,17 +17,17 @@
 
     public static class OnDisableEventTriggerExtension
     {
-        public static IUnRegister OnDisableEvent<T>(this T self, Action onDisable)
+        public static IUnRegister OnDisableEvent<T>(this T self, Action onDisable, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnDisableEventTrigger>().OnDisableEvent
-                       .Register(onDisable);
+                       .Register(onDisable, priority);
         }
 
-        public static IUnRegister OnDisableEvent(this GameObject self, Action onDisable)
+        public static IUnRegister OnDisableEvent(this GameObject self, Action onDisable, int priority = 0)
         {
             return self.GetOrAddComponent<OnDisableEventTrigger>().OnDisableEvent
-                       .Register(onDisable);
+                       .Register(onDisable, priority);
         }
     }
 }

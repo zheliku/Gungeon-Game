@@ -8,6 +8,7 @@
 
 namespace Framework.Core.Example._3.EasyEvent
 {
+    using Sirenix.OdinInspector;
     using UnityEngine;
     using EasyEvent = Core.EasyEvent;
 
@@ -16,14 +17,20 @@ namespace Framework.Core.Example._3.EasyEvent
 
     public class EasyEventExample : MonoBehaviour
     {
-        private EasyEvent _easyEvent        = new EasyEvent();
-        private string    _easyEventContent = "Waiting...";
+        [ShowInInspector]
+        private EasyEvent _easyEvent = new EasyEvent();
 
-        private EasyEvent<int> _easyEventInt        = new EasyEvent<int>();
-        private int            _easyEventIntValue   = 0;
-        private string         _easyEventIntContent = "Value: 0";
+        private string _easyEventContent = "Waiting...";
 
-        private EventA _eventA        = new EventA();
+        [ShowInInspector]
+        private EasyEvent<int> _easyEventInt = new EasyEvent<int>();
+
+        private int    _easyEventIntValue   = 0;
+        private string _easyEventIntContent = "Value: 0";
+
+        [ShowInInspector]
+        private EventA _eventA = new EventA();
+
         private int    _eventAValue1  = 0;
         private int    _eventAValue2  = 0;
         private string _eventAContent = "Value: 0, 0";
@@ -34,6 +41,16 @@ namespace Framework.Core.Example._3.EasyEvent
             {
                 _easyEventContent = "Clicked!";
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+            _easyEvent.Register(() =>
+            {
+                Debug.Log("Clicked! 1");
+            }, 2).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+            _easyEvent.Register(() =>
+            {
+                Debug.Log("Clicked! 2");
+            }, 1).UnRegisterWhenGameObjectDestroyed(gameObject);
 
             _easyEventInt.Register(value =>
             {

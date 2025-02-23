@@ -55,10 +55,12 @@ namespace Game
         public void Use()
         {
             CurrentBulletCount--;
-            
+
             if (CurrentBulletCount == 0)
             {
                 Player.DisplayText("子弹用完了", 2f);
+
+                TypeEventSystem.GLOBAL.Send(new GunBulletEnmptyEvent(Gun));
             }
         }
 
@@ -67,14 +69,13 @@ namespace Game
         /// </summary>
         /// <param name="reloadSound">音效</param>
         /// <param name="reloadBulletCount">需要重装多少子弹</param>
-        /// <param name="loadingCallback">重装时的回调函数，参数为已装好的子弹</param>
-        /// <param name="finishCallback">重装完毕的回调函数</param>
-        public void Reload(
-            AudioClip   reloadSound,
-            int         reloadBulletCount,
-            Action<int> loadingCallback = null,
-            Action      finishCallback  = null)
+        public void Reload(AudioClip reloadSound, int reloadBulletCount)
         {
+            if (IsReloading)
+            {
+                return;
+            }
+            
             // 重装子弹前首先抬枪
             Gun.ShootUp(Gun.ShootDirection);
 
@@ -85,17 +86,16 @@ namespace Game
             // 子弹填充动画
             ActionKit.Lerp(CurrentBulletCount, targetCount, reloadSound.length, f =>
             {
-                CurrentBulletCount = (int) f;
-                loadingCallback?.Invoke(reloadBulletCount + CurrentBulletCount - targetCount); // 补充了多少子弹
-                TypeEventSystem.GLOBAL.Send(new GunLoadBulletEvent(Gun));
+                var loadBulletCountThisFrame = (int) f - CurrentBulletCount;
+                CurrentBulletCount        += loadBulletCountThisFrame;
+                Gun.Bag.RemainBulletCount -= loadBulletCountThisFrame;
+                TypeEventSystem.GLOBAL.Send(new GunBulletLoadingEvent(Gun));
             }).StartCurrentScene();
 
             AudioKit.PlaySound(reloadSound, onPlayFinish: (player) =>
             {
                 IsReloading = false;
-                TypeEventSystem.GLOBAL.Send(new GunLoadBulletEvent(Gun));
-
-                finishCallback?.Invoke(); // 装弹完毕，执行回调函数
+                TypeEventSystem.GLOBAL.Send(new GunBulletLoadedEvent(Gun)); // 重装完毕，发送事件
             });
         }
     }

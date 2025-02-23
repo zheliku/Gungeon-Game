@@ -28,9 +28,9 @@ namespace Game
                 AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.4f);
                 IsShooting = true;
             }
-            else if (Clip.IsEmpty) // 自动装填
+            else if (Clip.IsEmpty)
             {
-                Reload();
+                TryAutoReload();
             }
         }
 

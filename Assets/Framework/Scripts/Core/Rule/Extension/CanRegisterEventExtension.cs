@@ -21,10 +21,11 @@ namespace Framework.Core
         /// <typeparam name="TEvent">事件类型</typeparam>
         /// <param name="self">ICanRegisterEvent 实例</param>
         /// <param name="onEvent">事件触发时的回调函数</param>
+        /// <param name="priority">事件优先级</param>
         /// <returns>IUnRegister 实例，用于取消注册事件</returns>
-        public static IUnRegister RegisterEvent<TEvent>(this ICanRegisterEvent self, Action<TEvent> onEvent)
+        public static IUnRegister RegisterEvent<TEvent>(this ICanRegisterEvent self, Action<TEvent> onEvent, int priority = 0)
         {
-            return self.Architecture.RegisterEvent<TEvent>(onEvent); // 调用 Architecture 类的 RegisterEvent 方法
+            return self.Architecture.RegisterEvent<TEvent>(onEvent, priority); // 调用 Architecture 类的 RegisterEvent 方法
         }
 
         /// <summary>

@@ -80,6 +80,11 @@ namespace Framework.Toolkits.AudioKit
         [ShowInInspector]
         public AudioClip AudioClip { get; private set; }
 
+        public bool IsPlaying
+        {
+            get => AudioSource != null && AudioSource.isPlaying;
+        }
+
         public float PlayedCount { get; private set; } // 已播放次数
 
     #endregion

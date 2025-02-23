@@ -39,6 +39,9 @@ namespace Framework.Toolkits.TimerKit
 
         [ShowInInspector]
         public SingletonObjectPool<Timer> TimerPool { get => SingletonObjectPool<Timer>.Instance; }
+        
+        [ShowInInspector]
+        public Dictionary<string, float> TimeDict { get; } = new Dictionary<string, float>();
 
     #region 公共方法
 

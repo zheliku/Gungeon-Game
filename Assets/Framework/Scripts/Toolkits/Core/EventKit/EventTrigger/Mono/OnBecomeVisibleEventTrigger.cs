@@ -17,17 +17,17 @@
 
     public static class OnBecameVisibleEventTriggerExtension
     {
-        public static IUnRegister OnBecameVisibleEvent<T>(this T self, Action onBecameVisible)
+        public static IUnRegister OnBecameVisibleEvent<T>(this T self, Action onBecameVisible, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnBecomeVisibleEventTrigger>().OnBecameVisibleEvent
-                       .Register(onBecameVisible);
+                       .Register(onBecameVisible, priority);
         }
 
-        public static IUnRegister OnBecameVisibleEvent(this GameObject self, Action onBecameVisible)
+        public static IUnRegister OnBecameVisibleEvent(this GameObject self, Action onBecameVisible, int priority = 0)
         {
             return self.GetOrAddComponent<OnBecomeVisibleEventTrigger>().OnBecameVisibleEvent
-                       .Register(onBecameVisible);
+                       .Register(onBecameVisible, priority);
         }
     }
 }

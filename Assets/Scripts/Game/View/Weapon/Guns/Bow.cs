@@ -32,13 +32,9 @@ namespace Game
                 _ShootInterval.Reset();
                 IsShooting = true;
             }
-            else // 自动装填
+            else if (Clip.IsEmpty)
             {
-                Reload(() =>
-                {
-                    _ShootInterval.Reset();
-                    IsShooting = true;
-                });
+                TryAutoReload();
             }
         }
 

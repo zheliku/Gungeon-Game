@@ -27,15 +27,15 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnDeselectEventTriggerExtension
     {
-        public static IUnRegister OnDeselectEvent<T>(this T self, Action<BaseEventData> onDeselect)
+        public static IUnRegister OnDeselectEvent<T>(this T self, Action<BaseEventData> onDeselect, int priority = 0)
             where T : Component
         {
-            return self.GetOrAddComponent<OnDeselectEventTrigger>().OnDeselectEvent.Register(onDeselect);
+            return self.GetOrAddComponent<OnDeselectEventTrigger>().OnDeselectEvent.Register(onDeselect, priority);
         }
 
-        public static IUnRegister OnDeselectEvent(this GameObject self, Action<BaseEventData> onDeselect)
+        public static IUnRegister OnDeselectEvent(this GameObject self, Action<BaseEventData> onDeselect, int priority = 0)
         {
-            return self.GetOrAddComponent<OnDeselectEventTrigger>().OnDeselectEvent.Register(onDeselect);
+            return self.GetOrAddComponent<OnDeselectEventTrigger>().OnDeselectEvent.Register(onDeselect, priority);
         }
     }
 }

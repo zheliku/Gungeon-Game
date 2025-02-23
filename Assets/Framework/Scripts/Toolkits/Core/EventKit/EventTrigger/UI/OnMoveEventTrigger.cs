@@ -26,15 +26,15 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnMoveEventTriggerExtension
     {
-        public static IUnRegister OnMoveEvent<T>(this T self, Action<AxisEventData> onMove)
+        public static IUnRegister OnMoveEvent<T>(this T self, Action<AxisEventData> onMove, int priority = 0)
             where T : Component
         {
-            return self.GetOrAddComponent<OnMoveEventTrigger>().OnMoveEvent.Register(onMove);
+            return self.GetOrAddComponent<OnMoveEventTrigger>().OnMoveEvent.Register(onMove, priority);
         }
 
-        public static IUnRegister OnMoveEvent(this GameObject self, Action<AxisEventData> onMove)
+        public static IUnRegister OnMoveEvent(this GameObject self, Action<AxisEventData> onMove, int priority = 0)
         {
-            return self.GetOrAddComponent<OnMoveEventTrigger>().OnMoveEvent.Register(onMove);
+            return self.GetOrAddComponent<OnMoveEventTrigger>().OnMoveEvent.Register(onMove, priority);
         }
     }
 }

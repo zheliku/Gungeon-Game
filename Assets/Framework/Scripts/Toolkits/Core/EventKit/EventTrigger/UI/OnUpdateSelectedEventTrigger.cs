@@ -27,15 +27,15 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnUpdateSelectedEventTriggerExtension
     {
-        public static IUnRegister OnUpdateSelectedEvent<T>(this T self, Action<BaseEventData> onUpdateSelected)
+        public static IUnRegister OnUpdateSelectedEvent<T>(this T self, Action<BaseEventData> onUpdateSelected, int priority = 0)
             where T : Component
         {
-            return self.GetOrAddComponent<OnUpdateSelectedEventTrigger>().OnUpdateSelectedEvent.Register(onUpdateSelected);
+            return self.GetOrAddComponent<OnUpdateSelectedEventTrigger>().OnUpdateSelectedEvent.Register(onUpdateSelected, priority);
         }
 
-        public static IUnRegister OnUpdateSelectedEvent(this GameObject self, Action<BaseEventData> onUpdateSelected)
+        public static IUnRegister OnUpdateSelectedEvent(this GameObject self, Action<BaseEventData> onUpdateSelected, int priority = 0)
         {
-            return self.GetOrAddComponent<OnUpdateSelectedEventTrigger>().OnUpdateSelectedEvent.Register(onUpdateSelected);
+            return self.GetOrAddComponent<OnUpdateSelectedEventTrigger>().OnUpdateSelectedEvent.Register(onUpdateSelected, priority);
         }
     }
 }

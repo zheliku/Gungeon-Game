@@ -23,18 +23,18 @@ namespace Framework.Toolkits.EventKit
 
         protected EnumEventSystem() { }
 
-        public IUnRegister Register<TEnum>(TEnum key, Action<TEnum, object[]> onEvent) where TEnum : Enum
+        public IUnRegister Register<TEnum>(TEnum key, Action<TEnum, object[]> onEvent, int priority = 0) where TEnum : Enum
         {
             if (_events.TryGetValue(key, out var e))
             {
                 var easyEvent = e.As<EasyEvent<TEnum, object[]>>();
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
             else
             {
                 var easyEvent = new EasyEvent<TEnum, object[]>();
                 _events.Add(key, easyEvent);
-                return easyEvent.Register(onEvent);
+                return easyEvent.Register(onEvent, priority);
             }
         }
 

@@ -43,30 +43,30 @@ namespace Framework.Toolkits.EventKit
 
     public static class OnApplicationPauseEventTriggerExtension
     {
-        public static IUnRegister OnApplicationPauseEvent<T>(this T self, Action onApplicationPause)
+        public static IUnRegister OnApplicationPauseEvent<T>(this T self, Action onApplicationPause, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnApplicationPauseEventTrigger>().OnApplicationPauseEvent
-               .Register(onApplicationPause);
+               .Register(onApplicationPause, priority);
         }
 
-        public static IUnRegister OnApplicationPauseEvent(this GameObject self, Action onApplicationPause)
+        public static IUnRegister OnApplicationPauseEvent(this GameObject self, Action onApplicationPause, int priority = 0)
         {
             return self.GetOrAddComponent<OnApplicationPauseEventTrigger>().OnApplicationPauseEvent
-               .Register(onApplicationPause);
+               .Register(onApplicationPause, priority);
         }
 
-        public static IUnRegister OnApplicationUnPauseEvent<T>(this T self, Action onApplicationUnPause)
+        public static IUnRegister OnApplicationUnPauseEvent<T>(this T self, Action onApplicationUnPause, int priority = 0)
             where T : Component
         {
             return self.GetOrAddComponent<OnApplicationPauseEventTrigger>().OnApplicationUnPauseEvent
-               .Register(onApplicationUnPause);
+               .Register(onApplicationUnPause, priority);
         }
 
-        public static IUnRegister OnApplicationUnPauseEvent(this GameObject self, Action onApplicationUnPause)
+        public static IUnRegister OnApplicationUnPauseEvent(this GameObject self, Action onApplicationUnPause, int priority = 0)
         {
             return self.GetOrAddComponent<OnApplicationPauseEventTrigger>().OnApplicationUnPauseEvent
-               .Register(onApplicationUnPause);
+               .Register(onApplicationUnPause, priority);
         }
     }
 }
