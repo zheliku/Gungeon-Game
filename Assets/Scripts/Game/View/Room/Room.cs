@@ -10,6 +10,7 @@ namespace Game
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
@@ -18,7 +19,8 @@ namespace Game
     {
         Init,
         Normal,
-        Final
+        Final,
+        Chest
     }
 
     public enum RoomState
@@ -56,7 +58,7 @@ namespace Game
                 _enemiesInRoom.Remove(e.Enemy);
 
                 // 检测房间内敌人数量是否为 0
-                if (_enemiesInRoom.Count == 0)
+                if (_enemiesInRoom.Count == 0 && State == RoomState.PlayerIn)
                 {
                     if (_enemyWaves.Count > 0) // 还有下一波敌人
                     {
@@ -105,11 +107,18 @@ namespace Game
         {
             _enemyWaves.RemoveAt(0);
 
-            foreach (var generatePos in _enemyGeneratePoses)
+            var enemyCount = (3, 5 + 1).RandomSelect();
+
+            var posGen = _enemyGeneratePoses
+               .OrderByDescending(p => Player.Instance.Distance(p))
+               .Take(enemyCount)
+               .ToList();
+
+            for (int i = 0; i < posGen.Count; i++)
             {
                 var enemy = LevelController.Instance.Enemy.Instantiate(keepName: true)
                    .EnableGameObject()
-                   .SetPosition(generatePos); // +0.5f to the center grid
+                   .SetPosition(posGen[i]);
 
                 _enemiesInRoom.Add(enemy);
             }

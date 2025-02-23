@@ -14,6 +14,7 @@ namespace Game
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
+    using Framework.Toolkits.TimerKit;
     using UnityEngine;
     using Random = UnityEngine.Random;
 
@@ -94,7 +95,7 @@ namespace Game
                     CurrentSeconds = 0;
                 }
 
-                if (Time.frameCount % 20 == 0 && player)
+                if (TimerKit.HasPassedInterval(this, 0.2f) && player)
                 {
                     Fire();
                 }

@@ -86,29 +86,45 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Random.Range(vec2.x, vec2.y);
         }
-
+        
         /// <summary>
-        /// 从区间 [0, x] 随机选择一个数
+        /// 从区间 [range.a, range.b) 随机选择一个数
         /// </summary>
-        public static float RandomTo0(this float x)
+        public static int RandomSelect(this (int a, int b) range)
         {
-            return Random.Range(0, x);
-        }
-
-        /// <summary>
-        /// 从区间 [x, y] 随机选择一个数
-        /// </summary>
-        public static float RandomToY(this float x, float y)
-        {
-            return Random.Range(x, y);
+            return Random.Range(range.a, range.b);
         }
         
         /// <summary>
-        /// 从区间 [-x, x] 随机选择一个数
+        /// 从区间 [range.a, range.b] 随机选择一个数
         /// </summary>
-        public static float RandomToNeg(this float x)
+        public static float RandomSelect(this (float a, float b) range)
         {
-            return Random.Range(-x, x);
+            return Random.Range(range.a, range.b);
+        }
+
+        /// <summary>
+        /// 从区间 [0, a] 随机选择一个数
+        /// </summary>
+        public static float RandomTo0(this float a)
+        {
+            return Random.Range(0, a);
+        }
+
+        /// <summary>
+        /// 从区间 [a, b] 随机选择一个数
+        /// </summary>
+        public static float RandomToY(this float a, float b)
+        {
+            return Random.Range(a, b);
+        }
+        
+        /// <summary>
+        /// 从区间 [-a, a] 随机选择一个数
+        /// </summary>
+        public static float RandomToNeg(this float a)
+        {
+            return Random.Range(-a, a);
         }
 
         /// <summary>

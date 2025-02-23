@@ -116,10 +116,37 @@ namespace Game
                 "1111111111111111111",
             }),
         };
+        
+        /// <summary>
+        /// 1：地块
+        /// c：宝箱
+        /// </summary>
+        public RoomConfig ChestRoom = new RoomConfig(RoomType.Chest).Set(new List<string>()
+        {
+            "1111111111111111111",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "d                 d",
+            "d        c        d",
+            "d                 d",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1                 1",
+            "1111111111111111111",
+        });
 
         /// <summary>
         /// 1：地块
-        /// e：敌人
+        /// #：终点
         /// </summary>
         public RoomConfig FinalRoom = new RoomConfig(RoomType.Final).Set(new List<string>()
         {

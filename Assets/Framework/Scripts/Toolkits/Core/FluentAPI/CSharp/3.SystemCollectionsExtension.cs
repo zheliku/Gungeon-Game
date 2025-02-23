@@ -34,7 +34,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return collection == null || collection.Length == 0;
         }
-        
+
         /// <summary>
         /// 判断数组是否不为空
         /// </summary>
@@ -42,7 +42,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return !IsNullOrEmpty(collection);
         }
-        
+
         /// <summary>
         /// 判断 IList 是否为空
         /// </summary>
@@ -60,7 +60,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return collection == null || collection.Count == 0;
         }
-        
+
         /// <summary>
         /// 判断 IList 是否不为空
         /// </summary>
@@ -68,7 +68,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return !IsNullOrEmpty(collection);
         }
-        
+
         /// <summary>
         /// 判断 IEnumerable 是否为空
         /// </summary>
@@ -76,7 +76,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return collection == null || !collection.Any();
         }
-        
+
         /// <summary>
         /// 判断 IEnumerable 是否不为空
         /// </summary>
@@ -240,6 +240,55 @@ namespace Framework.Toolkits.FluentAPI
             }
 
             enumerator.Dispose();
+        }
+
+        /// <summary>
+        /// 生成从 (from.x, from.y) 到 (to.x, to.y) 的坐标（[from, to]）
+        /// </summary>
+        /// <param name="from">起始坐标</param>
+        /// <param name="to">终止坐标</param>
+        /// <returns>每个坐标值，依次 +1</returns>
+        public static IEnumerable<(int i, int j)> StepTo(this (int x, int y) from, (int x, int y) to)
+        {
+            for (int i = from.x; i <= to.x; i++)
+            {
+                for (int j = from.y; j <= to.y; j++)
+                {
+                    yield return (i, j);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 生成从 (from.x, from.y) 到 (toX, toY) 的坐标（[from, to]）
+        /// </summary>
+        /// <param name="from">起始坐标</param>
+        /// <param name="toX">终止 X 坐标</param>
+        /// <param name="toY">终止 Y 坐标</param>
+        /// <returns>每个坐标值，依次 +1</returns>
+        public static IEnumerable<(int i, int j)> StepTo(this (int x, int y) from, int toX, int toY)
+        {
+            for (int i = from.x; i <= toX; i++)
+            {
+                for (int j = from.y; j <= toY; j++)
+                {
+                    yield return (i, j);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 生成从 from 到 to 的步长为 1 的序列（[from, to]）
+        /// </summary>
+        /// <param name="from">起始数</param>
+        /// <param name="to">中止数</param>
+        /// <returns>序列</returns>
+        public static IEnumerable<int> StepTo(this int from, int to)
+        {
+            for (int i = from; i <= to; i++)
+            {
+                yield return i;
+            }
         }
     }
 }

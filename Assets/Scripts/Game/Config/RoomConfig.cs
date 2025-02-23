@@ -40,4 +40,23 @@ namespace Game
             return this;
         }
     }
+
+    public class RoomNode
+    {
+        public RoomType RoomType { get; } = RoomType.Init;
+        
+        public List<RoomNode> Children { get; } = new List<RoomNode>();
+
+        public RoomNode(RoomType type)
+        {
+            RoomType = type;
+        }
+
+        public RoomNode Next(RoomType type)
+        {
+            var child = new RoomNode(type);
+            Children.Add(child);
+            return child;
+        }
+    }
 }
