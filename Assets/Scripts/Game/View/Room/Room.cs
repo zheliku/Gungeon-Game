@@ -48,6 +48,8 @@ namespace Game
         };
 
         private EnemyWaveConfig _currentWave;
+        
+        public RoomGenerateNode GenerateNode { get; set; }
 
         public RoomState State { get; private set; } = RoomState.Closed;
 

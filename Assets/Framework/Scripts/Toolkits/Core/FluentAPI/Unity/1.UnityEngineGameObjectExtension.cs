@@ -77,7 +77,7 @@ namespace Framework.Toolkits.FluentAPI
         
         public static bool IsEnabled(this GameObject selfObj)
         {
-            return selfObj.activeSelf;
+            return selfObj.activeInHierarchy;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Framework.Toolkits.FluentAPI
         
         public static bool IsDisabled(this GameObject selfObj)
         {
-            return !selfObj.activeSelf;
+            return !selfObj.activeInHierarchy;
         }
 
         /// <summary>

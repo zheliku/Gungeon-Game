@@ -8,13 +8,16 @@
 
 namespace Game
 {
+    using System;
+    using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
+    using Framework.Toolkits.GridKit;
     using Framework.Toolkits.SingletonKit;
     using UnityEngine;
     using UnityEngine.Tilemaps;
 
-    public class LevelController : MonoSingleton<LevelController>
+    public partial class LevelController : MonoSingleton<LevelController>
     {
         public TileBase WallTile;
         public TileBase FloorTile;
@@ -70,60 +73,103 @@ namespace Game
                .Next(RoomType.Normal)
                .Next(RoomType.Final);
 
-            var currentRoomStartPosX = 0;
+            var layoutGrid = new DynamicGrid<RoomGenerateNode>();
 
-            GenerateRoomByNode(layout, ref currentRoomStartPosX);
+            GenerateLayoutBFS(layout, layoutGrid);
 
-            var grid       = _levelModel.InitRoom.Grid;
-            var roomWidth  = grid.Column;
-            var roomHeight = grid.Row;
-
-            for (int count = 1; count <= 7; count++)
+            foreach (var pair in layoutGrid)
             {
-                var posX = count * (roomWidth + 3) - 2;
-                var posY = roomHeight / 2;
+                var index = pair.Key;
+                
+                GenerateRoomByNode(pair.Value.RoomNode, index);
 
-                foreach (var (i, j) in (-1, -1).StepTo((1, 1)))
-                {
-                    FloorTilemap.SetTile(new Vector3Int(posX + i, posY + j, 0), FloorTile);
-                }
-
-                foreach (var i in (-1).StepTo(1))
-                {
-                    WallTilemap.SetTile(new Vector3Int(posX + i, posY + 2, 0), WallTile);
-                    WallTilemap.SetTile(new Vector3Int(posX + i, posY - 2, 0), WallTile);
-                }
+                //
+                // var grid       = _levelModel.InitRoom.Grid;
+                // var roomWidth  = grid.Column;
+                // var roomHeight = grid.Row;
+                //
+                // for (int count = 1; count <= 7; count++)
+                // {
+                //     var posX = count * (roomWidth + 3) - 2;
+                //     var posY = roomHeight / 2;
+                //
+                //     foreach (var (i, j) in (-1, -1).StepTo((1, 1)))
+                //     {
+                //         FloorTilemap.SetTile(new Vector3Int(posX + i, posY + j, 0), FloorTile);
+                //     }
+                //
+                //     foreach (var i in (-1).StepTo(1))
+                //     {
+                //         WallTilemap.SetTile(new Vector3Int(posX + i, posY + 2, 0), WallTile);
+                //         WallTilemap.SetTile(new Vector3Int(posX + i, posY - 2, 0), WallTile);
+                //     }
+                // }
             }
         }
 
-        private void GenerateRoomByNode(RoomNode node, ref int currentRoomStartPosX)
+        private void GenerateLayoutBFS(RoomNode roomNode, DynamicGrid<RoomGenerateNode> layoutGrid)
         {
-            if (node.RoomType == RoomType.Init)
+            var queue = new Queue<RoomGenerateNode>();
+            queue.Enqueue(new RoomGenerateNode
             {
-                GenerateRoom(_levelModel.InitRoom, ref currentRoomStartPosX);
-            }
-            else if (node.RoomType == RoomType.Normal)
-            {
-                GenerateRoom(_levelModel.NormalRoom.RandomTakeOne(), ref currentRoomStartPosX);
-            }
-            else if (node.RoomType == RoomType.Final)
-            {
-                GenerateRoom(_levelModel.FinalRoom, ref currentRoomStartPosX);
-            }
-            else if (node.RoomType == RoomType.Chest)
-            {
-                GenerateRoom(_levelModel.ChestRoom, ref currentRoomStartPosX);
-            }
+                RoomNode   = roomNode,
+                Index      = Vector2Int.zero,
+                Directions = { } // 初始房间没有朝向，朝向后续添加
+            });
 
-            currentRoomStartPosX += 3;
-
-            foreach (var child in node.Children)
+            while (queue.Count > 0)
             {
-                GenerateRoomByNode(child, ref currentRoomStartPosX);
+                var generateNode = queue.Dequeue();
+
+                layoutGrid[generateNode.Index] = generateNode;
+
+                var availableDirection = new List<Direction>();
+
+                // 遍历枚举值，看上下左右是否可以生成房间
+                foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+                {
+                    if (layoutGrid[generateNode.Index + dir.ToVector2Int()] == null)
+                    {
+                        availableDirection.Add(dir);
+                    }
+                }
+
+                foreach (var node in generateNode.RoomNode.Children)
+                {
+                    var direction = availableDirection.RandomTakeOne(); // 在这里随机房间的朝向
+
+                    generateNode.Directions.Add(direction); // 添加房间朝向
+
+                    queue.Enqueue(new RoomGenerateNode()
+                    {
+                        RoomNode   = node,
+                        Index      = generateNode.Index + direction.ToVector2Int(),
+                        Directions = { direction.Opposite() }, // 对面的房间需要相反朝向
+                    });
+                }
             }
         }
 
-        private void GenerateRoom(RoomConfig roomConfig, ref int currentRoomStartPosX)
+        private void GenerateRoomByNode(RoomNode node, Vector2Int index)
+        {
+            var roomConfig = node.RoomType switch
+            {
+                RoomType.Init   => _levelModel.InitRoom,
+                RoomType.Normal => _levelModel.NormalRoom.RandomTakeOne(),
+                RoomType.Final  => _levelModel.FinalRoom,
+                RoomType.Chest  => _levelModel.ChestRoom,
+                _               => throw new ArgumentOutOfRangeException()
+            };
+
+            var pos = new Vector2Int(
+                index.x * (roomConfig.Grid.Row + 2),
+                index.y * (roomConfig.Grid.Column + 2)
+            );
+
+            GenerateRoom(roomConfig, pos);
+        }
+
+        private void GenerateRoom(RoomConfig roomConfig, Vector2Int pos)
         {
             var grid       = roomConfig.Grid;
             var roomWidth  = grid.Column;
@@ -131,7 +177,7 @@ namespace Game
 
             var room = RoomTemplate.Instantiate(this)
                .SetConfig(roomConfig)
-               .SetPosition(x: currentRoomStartPosX + roomWidth / 2f, y: roomHeight / 2f)
+               .SetPosition(x: pos.x + roomWidth / 2f, y: pos.y + roomHeight / 2f)
                .EnableGameObject();
 
             var roomTrigger = room.GetComponent<BoxCollider2D>();
@@ -143,8 +189,8 @@ namespace Game
                 {
                     var code = grid[i, j];
 
-                    var x = j + currentRoomStartPosX;
-                    var y = roomHeight - i - 1;
+                    var x = pos.x + j;
+                    var y = pos.y + roomHeight - i - 1;
 
                     FloorTilemap.SetTile(new Vector3Int(x, y, 0), FloorTile);
 
@@ -183,8 +229,6 @@ namespace Game
                     }
                 }
             }
-
-            currentRoomStartPosX += roomWidth;
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

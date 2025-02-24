@@ -9,11 +9,13 @@
 namespace Framework.Toolkits.GridKit
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using Sirenix.OdinInspector;
+    using UnityEngine;
 
     [HideReferenceObjectPicker]
-    public partial class DynamicGrid<TValue>
+    public partial class DynamicGrid<TValue> : IEnumerable<KeyValuePair<Vector2Int, TValue>>
     {
         [ShowInInspector]
         [DictionaryDrawerSettings(KeyLabel = "Row, Column", ValueLabel = "Value")]
@@ -40,6 +42,11 @@ namespace Framework.Toolkits.GridKit
             }
         }
 
+        public int Count
+        {
+            get => _grid.Count;
+        }
+
         public TValue this[int row, int column]
         {
             get
@@ -54,10 +61,36 @@ namespace Framework.Toolkits.GridKit
             }
         }
 
+        public TValue this[Vector2Int index]
+        {
+            get
+            {
+                var key = new Index(index.x, index.y);
+                return _grid.GetValueOrDefault(key);
+            }
+            set
+            {
+                var key = new Index(index.x, index.y);
+                _grid[key] = value;
+            }
+        }
+
         public void Clear(Action<TValue> cleanupItem = null)
         {
             _grid.Clear();
         }
+
+        public IEnumerator<KeyValuePair<Vector2Int, TValue>> GetEnumerator()
+        {
+            foreach (var kvp in _grid)
+            {
+                yield return new KeyValuePair<Vector2Int, TValue>(
+                    new Vector2Int(kvp.Key.Row, kvp.Key.Column), kvp.Value
+                );
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
     }
 
     public partial class DynamicGrid<TValue>

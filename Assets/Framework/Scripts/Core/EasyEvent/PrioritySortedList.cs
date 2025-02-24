@@ -18,7 +18,7 @@ namespace Framework.Core
     /// 支持按优先级排序的列表（最小优先级在前），相同优先级后插入的排在后面
     /// </summary>
     [HideReferenceObjectPicker]
-    public class PrioritySortedList<TElement, TPriority> : IEnumerable<TElement>, IEnumerable
+    public class PrioritySortedList<TElement, TPriority> : IEnumerable<TElement>
     {
         [ShowInInspector]
         private readonly List<Entry> _elements = new List<Entry>();

@@ -21,7 +21,7 @@ namespace Game
         /// </summary>
         public RoomConfig InitRoom = new RoomConfig(RoomType.Init).Set(new List<string>()
         {
-            "1111111111111111111",
+            "111111111d111111111",
             "1                 1",
             "1 @               1",
             "1                 1",
@@ -29,9 +29,8 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "1                 d",
-            "1                 d",
-            "1                 d",
+            "1                 1",
+            "d                 d",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -39,7 +38,8 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "1111111111111111111",
+            "1                 1",
+            "111111111d111111111",
         });
 
 
@@ -51,7 +51,7 @@ namespace Game
         {
             new RoomConfig(RoomType.Normal).Set(new List<string>()
             {
-                "1111111111111111111",
+                "111111111d111111111",
                 "1                 1",
                 "1 e             e 1",
                 "1                 1",
@@ -59,9 +59,9 @@ namespace Game
                 "1                 1",
                 "1                 1",
                 "1                 1",
-                "d        e        d",
+                "1        e        1",
                 "d      e 1 e      d",
-                "d        e        d",
+                "1        e        1",
                 "1                 1",
                 "1                 1",
                 "1                 1",
@@ -69,11 +69,11 @@ namespace Game
                 "1                 1",
                 "1 e             e 1",
                 "1                 1",
-                "1111111111111111111",
+                "111111111d111111111",
             }),
             new RoomConfig(RoomType.Normal).Set(new List<string>()
             {
-                "1111111111111111111",
+                "111111111d111111111",
                 "1                 1",
                 "1                 1",
                 "1                 1",
@@ -81,9 +81,9 @@ namespace Game
                 "1                 1",
                 "1    e       e    1",
                 "1      e 1 e      1",
-                "d      1 e 1      d",
+                "1      1 e 1      1",
                 "d      e   e      d",
-                "d      1 e 1      d",
+                "1      1 e 1      1",
                 "1      e 1 e      1",
                 "1    e       e    1",
                 "1                 1",
@@ -91,11 +91,11 @@ namespace Game
                 "1                 1",
                 "1                 1",
                 "1                 1",
-                "1111111111111111111",
+                "111111111d111111111",
             }),
             new RoomConfig(RoomType.Normal).Set(new List<string>()
             {
-                "1111111111111111111",
+                "111111111d111111111",
                 "1                 1",
                 "1  11         11  1",
                 "1  1e         e1  1",
@@ -103,9 +103,9 @@ namespace Game
                 "1                 1",
                 "1                 1",
                 "1       e e       1",
-                "d        e        d",
+                "1        e        1",
                 "d       e1e       d",
-                "d        e        d",
+                "1        e        1",
                 "1       e e       1",
                 "1                 1",
                 "1                 1",
@@ -113,7 +113,7 @@ namespace Game
                 "1  1e         e1  1",
                 "1  11         11  1",
                 "1                 1",
-                "1111111111111111111",
+                "111111111d111111111",
             }),
         };
         
@@ -123,7 +123,7 @@ namespace Game
         /// </summary>
         public RoomConfig ChestRoom = new RoomConfig(RoomType.Chest).Set(new List<string>()
         {
-            "1111111111111111111",
+            "111111111d111111111",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -131,9 +131,8 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "d                 d",
+            "1                 1",
             "d        c        d",
-            "d                 d",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -141,7 +140,8 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "1111111111111111111",
+            "1                 1",
+            "111111111d111111111",
         });
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Game
         /// </summary>
         public RoomConfig FinalRoom = new RoomConfig(RoomType.Final).Set(new List<string>()
         {
-            "1111111111111111111",
+            "111111111d111111111",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -158,9 +158,8 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "d                 1",
-            "d            #    1",
-            "d                 1",
+            "1                 1",
+            "d            #    d",
             "1                 1",
             "1                 1",
             "1                 1",
@@ -168,7 +167,8 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "1111111111111111111",
+            "1                 1",
+            "111111111d111111111",
         });
 
         protected override void OnInit()

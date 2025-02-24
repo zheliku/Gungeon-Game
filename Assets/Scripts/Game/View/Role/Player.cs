@@ -101,7 +101,7 @@ namespace Game
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
             UIKit.ShowPanelAsync<GamePlay>();
-
+            
             for (int i = 0; i < WeaponTransform.childCount; i++)
             {
                 var gun = WeaponTransform.GetChild(i).GetComponent<Gun>();
