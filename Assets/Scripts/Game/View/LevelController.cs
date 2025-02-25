@@ -10,14 +10,14 @@ namespace Game
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
-    using Framework.Toolkits.GridKit;
     using Framework.Toolkits.SingletonKit;
     using UnityEngine;
     using UnityEngine.Tilemaps;
 
-    public partial class LevelController : MonoSingleton<LevelController>
+    public class LevelController : MonoSingleton<LevelController>
     {
         public TileBase WallTile;
         public TileBase FloorTile;
@@ -28,7 +28,7 @@ namespace Game
         [HierarchyPath("Grid/Floor")]
         public Tilemap FloorTilemap;
 
-        [HierarchyPath("/Template/Enemy")]
+        [HierarchyPath("Template/Enemy")]
         public Enemy Enemy;
 
         [HierarchyPath("Template/Final")]
@@ -60,99 +60,58 @@ namespace Game
             DoorTemplate.DisableGameObject();
             Hp1Template.DisableGameObject();
             ChestTemplate.DisableGameObject();
+
+            // DontDestroyOnLoad(this); // 防止被销毁
         }
 
         private void Start()
         {
-            var layout = new RoomNode(RoomType.Init);
-            layout.Next(RoomType.Normal)
-               .Next(RoomType.Normal)
-               .Next(RoomType.Chest)
-               .Next(RoomType.Normal)
-               .Next(RoomType.Normal)
-               .Next(RoomType.Normal)
-               .Next(RoomType.Final);
+            var initRoomNode = new RoomNode(RoomType.Init);
+            initRoomNode.Connect(RoomType.Normal)
+               .Connect(RoomType.Normal)
+               .Connect(RoomType.Chest)
+               .Connect(RoomType.Normal)
+               .Connect(RoomType.Normal)
+               .Connect(RoomType.Normal)
+               .Connect(RoomType.Final);
 
-            var layoutGrid = new DynamicGrid<RoomGenerateNode>();
-
-            GenerateLayoutBFS(layout, layoutGrid);
-
-            foreach (var pair in layoutGrid)
-            {
-                var index = pair.Key;
-                
-                GenerateRoomByNode(pair.Value.RoomNode, index);
-
-                //
-                // var grid       = _levelModel.InitRoom.Grid;
-                // var roomWidth  = grid.Column;
-                // var roomHeight = grid.Row;
-                //
-                // for (int count = 1; count <= 7; count++)
-                // {
-                //     var posX = count * (roomWidth + 3) - 2;
-                //     var posY = roomHeight / 2;
-                //
-                //     foreach (var (i, j) in (-1, -1).StepTo((1, 1)))
-                //     {
-                //         FloorTilemap.SetTile(new Vector3Int(posX + i, posY + j, 0), FloorTile);
-                //     }
-                //
-                //     foreach (var i in (-1).StepTo(1))
-                //     {
-                //         WallTilemap.SetTile(new Vector3Int(posX + i, posY + 2, 0), WallTile);
-                //         WallTilemap.SetTile(new Vector3Int(posX + i, posY - 2, 0), WallTile);
-                //     }
-                // }
-            }
+            GenerateRoomMapBFS(initRoomNode);
         }
 
-        private void GenerateLayoutBFS(RoomNode roomNode, DynamicGrid<RoomGenerateNode> layoutGrid)
+        private void GenerateRoomMapBFS(RoomNode roomNode)
         {
-            var queue = new Queue<RoomGenerateNode>();
-            queue.Enqueue(new RoomGenerateNode
-            {
-                RoomNode   = roomNode,
-                Index      = Vector2Int.zero,
-                Directions = { } // 初始房间没有朝向，朝向后续添加
-            });
+            var queue = new Queue<RoomNode>();
+            queue.Enqueue(roomNode);
+
+            var visited = new HashSet<RoomNode>(); // 记录已访问的节点
 
             while (queue.Count > 0)
             {
-                var generateNode = queue.Dequeue();
+                var node = queue.Dequeue();
+                visited.Add(node); // 标记为已访问
 
-                layoutGrid[generateNode.Index] = generateNode;
+                GenerateRoomByNode(node);
 
-                var availableDirection = new List<Direction>();
-
-                // 遍历枚举值，看上下左右是否可以生成房间
-                foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+                if (node.ConnectNodes.Count == 0)
                 {
-                    if (layoutGrid[generateNode.Index + dir.ToVector2Int()] == null)
-                    {
-                        availableDirection.Add(dir);
-                    }
+                    continue;
                 }
 
-                foreach (var node in generateNode.RoomNode.Children)
+                foreach (var connectNode in node.ConnectNodes.Values.ToList())
                 {
-                    var direction = availableDirection.RandomTakeOne(); // 在这里随机房间的朝向
-
-                    generateNode.Directions.Add(direction); // 添加房间朝向
-
-                    queue.Enqueue(new RoomGenerateNode()
+                    if (visited.Contains(connectNode)) // 检查是否已访问
                     {
-                        RoomNode   = node,
-                        Index      = generateNode.Index + direction.ToVector2Int(),
-                        Directions = { direction.Opposite() }, // 对面的房间需要相反朝向
-                    });
+                        continue;
+                    }
+
+                    queue.Enqueue(connectNode);
                 }
             }
         }
 
-        private void GenerateRoomByNode(RoomNode node, Vector2Int index)
+        private void GenerateRoomByNode(RoomNode node)
         {
-            var roomConfig = node.RoomType switch
+            var roomGrid = node.RoomType switch
             {
                 RoomType.Init   => _levelModel.InitRoom,
                 RoomType.Normal => _levelModel.NormalRoom.RandomTakeOne(),
@@ -161,36 +120,31 @@ namespace Game
                 _               => throw new ArgumentOutOfRangeException()
             };
 
+            var roomWidth  = roomGrid.Column;
+            var roomHeight = roomGrid.Row;
+
             var pos = new Vector2Int(
-                index.x * (roomConfig.Grid.Row + 2),
-                index.y * (roomConfig.Grid.Column + 2)
+                node.Index.x * (roomWidth + 2),
+                node.Index.y * (roomHeight + 2) // 每个房间目前间距为 2
             );
 
-            GenerateRoom(roomConfig, pos);
-        }
-
-        private void GenerateRoom(RoomConfig roomConfig, Vector2Int pos)
-        {
-            var grid       = roomConfig.Grid;
-            var roomWidth  = grid.Column;
-            var roomHeight = grid.Row;
-
             var room = RoomTemplate.Instantiate(this)
-               .SetConfig(roomConfig)
-               .SetPosition(x: pos.x + roomWidth / 2f, y: pos.y + roomHeight / 2f)
+               .SetGrid(roomGrid)
+               .SetPosition(x: pos.x + 0.5f, y: pos.y + 0.5f) // +0.5f to the center grid
                .EnableGameObject();
 
             var roomTrigger = room.GetComponent<BoxCollider2D>();
             roomTrigger.size = new Vector2(roomWidth - 4, roomHeight - 4); // 减去 4 是为了防止玩家卡在墙壁上
 
-            for (int i = 0; i < roomHeight; i++)
+            // 绘制墙体与背景
+            for (int i = -roomHeight / 2; i <= roomHeight / 2; i++)
             {
-                for (int j = 0; j < roomWidth; j++)
+                for (int j = -roomWidth / 2; j <= roomWidth / 2; j++)
                 {
-                    var code = grid[i, j];
+                    var code = roomGrid[i + roomHeight / 2, j + roomWidth / 2];
 
                     var x = pos.x + j;
-                    var y = pos.y + roomHeight - i - 1;
+                    var y = pos.y + i;
 
                     FloorTilemap.SetTile(new Vector3Int(x, y, 0), FloorTile);
 
@@ -215,11 +169,11 @@ namespace Game
                     }
                     else if (code == 'd')
                     {
-                        var door = DoorTemplate.Instantiate(parent: room)
-                           .DisableGameObject()
-                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
-
-                        room.AddDoor(door);
+                        // var door = DoorTemplate.Instantiate(parent: room)
+                        //    .EnableGameObject()
+                        //    .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+                        //
+                        // room.AddDoor(door);
                     }
                     else if (code == 'c')
                     {
@@ -228,6 +182,72 @@ namespace Game
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                     }
                 }
+            }
+
+            var openDirections  = node.ConnectNodes.Keys.ToList();
+            var closeDirections = Enum.GetValues(typeof(Direction)).Cast<Direction>().Except(openDirections).ToList();
+
+            // 开启的方向绘制连接道路
+            foreach (var direction in openDirections)
+            {
+                var connectNode = node.ConnectNodes[direction]; // 连接的节点
+                var connectNodePos = new Vector2Int(
+                    connectNode.Index.x * (roomWidth + 2),
+                    connectNode.Index.y * (roomHeight + 2) // 每个房间目前间距为 2
+                );
+                var dirVector    = direction.ToVector2Int();                  // 门朝向的向量
+                var normalVector = new Vector2Int(dirVector.y, -dirVector.x); // 门朝向的垂直向量
+
+                // 开始位置与结束位置的门位置
+                var startPos = new Vector2Int(
+                    direction.ToVector2Int().x * roomWidth / 2 + pos.x,
+                    direction.ToVector2Int().y * roomHeight / 2 + pos.y
+                );
+                var endPos = new Vector2Int(
+                    direction.Opposite().ToVector2Int().x * roomWidth / 2 + connectNodePos.x,
+                    direction.Opposite().ToVector2Int().y * roomHeight / 2 + connectNodePos.y
+                );
+
+                var startDoor = DoorTemplate.Instantiate(parent: room)
+                   .EnableGameObject()
+                   .SetPosition(startPos.x + 0.5f, startPos.y + 0.5f, 0) // +0.5f to the center grid
+                   .SetLocalScale(x: 3)
+                   .SetTransformRight(new Vector3(normalVector.x, normalVector.y, 0));
+                room.AddDoor(startDoor);
+
+                // 绘制连接道路
+                for (Vector2Int p = startPos + dirVector; p != endPos; p += dirVector)
+                {
+                    for (int i = -2; i <= 2; i++)
+                    {
+                        // 绘制地板
+                        FloorTilemap.SetTile((Vector3Int) (p + normalVector * i), FloorTile);
+                    }
+
+                    // 绘制两侧墙壁
+                    WallTilemap.SetTile((Vector3Int) (p + normalVector * 2), WallTile);
+                    WallTilemap.SetTile((Vector3Int) (p - normalVector * 2), WallTile);
+                }
+
+                // 取消开始与结束位置门朝向的墙壁
+                WallTilemap.SetTile((Vector3Int) (startPos + normalVector), null);
+                WallTilemap.SetTile((Vector3Int) (startPos - normalVector), null);
+                WallTilemap.SetTile((Vector3Int) (endPos + normalVector), null);
+                WallTilemap.SetTile((Vector3Int) (endPos - normalVector), null);
+
+                // var door = DoorTemplate.Instantiate(parent: room)
+                //    .DisableGameObject()
+                //    .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+                //
+                // room.AddDoor(door);
+            }
+
+            // 关闭的方向绘制墙壁
+            foreach (var direction in closeDirections)
+            {
+                var doorPosX = direction.ToVector2Int().x * roomWidth / 2 + pos.x;
+                var doorPosY = direction.ToVector2Int().y * roomHeight / 2 + pos.y;
+                WallTilemap.SetTile(new Vector3Int(doorPosX, doorPosY, 0), WallTile);
             }
         }
 

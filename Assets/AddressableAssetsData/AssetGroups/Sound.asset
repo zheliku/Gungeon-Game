@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7970a4cb0115d364eacab42226cd1998
+    m_Address: DoorOpen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: beee6b01d906387439d6914f838af48f
     m_Address: Chest
     m_ReadOnly: 0

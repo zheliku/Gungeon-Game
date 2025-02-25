@@ -290,5 +290,13 @@ namespace Framework.Toolkits.FluentAPI
                 yield return i;
             }
         }
+        
+        /// <summary>
+        /// 转换为 List
+        /// </summary>
+        public static List<T> ToList<T>(this Array array)
+        {
+            return array.Cast<T>().ToList();
+        }
     }
 }

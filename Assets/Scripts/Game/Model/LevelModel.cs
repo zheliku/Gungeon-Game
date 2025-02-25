@@ -19,7 +19,7 @@ namespace Game
         /// e：敌人
         /// d: 门
         /// </summary>
-        public RoomConfig InitRoom = new RoomConfig(RoomType.Init).Set(new List<string>()
+        public RoomGrid InitRoom = new RoomGrid(RoomType.Init).Set(new List<string>()
         {
             "111111111d111111111",
             "1                 1",
@@ -47,9 +47,9 @@ namespace Game
         /// 1：地块
         /// e：敌人
         /// </summary>
-        public List<RoomConfig> NormalRoom = new List<RoomConfig>()
+        public List<RoomGrid> NormalRoom = new List<RoomGrid>()
         {
-            new RoomConfig(RoomType.Normal).Set(new List<string>()
+            new RoomGrid(RoomType.Normal).Set(new List<string>()
             {
                 "111111111d111111111",
                 "1                 1",
@@ -71,7 +71,7 @@ namespace Game
                 "1                 1",
                 "111111111d111111111",
             }),
-            new RoomConfig(RoomType.Normal).Set(new List<string>()
+            new RoomGrid(RoomType.Normal).Set(new List<string>()
             {
                 "111111111d111111111",
                 "1                 1",
@@ -93,7 +93,7 @@ namespace Game
                 "1                 1",
                 "111111111d111111111",
             }),
-            new RoomConfig(RoomType.Normal).Set(new List<string>()
+            new RoomGrid(RoomType.Normal).Set(new List<string>()
             {
                 "111111111d111111111",
                 "1                 1",
@@ -121,7 +121,7 @@ namespace Game
         /// 1：地块
         /// c：宝箱
         /// </summary>
-        public RoomConfig ChestRoom = new RoomConfig(RoomType.Chest).Set(new List<string>()
+        public RoomGrid ChestRoom = new RoomGrid(RoomType.Chest).Set(new List<string>()
         {
             "111111111d111111111",
             "1                 1",
@@ -148,7 +148,7 @@ namespace Game
         /// 1：地块
         /// #：终点
         /// </summary>
-        public RoomConfig FinalRoom = new RoomConfig(RoomType.Final).Set(new List<string>()
+        public RoomGrid FinalRoom = new RoomGrid(RoomType.Final).Set(new List<string>()
         {
             "111111111d111111111",
             "1                 1",

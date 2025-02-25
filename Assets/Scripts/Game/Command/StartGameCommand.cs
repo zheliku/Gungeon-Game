@@ -20,8 +20,10 @@ namespace Game
             var playerModel = this.GetModel<PlayerModel>();
             playerModel.Property.Hp.SetValueWithoutEvent(3);
             
-            ResKit.LoadSceneAsync("Game");
-            Time.timeScale = 1;
+            ResKit.LoadSceneAsync("Game", () =>
+            {
+                Time.timeScale = 1;
+            });
         }
     }
 }

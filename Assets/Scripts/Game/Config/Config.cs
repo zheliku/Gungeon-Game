@@ -15,6 +15,7 @@ namespace Game
             public const string EMPTY_BULLET = "EmptyBullet";
             public const string HP1          = "Hp1";
             public const string CHEST        = "Chest";
+            public const string DOOR_OPEN    = "DoorOpen";
         }
     }
 }

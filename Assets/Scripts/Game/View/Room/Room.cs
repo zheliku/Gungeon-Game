@@ -8,11 +8,11 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
+    using Sirenix.OdinInspector;
     using UnityEngine;
 
     public enum RoomType
@@ -36,7 +36,8 @@ namespace Game
 
         private List<Door> _doors = new List<Door>();
 
-        private RoomConfig _config;
+        [ShowInInspector]
+        private RoomGrid _grid;
 
         private List<Enemy> _enemiesInRoom = new List<Enemy>();
 
@@ -49,7 +50,8 @@ namespace Game
 
         private EnemyWaveConfig _currentWave;
         
-        public RoomGenerateNode GenerateNode { get; set; }
+        [ShowInInspector]
+        public RoomNode Node { get; set; }
 
         public RoomState State { get; private set; } = RoomState.Closed;
 
@@ -72,18 +74,18 @@ namespace Game
 
                         foreach (var door in _doors) // 开门
                         {
-                            door.DisableGameObject();
+                            door.State.ChangeState(DoorState.Open);
                         }
                     }
                 }
-            });
+            }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
             {
-                if (_config.RoomType == RoomType.Normal)
+                if (_grid.RoomType == RoomType.Normal)
                 {
                     if (State == RoomState.Closed) // 第一次进，状态变为 PlayerIn
                     {
@@ -93,7 +95,7 @@ namespace Game
 
                         foreach (var door in _doors)
                         {
-                            door.EnableGameObject();
+                            door.State.ChangeState(DoorState.Close);
                         }
                     }
                 }
@@ -132,9 +134,9 @@ namespace Game
             return this;
         }
 
-        public Room SetConfig(RoomConfig config)
+        public Room SetGrid(RoomGrid grid)
         {
-            _config = config;
+            _grid = grid;
             return this;
         }
 

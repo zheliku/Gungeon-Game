@@ -9,12 +9,14 @@
 namespace Framework.Toolkits.GridKit
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using Framework.Core;
     using Sirenix.OdinInspector;
     using UnityEngine;
 
     [HideReferenceObjectPicker]
-    public class EasyGrid<TValue>
+    public class EasyGrid<TValue> : IEnumerable<KeyValuePair<Vector2Int, TValue>>
     {
         [ShowInInspector]
         [TableMatrix(Transpose = true)]
@@ -24,9 +26,9 @@ namespace Framework.Toolkits.GridKit
         {
             _grid = new TValue[row, column];
         }
-        
+
         public int Row { get => _grid.GetLength(0); }
-        
+
         public int Column { get => _grid.GetLength(1); }
 
         public TValue this[int row, int column]
@@ -48,7 +50,7 @@ namespace Framework.Toolkits.GridKit
                     _grid[row, column] = value;
                     return;
                 }
-                
+
                 throw new FrameworkException($"Grid index ({row}, {column}) out of range ({Row}, {Column}");
             }
         }
@@ -63,7 +65,7 @@ namespace Framework.Toolkits.GridKit
                 }
             }
         }
-        
+
         public void Fill(Func<int, int, TValue> onFill)
         {
             for (var i = 0; i < Row; i++)
@@ -81,7 +83,7 @@ namespace Framework.Toolkits.GridKit
 
             var minRow    = Mathf.Min(Row, row);
             var minColumn = Mathf.Min(Column, column);
-            
+
             for (var i = 0; i < minRow; i++)
             {
                 for (var j = 0; j < minColumn; j++)
@@ -104,13 +106,13 @@ namespace Framework.Toolkits.GridKit
                     newGrid[i, j] = onAdd(i, j);
                 }
             }
-            
+
             // 清空之前的 grid
             Fill(default(TValue));
-            
+
             _grid = newGrid;
         }
-        
+
         public void ForEach(Action<int, int, TValue> each)
         {
             for (var i = 0; i < Row; i++)
@@ -145,6 +147,27 @@ namespace Framework.Toolkits.GridKit
             }
 
             _grid = null;
+        }
+
+        // 实现 IEnumerable<TValue> 接口
+        public IEnumerator<KeyValuePair<Vector2Int, TValue>> GetEnumerator()
+        {
+            for (var i = 0; i < Row; i++)
+            {
+                for (var j = 0; j < Column; j++)
+                {
+                    yield return new KeyValuePair<Vector2Int, TValue>(
+                        new Vector2Int(i, j),
+                        _grid[i, j]
+                    );
+                }
+            }
+        }
+
+        // 实现 IEnumerable 接口
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

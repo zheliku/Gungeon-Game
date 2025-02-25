@@ -22,19 +22,28 @@ namespace Framework.Toolkits.SingletonKit
     {
         public static TSingleton CreateSingleton<TSingleton>() where TSingleton : class, ISingleton
         {
-            var type              = typeof(TSingleton);
-            var monoBehaviourType = typeof(MonoBehaviour);
+            var type = typeof(TSingleton);
 
-            if (monoBehaviourType.IsAssignableFrom(type))
+            // 获取全部私有构造函数
+            var constructorInfos = type.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
+
+            // 获取无参构造函数
+            var ctor = Array.Find(constructorInfos, c => c.GetParameters().Length == 0);
+
+            if (ctor == null)
             {
-                return CreateMonoSingleton<TSingleton>();
+                throw new FrameworkException("Non-Public Constructor() not found! in " + type);
             }
-            else
+
+            var instance = ctor.Invoke(null) as TSingleton;
+
+            if (instance == null)
             {
-                var instance = CreateNonPublicConstructorObject<TSingleton>();
-                instance.OnSingletonInit();
-                return instance;
+                throw new FrameworkException("Create Singleton Failed! in " + type);
             }
+
+            instance.OnSingletonInit();
+            return instance;
         }
 
         /// <summary>
@@ -42,7 +51,7 @@ namespace Framework.Toolkits.SingletonKit
         /// </summary>
         /// <typeparam name="TMonoSingleton"></typeparam>
         /// <returns></returns>
-        public static TMonoSingleton CreateMonoSingleton<TMonoSingleton>() where TMonoSingleton : class, ISingleton
+        public static TMonoSingleton CreateMonoSingleton<TMonoSingleton>() where TMonoSingleton : MonoBehaviour, ISingleton
         {
             // 判断 TMonoSingleton 实例存在的条件是否满足
             if (!Application.isPlaying)
@@ -55,6 +64,7 @@ namespace Framework.Toolkits.SingletonKit
             if (instance != null)
             {
                 instance.OnSingletonInit();
+                // Object.DontDestroyOnLoad(instance.gameObject); 场景中的物体手动 DontDestroyOnLoad，因为必须满足为 root GameObject
                 return instance;
             }
 
@@ -72,6 +82,9 @@ namespace Framework.Toolkits.SingletonKit
                 }
 
                 instance = CreateComponentOnGameObject<TMonoSingleton>(defineAttribute.PathInHierarchy, true);
+                
+                // Object.DontDestroyOnLoad(instance.gameObject); 场景中的物体手动 DontDestroyOnLoad，因为必须满足为 root GameObject
+                
                 break;
             }
 
@@ -186,24 +199,6 @@ namespace Framework.Toolkits.SingletonKit
             }
 
             return ++index == subPath.Length ? client : FindGameObject(client, subPath, index, build, dontDestroy);
-        }
-
-        private static T CreateNonPublicConstructorObject<T>() where T : class
-        {
-            var type = typeof(T);
-
-            // 获取全部私有构造函数
-            var constructorInfos = type.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
-
-            // 获取无参构造函数
-            var ctor = Array.Find(constructorInfos, c => c.GetParameters().Length == 0);
-
-            if (ctor == null)
-            {
-                throw new FrameworkException("Non-Public Constructor() not found! in " + type);
-            }
-
-            return ctor.Invoke(null) as T;
         }
     }
 }

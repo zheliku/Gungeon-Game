@@ -26,7 +26,7 @@ namespace Framework.Toolkits.SingletonKit
             {
                 if (_Instance == null)
                 {
-                    _Instance = SingletonCreator.CreateSingleton<TMonoSingleton>();
+                    _Instance = SingletonCreator.CreateMonoSingleton<TMonoSingleton>();
                 }
 
                 return _Instance;

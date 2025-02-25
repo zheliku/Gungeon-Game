@@ -189,6 +189,9 @@ namespace Game
 
         protected override IArchitecture _Architecture { get => Game.Interface; }
 
-        public void OnSingletonInit() { }
+        public void OnSingletonInit()
+        {
+            this.BindHierarchyComponent();
+        }
     }
 }
