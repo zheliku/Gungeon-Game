@@ -14,6 +14,7 @@ namespace Game
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
+    using Framework.Toolkits.TreeKit;
     using UnityEngine;
     using UnityEngine.Tilemaps;
 
@@ -66,47 +67,139 @@ namespace Game
 
         private void Start()
         {
-            var initRoomNode = new RoomNode(RoomType.Init);
-            initRoomNode.Connect(RoomType.Normal)
-               .Connect(RoomType.Normal)
-               .Connect(RoomType.Chest)
-               .Connect(RoomType.Normal)
-               .Connect(RoomType.Normal)
-               .Connect(RoomType.Normal)
-               .Connect(RoomType.Final);
+            var tree = new Tree<RoomType>(RoomType.Init);
+            tree.Root.AddChild(RoomType.Normal)
+               .AddChild(RoomType.Normal, child =>
+                {
+                    child.AddChild(RoomType.Normal)
+                       .AddChild(RoomType.Normal)
+                       .AddChild(RoomType.Chest)
+                       .AddChild(RoomType.Normal);
+                })
+               .AddChild(RoomType.Chest)
+               .AddChild(RoomType.Normal)
+               .AddChild(RoomType.Normal, child =>
+                {
+                    child.AddChild(RoomType.Normal)
+                       .AddChild(RoomType.Normal)
+                       .AddChild(RoomType.Chest, child =>
+                        {
+                            child.AddChild(RoomType.Normal)
+                               .AddChild(RoomType.Normal)
+                               .AddChild(RoomType.Chest)
+                               .AddChild(RoomType.Normal);
+                        })
+                       .AddChild(RoomType.Normal);
+                })
+               .AddChild(RoomType.Normal)
+               .AddChild(RoomType.Normal, child =>
+                {
+                    child.AddChild(RoomType.Normal)
+                       .AddChild(RoomType.Normal)
+                       .AddChild(RoomType.Chest, child =>
+                        {
+                            child.AddChild(RoomType.Normal)
+                               .AddChild(RoomType.Normal)
+                               .AddChild(RoomType.Chest)
+                               .AddChild(RoomType.Normal);
+                        })
+                       .AddChild(RoomType.Normal);
+                })
+               .AddChild(RoomType.Final);
 
-            GenerateRoomMapBFS(initRoomNode);
+            GenerateRoomMap(tree.Root);
         }
 
-        private void GenerateRoomMapBFS(RoomNode roomNode)
+        private RoomNode GenerateRoomMap(TreeNode<RoomType> tree)
         {
-            var queue = new Queue<RoomNode>();
-            queue.Enqueue(roomNode);
+            var roomNode = new RoomNode(tree.Data);
 
-            var visited = new HashSet<RoomNode>(); // 记录已访问的节点
+            // 基于权重生成网格
+            var predictWeight = 0;
+            while (!GenerateRoomMapBFS(tree, roomNode, predictWeight))
+            {
+                predictWeight++;
+            }
+            
+            Debug.Log(predictWeight + " weight!");
+
+            var queue       = new Queue<RoomNode>();
+            var visitedRoom = new HashSet<RoomNode>(); // 记录已生成的房间
+            queue.Enqueue(roomNode);
 
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
-                visited.Add(node); // 标记为已访问
-
+                visitedRoom.Add(node);
                 GenerateRoomByNode(node);
 
-                if (node.ConnectNodes.Count == 0)
+                foreach (var pair in node.ConnectNodes)
                 {
-                    continue;
-                }
-
-                foreach (var connectNode in node.ConnectNodes.Values.ToList())
-                {
-                    if (visited.Contains(connectNode)) // 检查是否已访问
+                    if (!visitedRoom.Contains(pair.Value)) // 防止重复生成
                     {
-                        continue;
+                        queue.Enqueue(pair.Value);
                     }
-
-                    queue.Enqueue(connectNode);
                 }
             }
+
+            return roomNode;
+        }
+
+        private bool GenerateRoomMapBFS(TreeNode<RoomType> treeRoot, RoomNode roomRoot, int predictWeight = 0)
+        {
+            var roomQueue  = new Queue<RoomNode>();
+            var treeQueue  = new Queue<TreeNode<RoomType>>();
+            var existIndex = new HashSet<Vector2Int>(); // 记录已生成的房间位置
+            roomQueue.Enqueue(roomRoot);
+            treeQueue.Enqueue(treeRoot);
+            existIndex.Add(Vector2Int.zero);
+
+            while (treeQueue.Count > 0)
+            {
+                var roomNode = roomQueue.Dequeue();
+                var treeNode = treeQueue.Dequeue();
+
+                var availableDirections = LevelGenHelper.GetAvailableDirections(roomNode.Index, existIndex);
+
+                if (availableDirections.Count < treeNode.Degree) // 没有足够的方向可连接
+                {
+                    Debug.LogWarning("房间度数与树节点度数不匹配");
+                    return false;
+                }
+
+                var predictDic       = LevelGenHelper.Predict(roomNode.Index, existIndex);
+                var sortedDirections = predictDic.OrderBy(pair => pair.Value).ToList(); // 最优方案：按可选择方向数从大到小排序
+
+                // 是否选择最优方案
+                var choosePerfect = (0, 100 + 1).RandomSelect() < predictWeight;
+
+                foreach (var child in treeNode.Children)
+                {
+                    Direction nextRoomDirection;
+                    if (choosePerfect) // 选择最优方案
+                    {
+                        nextRoomDirection = sortedDirections.First().Key;
+                        sortedDirections.RemoveAt(0);
+                    }
+                    else // 随机生成方向
+                    {
+                        nextRoomDirection = availableDirections.RandomTakeOneAndRemove();
+                    }
+
+                    var connectNode = new RoomNode(child.Data)
+                    {
+                        Index = roomNode.Index + nextRoomDirection.ToVector2Int()
+                    };
+
+                    existIndex.Add(connectNode.Index);
+                    roomNode.Connect(nextRoomDirection, connectNode); // 连接房间
+
+                    treeQueue.Enqueue(child);
+                    roomQueue.Enqueue(connectNode);
+                }
+            }
+
+            return true;
         }
 
         private void GenerateRoomByNode(RoomNode node)
@@ -208,6 +301,7 @@ namespace Game
                     direction.Opposite().ToVector2Int().y * roomHeight / 2 + connectNodePos.y
                 );
 
+                // 绘制门
                 var startDoor = DoorTemplate.Instantiate(parent: room)
                    .EnableGameObject()
                    .SetPosition(startPos.x + 0.5f, startPos.y + 0.5f, 0) // +0.5f to the center grid

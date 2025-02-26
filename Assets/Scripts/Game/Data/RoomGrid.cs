@@ -73,29 +73,34 @@ namespace Game
             get => ConnectNodes.Count == 4;
         }
 
+        public List<Direction> ConnectedDirections
+        {
+            get => ConnectNodes.Keys.ToList();
+        }
+
+        public List<Direction> ClosedDirections
+        {
+            get => Enum.GetValues(typeof(Direction)).Cast<Direction>().Except(ConnectedDirections).ToList();
+        }
+
         public RoomNode(RoomType type)
         {
             RoomType = type;
         }
 
-        public RoomNode Connect(RoomType type)
+        public void Connect(Direction direction, RoomNode node)
         {
-            if (FullConnect)
+            ConnectNodes.Add(direction, node);
+            node.ConnectNodes.Add(direction.Opposite(), this);
+        }
+
+        public void DisConnect(Direction direction)
+        {
+            if (ConnectNodes.TryGetValue(direction, out var connectNode))
             {
-                throw new FrameworkException("RoomNode is full connect");
+                connectNode.ConnectNodes.Remove(direction.Opposite());
+                ConnectNodes.Remove(direction);
             }
-
-            var allDirections    = Enum.GetValues(typeof(Direction)).ToList<Direction>();
-            var remainDirections = allDirections.Except(ConnectNodes.Keys).ToList();
-            var direction        = remainDirections.RandomTakeOne();
-
-            var child = new RoomNode(type)
-            {
-                ConnectNodes = { { direction.Opposite(), this } },
-                Index        = Index + direction.ToVector2Int(),
-            };
-            ConnectNodes.Add(direction, child);
-            return child;
         }
     }
 

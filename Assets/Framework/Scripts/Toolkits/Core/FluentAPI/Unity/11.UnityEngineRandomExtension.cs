@@ -80,13 +80,56 @@ namespace Framework.Toolkits.FluentAPI
         }
         
         /// <summary>
+        /// 对 IList 进行随机打乱顺序
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="source">输入集合</param>
+        /// <returns>打乱顺序后的集合</returns>
+        public static IList<T> Shuffle<T>(this IList<T> source)
+        {
+            // Fisher-Yates 洗牌算法
+            for (int i = source.Count - 1; i > 0; i--)
+            {
+                int j = (0, i + 1).RandomSelect(); // 生成随机索引
+
+                // 交换元素
+                (source[i], source[j]) = (source[j], source[i]);
+            }
+
+            return source;
+        }
+
+        /// <summary>
+        /// 对 IEnumerable 进行随机打乱顺序
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="source">输入集合</param>
+        /// <returns>打乱顺序后的集合</returns>
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
+        {
+            // 将 IEnumerable 转换为列表以便随机访问
+            var list = source.ToList();
+
+            // Fisher-Yates 洗牌算法
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = (0, i + 1).RandomSelect(); // 生成随机索引
+
+                // 交换元素
+                (list[i], list[j]) = (list[j], list[i]);
+            }
+
+            return list;
+        }
+
+        /// <summary>
         /// 从区间 [vec2.x, vec2.y] 随机选择一个数
         /// </summary>
         public static float RandomSelect(this Vector2 vec2)
         {
             return Random.Range(vec2.x, vec2.y);
         }
-        
+
         /// <summary>
         /// 从区间 [range.a, range.b) 随机选择一个数
         /// </summary>
@@ -94,7 +137,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Random.Range(range.a, range.b);
         }
-        
+
         /// <summary>
         /// 从区间 [range.a, range.b] 随机选择一个数
         /// </summary>
@@ -118,7 +161,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Random.Range(a, b);
         }
-        
+
         /// <summary>
         /// 从区间 [-a, a] 随机选择一个数
         /// </summary>
