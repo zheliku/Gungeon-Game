@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Framework.Core;
@@ -53,6 +54,8 @@ namespace Game
         [ShowInInspector]
         public RoomNode Node { get; set; }
 
+        public RoomType RoomType { get => _grid.RoomType; }
+
         public RoomState State { get; private set; } = RoomState.Closed;
 
         private void Awake()
@@ -81,6 +84,17 @@ namespace Game
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
+        private void Start()
+        {
+            if (RoomType == RoomType.Init)
+            {
+                foreach (var door in _doors)
+                {
+                    door.State.ChangeState(DoorState.Open);
+                }
+            }
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
@@ -95,7 +109,7 @@ namespace Game
 
                         foreach (var door in _doors)
                         {
-                            door.State.ChangeState(DoorState.Close);
+                            door.State.ChangeState(DoorState.BattleClose);
                         }
                     }
                 }

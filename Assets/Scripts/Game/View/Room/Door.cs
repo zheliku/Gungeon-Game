@@ -11,20 +11,22 @@ namespace Game
     using System;
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
+    using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using UnityEngine;
 
     public enum DoorState
     {
         Open,
-        Close
+        IdleClose,   // 房间默认关闭
+        BattleClose, // 战斗中关闭
     }
-    
+
     public class Door : AbstractView
     {
         public Sprite OpenSprite;
         public Sprite CloseSprite;
-        
+
         [HierarchyPath]
         public SpriteRenderer SpriteRenderer;
 
@@ -36,25 +38,37 @@ namespace Game
         private void Awake()
         {
             this.BindHierarchyComponent();
-            
+
             State.State(DoorState.Open)
                .OnEnter(() =>
                 {
-                    Collider.isTrigger    = true;
+                    Collider.Disable();
                     SpriteRenderer.sprite = OpenSprite;
+                    AudioKit.PlaySound(Config.Sound.DOOR_OPEN);
                 });
-            State.State(DoorState.Close)
+            State.State(DoorState.IdleClose)
+               .OnEnter(() =>
+                {
+                    Collider.isTrigger    = true;
+                    SpriteRenderer.sprite = CloseSprite;
+                });
+            State.State(DoorState.BattleClose)
                .OnEnter(() =>
                 {
                     Collider.isTrigger    = false;
+                    Collider.Enable();
                     SpriteRenderer.sprite = CloseSprite;
-                })
-               .OnExit(() =>
-                {
-                    AudioKit.PlaySound(Config.Sound.DOOR_OPEN);
                 });
-            
-            State.StartState(DoorState.Open);
+
+            State.StartState(DoorState.IdleClose);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Player") && State.CurrentStateId == DoorState.IdleClose)
+            {
+                State.ChangeState(DoorState.Open);
+            }
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }
