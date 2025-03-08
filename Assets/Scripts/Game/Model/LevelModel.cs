@@ -9,6 +9,7 @@
 namespace Game
 {
     using System.Collections.Generic;
+    using Framework.Core;
     using Framework.Core.Model;
 
     public class LevelModel : AbstractModel
@@ -116,7 +117,7 @@ namespace Game
                 "111111111d111111111",
             }),
         };
-        
+
         /// <summary>
         /// 1：地块
         /// c：宝箱
@@ -171,7 +172,22 @@ namespace Game
             "111111111d111111111",
         });
 
+        public Room CurrentRoom { get; private set; }
+
         protected override void OnInit()
-        { }
+        {
+            TypeEventSystem.GLOBAL.Register<EnterRoomEvent>(e =>
+            {
+                CurrentRoom = e.Room;
+            });
+            
+            TypeEventSystem.GLOBAL.Register<ExitRoomEvent>(e =>
+            {
+                if (CurrentRoom == e.Room)
+                {
+                    CurrentRoom = null;
+                }
+            });
+        }
     }
 }

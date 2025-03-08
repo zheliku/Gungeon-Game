@@ -45,13 +45,18 @@ namespace Game
         private List<EnemyWaveConfig> _enemyWaves = new List<EnemyWaveConfig>();
 
         private EnemyWaveConfig _currentWave;
-        
+
         [ShowInInspector]
         public RoomNode Node { get; set; }
 
         public RoomType RoomType { get => _grid.RoomType; }
 
         public RoomState State { get; private set; } = RoomState.Closed;
+        
+        public List<Enemy> EnemiesInRoom
+        {
+            get => _enemiesInRoom;
+        }
 
         private void Awake()
         {
@@ -102,6 +107,8 @@ namespace Game
         {
             if (other.CompareTag("Player"))
             {
+                TypeEventSystem.GLOBAL.Send(new EnterRoomEvent(this));
+
                 if (_grid.RoomType == RoomType.Normal)
                 {
                     if (State == RoomState.Closed) // 第一次进，状态变为 PlayerIn
@@ -116,6 +123,14 @@ namespace Game
                         }
                     }
                 }
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                TypeEventSystem.GLOBAL.Send(new ExitRoomEvent(this));
             }
         }
 

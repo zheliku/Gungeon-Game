@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 1b255338dc752c443af22b01a4e59f9b
+guid: df30f7a31d32c374fbbf1cea1535440f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7163737804956702814
-    second: 31.Aim3_0
+      213: 3022862107812882744
+    second: 31.Aim2_0
   - first:
-      213: 73953973207235885
-    second: 31.Aim3_1
+      213: 2936665394870860543
+    second: 31.Aim2_1
   - first:
-      213: 543531097549345718
-    second: 31.Aim3_2
+      213: -8941431128452538536
+    second: 31.Aim2_2
   - first:
-      213: 2828126010668318582
-    second: 31.Aim3_3
+      213: 4950838604313783737
+    second: 31.Aim2_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -55,12 +55,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -83,7 +83,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -135,11 +135,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 31.Aim3_0
+      name: 31.Aim2_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 8
+        x: 0
+        y: 9
         width: 7
         height: 7
       alignment: 0
@@ -150,18 +150,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2a7e487eb6a459c90800000000000000
-      internalID: -7163737804956702814
+      spriteID: 839ec2d321d53f920800000000000000
+      internalID: 3022862107812882744
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 31.Aim3_1
+      name: 31.Aim2_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
+        x: 9
+        y: 9
         width: 7
         height: 7
       alignment: 0
@@ -172,18 +172,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d2dfebe2fbcb60100800000000000000
-      internalID: 73953973207235885
+      spriteID: ffab5751e9121c820800000000000000
+      internalID: 2936665394870860543
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 31.Aim3_2
+      name: 31.Aim2_2
       rect:
         serializedVersion: 2
-        x: 8
-        y: 8
+        x: 0
+        y: 0
         width: 7
         height: 7
       alignment: 0
@@ -194,18 +194,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b39ec947a20b8700800000000000000
-      internalID: 543531097549345718
+      spriteID: 85f57fc23c7a9e380800000000000000
+      internalID: -8941431128452538536
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 31.Aim3_3
+      name: 31.Aim2_3
       rect:
         serializedVersion: 2
-        x: 8
-        y: 1
+        x: 9
+        y: 0
         width: 7
         height: 7
       alignment: 0
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 67f7de56f958f3720800000000000000
-      internalID: 2828126010668318582
+      spriteID: 9bde96eda79e4b440800000000000000
+      internalID: 4950838604313783737
       vertices: []
       indices: 
       edges: []
@@ -226,7 +226,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -236,10 +236,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      31.Aim3_0: -7163737804956702814
-      31.Aim3_1: 73953973207235885
-      31.Aim3_2: 543531097549345718
-      31.Aim3_3: 2828126010668318582
+      31.Aim2_0: 3022862107812882744
+      31.Aim2_1: 2936665394870860543
+      31.Aim2_2: -8941431128452538536
+      31.Aim2_3: 4950838604313783737
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

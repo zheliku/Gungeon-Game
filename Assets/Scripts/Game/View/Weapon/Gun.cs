@@ -10,6 +10,7 @@ namespace Game
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
@@ -36,6 +37,9 @@ namespace Game
         [HierarchyPath("/Player/Weapon/GunShootLight")]
         public SpriteRenderer GunShootLight;
 
+        [HierarchyPath("/Player/Weapon/Aim")]
+        public Transform Aim;
+
         public InputAction AttackAction { get; private set; }
 
         public bool IsShooting { get; protected set; }
@@ -45,6 +49,9 @@ namespace Game
 
         [ShowInInspector]
         protected GunShootInterval _ShootInterval { get; set; }
+
+        [ShowInInspector]
+        protected Enemy _TargetEnemy { get; set; }
 
         [ShowInInspector]
         public GunClip Clip { get; set; }
@@ -71,7 +78,34 @@ namespace Game
 
         public Vector3 ShootDirection
         {
-            get => (MousePosition - transform.position).normalized;
+            get
+            {
+                var currentRoom = this.GetModel<LevelModel>().CurrentRoom;
+                if (currentRoom && currentRoom.EnemiesInRoom.Count > 0)
+                {
+                    _TargetEnemy = currentRoom.EnemiesInRoom
+                       .OrderBy(e => (e.GetPosition() - MousePosition).magnitude)
+                       .FirstOrDefault(e =>
+                        {
+                            var vector2 = e.Position2DFrom(this);
+                            if (Physics2D.Raycast(this.GetPosition(), vector2.normalized, vector2.magnitude, LayerMask.GetMask("Wall")))
+                            {
+                                return false;
+                            }
+                            return true;
+                        });
+
+                    if (_TargetEnemy) // 自动瞄准
+                    {
+                        Aim.SetPosition(_TargetEnemy.GetPosition());
+                        Aim.EnableGameObject();
+                        return _TargetEnemy.Direction2DFrom(this);
+                    }
+                }
+                
+                Aim.DisableGameObject();
+                return (MousePosition - transform.position).normalized;
+            }
         }
 
         protected virtual void Awake()

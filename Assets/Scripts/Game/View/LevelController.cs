@@ -225,6 +225,7 @@ namespace Game
                .SetGrid(roomGrid)
                .SetPosition(x: pos.x + 0.5f, y: pos.y + 0.5f) // +0.5f to the center grid
                .EnableGameObject();
+            room.Node = node;
 
             var roomTrigger = room.GetComponent<BoxCollider2D>();
             roomTrigger.size = new Vector2(roomWidth - 4, roomHeight - 4); // 减去 4 是为了防止玩家卡在墙壁上
