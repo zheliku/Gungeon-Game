@@ -42,12 +42,7 @@ namespace Game
 
         private List<Enemy> _enemiesInRoom = new List<Enemy>();
 
-        private List<EnemyWaveConfig> _enemyWaves = new List<EnemyWaveConfig>()
-        {
-            new EnemyWaveConfig(),
-            new EnemyWaveConfig(),
-            new EnemyWaveConfig()
-        };
+        private List<EnemyWaveConfig> _enemyWaves = new List<EnemyWaveConfig>();
 
         private EnemyWaveConfig _currentWave;
         
@@ -91,6 +86,14 @@ namespace Game
                 foreach (var door in _doors)
                 {
                     door.State.ChangeState(DoorState.Open);
+                }
+            }
+            else if (RoomType == RoomType.Normal)
+            {
+                var randomCount = (1, 3 + 1).RandomSelect(); // 随机生成 1 到 3 波敌人
+                for (int i = 0; i < randomCount; i++)
+                {
+                    _enemyWaves.Add(new EnemyWaveConfig());
                 }
             }
         }
