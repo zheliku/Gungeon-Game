@@ -626,6 +626,7 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
@@ -1125,17 +1126,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 411765979}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1cff1ec5e734b86bf930cbbd0d36c2a, type: 3}
+  m_Script: {fileID: 11500000, guid: c5626f9679fb4d81867d26ea11e7a0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
   - {fileID: 8300000, guid: e453276a327dcb94d8b7cfc3d7faab00, type: 3}
+  FireCount: 3
+  IntervalTime: 0.2
 --- !u!1 &477252213
 GameObject:
   m_ObjectHideFlags: 0
@@ -1847,6 +1851,7 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
@@ -2797,6 +2802,7 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
@@ -4098,17 +4104,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1229256365}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1cff1ec5e734b86bf930cbbd0d36c2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e2cf64c0e4e465bbd55dc6d9aec0b58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
   - {fileID: 8300000, guid: e453276a327dcb94d8b7cfc3d7faab00, type: 3}
+  FireCount: 5
 --- !u!1 &1239379831
 GameObject:
   m_ObjectHideFlags: 0
@@ -4477,6 +4485,7 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
@@ -4591,13 +4600,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1417278532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1cff1ec5e734b86bf930cbbd0d36c2a, type: 3}
+  m_Script: {fileID: 11500000, guid: bab778f06a774c22b8fce21ba2a4f231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
@@ -7120,6 +7130,7 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
   FollowSeconds: 3
+  BulletSpeed: 5
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}

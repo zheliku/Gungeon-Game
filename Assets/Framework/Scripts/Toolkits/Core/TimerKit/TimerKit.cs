@@ -28,7 +28,7 @@ namespace Framework.Toolkits.TimerKit
             return TimerManager.Instance.CreateTimer(onTick, duration, repeat, timerType);
         }
 
-        public static bool HasPassedInterval(string id, float interval)
+        public static bool HasPassedInterval(int id, float interval)
         {
             var timeDict = TimerManager.Instance.TimeDict;
             if (timeDict.TryGetValue(id, out var time))
@@ -47,7 +47,7 @@ namespace Framework.Toolkits.TimerKit
 
         public static bool HasPassedInterval(object id, float interval)
         {
-            return HasPassedInterval(id.ToString(), interval);
+            return HasPassedInterval(id.GetHashCode(), interval);
         }
     }
 }

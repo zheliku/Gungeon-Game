@@ -15,7 +15,7 @@ namespace Game
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class EnemyB : Enemy
+    public class EnemyD : Enemy
     {
         public enum State
         {
@@ -23,8 +23,7 @@ namespace Game
             Shoot
         }
 
-        public int   FireCount     = 3;  // 一次射击发射的子弹个数
-        public float IntervalAngle = 15; // 间隔角度
+        public (int min, int max) FireCount = (12, 18 + 1); // 一次射击发射的子弹个数区间
 
         public FSM<State> FSM = new FSM<State>();
 
@@ -97,8 +96,11 @@ namespace Game
         public void Fire()
         {
             var mainDirection = Player.Instance.Direction2DFrom(this);
+            var angleOffset   = (0f, 360f).RandomSelect();
+            var fireCount     = FireCount.RandomSelect();
+            var stepAngle     = 360f / fireCount;
 
-            for (int i = -FireCount / 2; i <= FireCount / 2; i++)
+            for (int i = 0; i < fireCount; i++)
             {
                 var bullet = Bullet.Instantiate(transform.position)
                    .Enable()
@@ -107,7 +109,7 @@ namespace Game
                 bullet.Damage = 1f;
 
                 var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-                rigidbody2D.linearVelocity = mainDirection.Rotate(i * IntervalAngle) * BulletSpeed;
+                rigidbody2D.linearVelocity = mainDirection.Rotate(angleOffset + stepAngle * i) * BulletSpeed;
             }
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }

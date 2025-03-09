@@ -9,13 +9,14 @@
 namespace Game
 {
     using Framework.Core;
+    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class EnemyB : Enemy
+    public class EnemyC : Enemy
     {
         public enum State
         {
@@ -23,8 +24,8 @@ namespace Game
             Shoot
         }
 
-        public int   FireCount     = 3;  // 一次射击发射的子弹个数
-        public float IntervalAngle = 15; // 间隔角度
+        public int   FireCount    = 3;    // 一次射击发射的子弹个数
+        public float IntervalTime = 0.2f; // 间隔角度
 
         public FSM<State> FSM = new FSM<State>();
 
@@ -96,20 +97,23 @@ namespace Game
 
         public void Fire()
         {
-            var mainDirection = Player.Instance.Direction2DFrom(this);
+            var direction = Player.Instance.Direction2DFrom(this);
 
-            for (int i = -FireCount / 2; i <= FireCount / 2; i++)
-            {
-                var bullet = Bullet.Instantiate(transform.position)
-                   .Enable()
-                   .GetComponent<EnemyBullet>();
+            ActionKit.Repeat(3)
+               .Callback(() =>
+                {
+                    var bullet = Bullet.Instantiate(transform.position)
+                       .Enable()
+                       .GetComponent<EnemyBullet>();
 
-                bullet.Damage = 1f;
+                    bullet.Damage = 1f;
 
-                var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-                rigidbody2D.linearVelocity = mainDirection.Rotate(i * IntervalAngle) * BulletSpeed;
-            }
-            AudioKit.PlaySound(ShootSounds.RandomTakeOne());
+                    var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
+                    rigidbody2D.linearVelocity = direction * BulletSpeed;
+                    AudioKit.PlaySound(ShootSounds.RandomTakeOne());
+                })
+               .Delay(IntervalTime)
+               .Start(this);
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

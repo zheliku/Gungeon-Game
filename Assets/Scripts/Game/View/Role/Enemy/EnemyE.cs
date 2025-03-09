@@ -12,10 +12,11 @@ namespace Game
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
+    using Framework.Toolkits.TimerKit;
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class EnemyB : Enemy
+    public class EnemyE : Enemy
     {
         public enum State
         {
@@ -23,8 +24,11 @@ namespace Game
             Shoot
         }
 
-        public int   FireCount     = 3;  // 一次射击发射的子弹个数
-        public float IntervalAngle = 15; // 间隔角度
+        public (int min, int max) FireTimes = (1, 4 + 1); // 一次射击发射的子弹次数，一次发射 1s
+        
+        public int FireCount = 4; // 每秒发射个数
+
+        private int _fireTimes;
 
         public FSM<State> FSM = new FSM<State>();
 
@@ -57,12 +61,17 @@ namespace Game
             FSM.State(State.Shoot)
                .OnEnter(() =>
                 {
-                    Fire();
+                    _fireTimes                 = FireTimes.RandomSelect();
                     Rigidbody2D.linearVelocity = Vector2.zero;
                 })
                .OnUpdate(() =>
                 {
-                    if (FSM.SecondsOfCurrentState >= 1)
+                    if (TimerKit.HasPassedInterval(this, 1f / FireCount))
+                    {
+                        Fire();
+                    }
+                    
+                    if (FSM.SecondsOfCurrentState >= _fireTimes)
                     {
                         FSM.ChangeState(State.Follow);
                     }
@@ -96,19 +105,15 @@ namespace Game
 
         public void Fire()
         {
-            var mainDirection = Player.Instance.Direction2DFrom(this);
+            var bullet = Bullet.Instantiate(transform.position)
+               .Enable()
+               .GetComponent<EnemyBullet>();
 
-            for (int i = -FireCount / 2; i <= FireCount / 2; i++)
-            {
-                var bullet = Bullet.Instantiate(transform.position)
-                   .Enable()
-                   .GetComponent<EnemyBullet>();
+            bullet.Damage = 1f;
 
-                bullet.Damage = 1f;
+            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
+            rigidbody2D.linearVelocity = Player.Instance.Direction2DFrom(bullet) * BulletSpeed;
 
-                var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-                rigidbody2D.linearVelocity = mainDirection.Rotate(i * IntervalAngle) * BulletSpeed;
-            }
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
 

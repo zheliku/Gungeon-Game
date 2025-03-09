@@ -20,6 +20,8 @@ namespace Game
         public GameObject Bullet;
 
         public float FollowSeconds = 3;
+        
+        public float BulletSpeed = 5;
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 

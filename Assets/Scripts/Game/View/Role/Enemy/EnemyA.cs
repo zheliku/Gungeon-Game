@@ -100,7 +100,7 @@ namespace Game
             bullet.Damage = 1f;
 
             var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-            rigidbody2D.linearVelocity = Player.Instance.Direction2DFrom(bullet) * 3;
+            rigidbody2D.linearVelocity = Player.Instance.Direction2DFrom(bullet) * BulletSpeed;
 
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
