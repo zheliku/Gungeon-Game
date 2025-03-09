@@ -15,7 +15,9 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
     using Framework.Toolkits.TreeKit;
+    using Sirenix.OdinInspector;
     using UnityEngine;
+    using UnityEngine.Serialization;
     using UnityEngine.Tilemaps;
 
     public class LevelController : MonoSingleton<LevelController>
@@ -29,8 +31,9 @@ namespace Game
         [HierarchyPath("Grid/Floor")]
         public Tilemap FloorTilemap;
 
-        [HierarchyPath("Template/Enemy")]
-        public Enemy Enemy;
+        [ShowInInspector]
+        [HierarchyPath("/EnemyDB/EnemyB")]
+        public IEnemy Enemy;
 
         [HierarchyPath("Template/Final")]
         public Final FinalTemplate;
@@ -55,7 +58,6 @@ namespace Game
 
             _levelModel = this.GetModel<LevelModel>();
 
-            Enemy.DisableGameObject();
             FinalTemplate.DisableGameObject();
             RoomTemplate.DisableGameObject();
             DoorTemplate.DisableGameObject();
@@ -192,7 +194,12 @@ namespace Game
                     };
 
                     existIndex.Add(connectNode.Index);
-                    roomNode.Connect(nextRoomDirection, connectNode); // 连接房间
+                    var connectSuccess = roomNode.Connect(nextRoomDirection, connectNode); // 连接房间
+
+                    if (!connectSuccess)
+                    {
+                        return false;
+                    }
 
                     treeQueue.Enqueue(child);
                     roomQueue.Enqueue(connectNode);

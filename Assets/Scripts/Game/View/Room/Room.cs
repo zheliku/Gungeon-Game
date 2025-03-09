@@ -40,7 +40,7 @@ namespace Game
         [ShowInInspector]
         private RoomGrid _grid;
 
-        private List<Enemy> _enemiesInRoom = new List<Enemy>();
+        private List<IEnemy> _enemiesInRoom = new List<IEnemy>();
 
         private List<EnemyWaveConfig> _enemyWaves = new List<EnemyWaveConfig>();
 
@@ -53,7 +53,7 @@ namespace Game
 
         public RoomState State { get; private set; } = RoomState.Closed;
         
-        public List<Enemy> EnemiesInRoom
+        public List<IEnemy> EnemiesInRoom
         {
             get => _enemiesInRoom;
         }
@@ -152,9 +152,10 @@ namespace Game
 
             for (int i = 0; i < posGen.Count; i++)
             {
-                var enemy = LevelController.Instance.Enemy.Instantiate(keepName: true)
-                   .EnableGameObject()
-                   .SetPosition(posGen[i]);
+                var enemy = LevelController.Instance.Enemy.GameObject.Instantiate(keepName: true)
+                   .Enable()
+                   .SetPosition(posGen[i])
+                   .GetComponent<IEnemy>();
 
                 _enemiesInRoom.Add(enemy);
             }

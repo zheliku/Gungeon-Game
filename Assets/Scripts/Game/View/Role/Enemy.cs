@@ -1,155 +1,62 @@
-﻿// ------------------------------------------------------------
+// ------------------------------------------------------------
 // @file       Enemy.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-01-29 16:01:14
+// @Modified   2025-03-09 12:48:36
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using Framework.Core;
-    using Framework.Toolkits.AudioKit;
-    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
-    using Framework.Toolkits.TimerKit;
+    using Sirenix.OdinInspector;
     using UnityEngine;
-    using Random = UnityEngine.Random;
 
-    public class Enemy : AbstractRole
+    public abstract class Enemy : AbstractRole, IEnemy
     {
-        public enum States
-        {
-            Follow,
-            Shoot
-        }
-
         [HierarchyPath("Bullet")]
         public GameObject Bullet;
 
-        public States State;
-
         public float FollowSeconds = 3;
-
-        public float CurrentSeconds = 0;
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
-        private EnemyModel _enemyModel;
+        [ShowInInspector]
+        protected Property _property = new Property() { Hp = { Value = 2 } };
+        
+        public GameObject GameObject { get => gameObject; }
 
-        private Property _Property = new Property() { Hp = { Value = 2 } };
+        public Transform Transform { get => transform; }
 
         protected override void Awake()
         {
             base.Awake();
 
             Bullet.Disable();
-
-            _Property.Hp.Register((oldValue, value) =>
+            
+            _property.Hp.Register((oldValue, value) =>
             {
                 if (value <= 0)
                 {
                     this.DestroyGameObject();
                 }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            
+
             // 生成时发送生成事件
             TypeEventSystem.GLOBAL.Send(new EnemyCreateEvent(this));
         }
-
-        private void Update()
-        {
-            var player = Player.Instance;
-
-            var directionToPlayer = player.Direction2DFrom(transform);
-
-            if (directionToPlayer.x > 0)
-            {
-                SpriteRenderer.flipX = false;
-            }
-            else if (directionToPlayer.x < 0)
-            {
-                SpriteRenderer.flipX = true;
-            }
-
-            if (State == States.Follow)
-            {
-                if (CurrentSeconds >= FollowSeconds)
-                {
-                    State          = States.Shoot;
-                    CurrentSeconds = 0;
-                }
-
-                CurrentSeconds += Time.deltaTime;
-            }
-            else if (State == States.Shoot)
-            {
-                CurrentSeconds += Time.deltaTime;
-
-                if (CurrentSeconds >= 1)
-                {
-                    State          = States.Follow;
-                    FollowSeconds  = Random.Range(2f, 4f);
-                    CurrentSeconds = 0;
-                }
-
-                if (TimerKit.HasPassedInterval(this, 0.2f) && player)
-                {
-                    Fire();
-                }
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            var player = Player.Instance;
-
-            if (State == States.Follow)
-            {
-                if (player)
-                {
-                    Rigidbody2D.linearVelocity = player.Direction2DFrom(transform) * _Property.MoveSpeed;
-                }
-            }
-        }
-
-        private void OnDestroy()
+        
+        protected virtual void OnDestroy()
         {
             // 死亡时发送死亡事件
             TypeEventSystem.GLOBAL.Send(new EnemyDieEvent(this));
         }
-
-        public void Fire()
-        {
-            var bullet = Bullet.Instantiate(transform.position)
-               .Enable();
-            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-
-            rigidbody2D.linearVelocity = Player.Instance.Direction2DFrom(bullet) * 3;
-            bullet.OnFixedUpdateEvent(() => { }); // todo: 需要写在这里吗？
-
-            bullet.OnCollisionEnter2DEvent(collider2D =>
-            {
-                var player = collider2D.gameObject.GetComponent<Player>();
-                if (player)
-                {
-                    player.Hurt(1);
-                    bullet.Destroy();
-                }
-
-                bullet.Destroy();
-            });
-
-            AudioKit.PlaySound(ShootSounds.RandomTakeOne());
-        }
-
+        
         public override void Hurt(float damage)
         {
-            _Property.Hp.Value -= damage;
+            _property.Hp.Value -= damage;
         }
-
-        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

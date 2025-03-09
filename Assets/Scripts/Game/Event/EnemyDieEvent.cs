@@ -10,9 +10,9 @@ namespace Game
 {
     public struct EnemyDieEvent
     {
-        public Enemy Enemy;
+        public IEnemy Enemy;
 
-        public EnemyDieEvent(Enemy enemy)
+        public EnemyDieEvent(IEnemy enemy)
         {
             Enemy = enemy;
         }

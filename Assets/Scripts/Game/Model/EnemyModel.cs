@@ -14,7 +14,7 @@ namespace Game
 
     public class EnemyModel : AbstractModel
     {
-        public List<Enemy> Enemies = new List<Enemy>();
+        public List<IEnemy> Enemies = new List<IEnemy>();
         
         protected override void OnInit()
         {

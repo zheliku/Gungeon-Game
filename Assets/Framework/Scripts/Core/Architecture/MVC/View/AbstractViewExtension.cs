@@ -28,8 +28,10 @@ namespace Framework.Core
 
             // 获取所有合格字段
             var targetFields = fields
-               .Where(f => f.GetCustomAttribute<HierarchyPathAttribute>() != null)                                // 必须拥有 HierarchyPathAttribute 特性
-               .Where(f => f.FieldType == typeof(GameObject) || typeof(Component).IsAssignableFrom(f.FieldType)); // 类型必须是 GameObject 或 Component 的派生类
+               .Where(f => f.GetCustomAttribute<HierarchyPathAttribute>() != null) // 必须拥有 HierarchyPathAttribute 特性
+               .Where(f => f.FieldType == typeof(GameObject) ||
+                           typeof(Component).IsAssignableFrom(f.FieldType) ||
+                           f.FieldType.IsInterface); // 类型必须是 GameObject 或 Component 的派生类
 
             foreach (var field in targetFields)
             {
@@ -66,7 +68,7 @@ namespace Framework.Core
                 }
 
                 // 赋值字段
-                if (typeof(Component).IsAssignableFrom(fieldType))
+                if (typeof(Component).IsAssignableFrom(fieldType)) // 如果是 Component，则尝试获取该组件
                 {
                     var component = targetTransform.GetComponent(fieldType);
                     if (component)
@@ -78,9 +80,24 @@ namespace Framework.Core
                         Debug.LogError($"Component resolve failed: {attribute.HierarchyPath}", view.gameObject);
                     }
                 }
-                else
+                else if (fieldType == typeof(GameObject)) // 如果是 GameObject，则直接赋值
                 {
                     field.SetValue(view, targetTransform.gameObject);
+                }
+                else if (fieldType.IsInterface) // 如果是接口，则尝试获取该接口的实现类
+                {
+                    // 获取 targetTransform 上的所有 MonoBehaviour 脚本
+                    var scripts = targetTransform.GetComponents<MonoBehaviour>();
+
+                    foreach (var script in scripts)
+                    {
+                        // 检查脚本是否实现了接口
+                        if (fieldType.IsAssignableFrom(script.GetType()))
+                        {
+                            field.SetValue(view, script);
+                            break;
+                        }
+                    }
                 }
             }
         }

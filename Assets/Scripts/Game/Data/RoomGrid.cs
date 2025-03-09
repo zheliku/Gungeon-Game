@@ -88,10 +88,15 @@ namespace Game
             RoomType = type;
         }
 
-        public void Connect(Direction direction, RoomNode node)
+        public bool Connect(Direction direction, RoomNode node)
         {
+            if (ConnectedDirections.Contains(direction))
+            {
+                return false;
+            }
             ConnectNodes.Add(direction, node);
             node.ConnectNodes.Add(direction.Opposite(), this);
+            return true;
         }
 
         public void DisConnect(Direction direction)

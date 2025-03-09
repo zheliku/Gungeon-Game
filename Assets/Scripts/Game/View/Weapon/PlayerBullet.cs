@@ -8,24 +8,18 @@
 
 namespace Game
 {
-    using System;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class Bullet : AbstractView
+    public class PlayerBullet : AbstractView
     {
         public float Damage;
 
-        private void Awake()
-        {
-            
-        }
-
         private void OnCollisionEnter2D(Collision2D other)
         {
-            var enemy = other.gameObject.GetComponent<Enemy>();
-            if (enemy)
+            var enemy = other.gameObject.GetComponent<IEnemy>();
+            if (enemy != null)
             {
                 enemy.Hurt(Damage);
             }

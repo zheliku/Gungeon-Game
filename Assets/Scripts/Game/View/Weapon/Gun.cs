@@ -51,7 +51,7 @@ namespace Game
         protected GunShootInterval _ShootInterval { get; set; }
 
         [ShowInInspector]
-        protected Enemy _TargetEnemy { get; set; }
+        protected IEnemy _TargetEnemy { get; set; }
 
         [ShowInInspector]
         public GunClip Clip { get; set; }
@@ -84,10 +84,10 @@ namespace Game
                 if (currentRoom && currentRoom.EnemiesInRoom.Count > 0)
                 {
                     _TargetEnemy = currentRoom.EnemiesInRoom
-                       .OrderBy(e => (e.GetPosition() - MousePosition).magnitude)
+                       .OrderBy(e => (e.Position - MousePosition).magnitude)
                        .FirstOrDefault(e =>
                         {
-                            var vector2 = e.Position2DFrom(this);
+                            var vector2 = this.Position2DTo(e.Position);
                             if (Physics2D.Raycast(this.GetPosition(), vector2.normalized, vector2.magnitude, LayerMask.GetMask("Wall")))
                             {
                                 return false;
@@ -95,11 +95,11 @@ namespace Game
                             return true;
                         });
 
-                    if (_TargetEnemy) // 自动瞄准
+                    if (_TargetEnemy != null) // 自动瞄准
                     {
-                        Aim.SetPosition(_TargetEnemy.GetPosition());
+                        Aim.SetPosition(_TargetEnemy.Position);
                         Aim.EnableGameObject();
-                        return _TargetEnemy.Direction2DFrom(this);
+                        return this.Direction2DTo(_TargetEnemy.Position);
                     }
                 }
                 
@@ -174,7 +174,7 @@ namespace Game
             var bullet = Bullet.Instantiate(Bullet.GetPosition())
                .Enable()
                .SetTransformRight(direction)
-               .GetComponent<Bullet>();
+               .GetComponent<PlayerBullet>();
 
             var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
 

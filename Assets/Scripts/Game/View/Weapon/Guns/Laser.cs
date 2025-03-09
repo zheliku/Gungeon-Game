@@ -84,7 +84,7 @@ namespace Game
 
                 if (hit)
                 {
-                    var enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                    var enemy = hit.collider.gameObject.GetComponent<EnemyA>();
                     if (enemy)
                     {
                         var damage = _gunData.DamageRange.RandomSelect();

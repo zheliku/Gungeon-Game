@@ -61,7 +61,7 @@ namespace Game
 
                 bullet.OnCollisionEnter2DEvent(collider2D =>
                 {
-                    var enemy = collider2D.gameObject.GetComponent<Enemy>();
+                    var enemy = collider2D.gameObject.GetComponent<EnemyA>();
                     if (enemy)
                     {
                         enemy.Hurt(1);
