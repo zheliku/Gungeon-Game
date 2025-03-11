@@ -9,14 +9,15 @@
 namespace Game
 {
     using Framework.Core;
-    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
+    using Framework.Toolkits.TimerKit;
     using UnityEngine;
+    using UnityEngine.Serialization;
     using Random = UnityEngine.Random;
 
-    public class EnemyC : Enemy
+    public class EnemyH : Enemy
     {
         public enum State
         {
@@ -24,7 +25,15 @@ namespace Game
             Shoot
         }
 
-        public float IntervalTime = 0.2f; // 发射间隔时间
+        public (int min, int max) FireTimes = (1, 4 + 1); // 一次连续射击发射的子弹次数，一次发射 1s
+
+        public float FireInterval = 0.25f; // 发射间隔时间
+
+        private int _fireTimes;
+
+        public int FireCount = 8; // 每次开枪射击发射的子弹个数
+
+        public float IntervalAngle = 15; // 间隔角度
 
         public FSM<State> FSM = new FSM<State>();
 
@@ -57,12 +66,17 @@ namespace Game
             FSM.State(State.Shoot)
                .OnEnter(() =>
                 {
-                    Fire();
+                    _fireTimes                 = FireTimes.RandomSelect();
                     Rigidbody2D.linearVelocity = Vector2.zero;
                 })
                .OnUpdate(() =>
                 {
-                    if (FSM.SecondsOfCurrentState >= 1)
+                    if (TimerKit.HasPassedInterval(this, FireInterval))
+                    {
+                        Fire();
+                    }
+
+                    if (FSM.SecondsOfCurrentState >= _fireTimes)
                     {
                         FSM.ChangeState(State.Follow);
                     }
@@ -97,20 +111,17 @@ namespace Game
         public void Fire()
         {
             var direction = Player.Instance.Direction2DFrom(this);
+            
+            BulletHelper.SpreadShoot(
+                fireCount: FireCount,
+                center: transform.position,
+                radius: 0.5f,
+                direction: direction,
+                intervalAngle: IntervalAngle,
+                bulletPrefab: Bullet,
+                speed: BulletSpeed);
 
-            ActionKit.Repeat(3)
-               .Callback(() =>
-                {
-                    var bullet = Bullet.Instantiate(transform.position)
-                       .Enable()
-                       .GetComponent<EnemyBullet>();
-
-                    bullet.Damage   = 1f;
-                    bullet.Velocity = direction * BulletSpeed;
-                    AudioKit.PlaySound(ShootSounds.RandomTakeOne());
-                })
-               .Delay(IntervalTime)
-               .Start(this);
+            AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

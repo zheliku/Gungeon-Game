@@ -102,7 +102,7 @@ namespace Game
         {
             FSM.FixedUpdate();
         }
-
+        
         public void Fire()
         {
             var bullet = Bullet.Instantiate(transform.position)
@@ -110,9 +110,7 @@ namespace Game
                .GetComponent<EnemyBullet>();
 
             bullet.Damage = 1f;
-
-            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-            rigidbody2D.linearVelocity = Player.Instance.Direction2DFrom(bullet) * BulletSpeed;
+            bullet.Velocity = Player.Instance.Direction2DFrom(bullet) * BulletSpeed;
 
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }

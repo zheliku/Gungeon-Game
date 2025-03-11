@@ -102,7 +102,7 @@ namespace Game
                         return this.Direction2DTo(_TargetEnemy.Position);
                     }
                 }
-                
+
                 Aim.DisableGameObject();
                 return (MousePosition - transform.position).normalized;
             }
@@ -143,9 +143,6 @@ namespace Game
                 // 重装子弹
                 Reload();
             }).UnBindAllWhenGameObjectDisabled(gameObject);
-
-            InputKit.BindPerformed("Move", context =>
-                                   { });
         }
 
         private void Update()
@@ -158,6 +155,11 @@ namespace Game
             var angle = Mathf.Atan2(ShootDirection.y, ShootDirection.x).Rad2Deg();
             this.SetLocalEulerAngles(z: angle);             // 使 Weapon 方向跟手
             this.SetLocalScale(y: ShootDirection.x.Sign()); // 使 Weapon 随鼠标左右翻转
+        }
+
+        protected virtual void OnDestroy()
+        {
+            ShootUp(Vector2.zero); // 销毁时抬枪，否则死后可能会一直播放射击声音
         }
 
         public abstract void ShootDown(Vector2 direction);
@@ -175,12 +177,9 @@ namespace Game
                .Enable()
                .SetTransformRight(direction)
                .GetComponent<PlayerBullet>();
-
-            var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-
-            rigidbody2D.linearVelocity = direction * _BulletSpeed;
-
-            bullet.Damage = _gunData.DamageRange.RandomSelect();
+            
+            bullet.Damage   = _gunData.DamageRange.RandomSelect();
+            bullet.Velocity = direction * _BulletSpeed;
 
             ShowGunShootLight(direction);
 

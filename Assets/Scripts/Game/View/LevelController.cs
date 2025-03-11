@@ -32,7 +32,7 @@ namespace Game
         public Tilemap FloorTilemap;
 
         [ShowInInspector]
-        [HierarchyPath("/EnemyDB/EnemyE")]
+        [HierarchyPath("/EnemyDB/EnemyA_Big")]
         public IEnemy Enemy;
 
         [HierarchyPath("Template/Final")]

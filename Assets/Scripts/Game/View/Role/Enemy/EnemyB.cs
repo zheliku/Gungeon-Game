@@ -96,19 +96,17 @@ namespace Game
 
         public void Fire()
         {
-            var mainDirection = Player.Instance.Direction2DFrom(this);
+            var direction = Player.Instance.Direction2DFrom(this);
 
-            for (int i = -FireCount / 2; i <= FireCount / 2; i++)
-            {
-                var bullet = Bullet.Instantiate(transform.position)
-                   .Enable()
-                   .GetComponent<EnemyBullet>();
+            BulletHelper.SpreadShoot(
+                fireCount: FireCount,
+                center: transform.position,
+                radius: 0.5f,
+                direction: direction,
+                intervalAngle: IntervalAngle,
+                bulletPrefab: Bullet,
+                speed: BulletSpeed);
 
-                bullet.Damage = 1f;
-
-                var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-                rigidbody2D.linearVelocity = mainDirection.Rotate(i * IntervalAngle) * BulletSpeed;
-            }
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
 

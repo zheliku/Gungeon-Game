@@ -9,14 +9,13 @@
 namespace Game
 {
     using Framework.Core;
-    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class EnemyC : Enemy
+    public class EnemyA_Big : Enemy
     {
         public enum State
         {
@@ -24,13 +23,14 @@ namespace Game
             Shoot
         }
 
-        public float IntervalTime = 0.2f; // 发射间隔时间
-
         public FSM<State> FSM = new FSM<State>();
 
         protected override void Awake()
         {
             base.Awake();
+
+            BulletSpeed = 10f;                     // 子弹速度更快
+            _property.Hp.SetValueWithoutEvent(10); // 血量更高
 
             FSM.State(State.Follow)
                .OnEnter(() =>
@@ -96,21 +96,14 @@ namespace Game
 
         public void Fire()
         {
-            var direction = Player.Instance.Direction2DFrom(this);
+            var bullet = Bullet.Instantiate(transform.position)
+               .Enable()
+               .GetComponent<EnemyBullet>();
 
-            ActionKit.Repeat(3)
-               .Callback(() =>
-                {
-                    var bullet = Bullet.Instantiate(transform.position)
-                       .Enable()
-                       .GetComponent<EnemyBullet>();
+            bullet.Damage   = 1f;
+            bullet.Velocity = Player.Instance.Direction2DFrom(bullet) * BulletSpeed;
 
-                    bullet.Damage   = 1f;
-                    bullet.Velocity = direction * BulletSpeed;
-                    AudioKit.PlaySound(ShootSounds.RandomTakeOne());
-                })
-               .Delay(IntervalTime)
-               .Start(this);
+            AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

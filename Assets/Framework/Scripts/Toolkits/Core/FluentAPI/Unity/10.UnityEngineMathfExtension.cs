@@ -29,7 +29,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Abs(self);
         }
-        
+
         public static float AbsTo(this float self, float to)
         {
             return Mathf.Abs(self - to);
@@ -39,7 +39,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Abs(self - to);
         }
-        
+
         public static float AbsTo(this int self, int to)
         {
             return Mathf.Abs(self - to);
@@ -54,17 +54,17 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Approximately(self, other);
         }
-        
+
         public static bool Approximately(this float self, int other)
         {
             return Mathf.Approximately(self, other);
         }
-        
+
         public static bool Approximately(this int self, int other)
         {
             return Mathf.Approximately(self, other);
         }
-        
+
         public static bool Approximately(this int self, float other)
         {
             return Mathf.Approximately(self, other);
@@ -89,7 +89,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Log(self);
         }
-        
+
         public static float Log10(this float self)
         {
             return Mathf.Log10(self);
@@ -199,7 +199,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Clamp(self, min, max);
         }
-        
+
         public static float Clamp(this int self, int min, int max)
         {
             return Mathf.Clamp(self, min, max);
@@ -209,45 +209,55 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Clamp01(self);
         }
-        
+
         public static float MinWith(this float self, float min)
         {
             return Mathf.Min(self, min);
         }
-        
+
         public static float MinWith(this float self, int min)
         {
             return Mathf.Min(self, min);
         }
-        
+
         public static float MinWith(this int self, float min)
         {
             return Mathf.Min(self, min);
         }
-        
+
         public static int MinWith(this int self, int min)
         {
             return Mathf.Min(self, min);
         }
-        
+
         public static float MaxWith(this float self, float max)
         {
             return Mathf.Max(self, max);
         }
-        
+
         public static float MaxWith(this float self, int max)
         {
             return Mathf.Max(self, max);
         }
-        
+
         public static float MaxWith(this int self, float max)
         {
             return Mathf.Max(self, max);
         }
-        
+
         public static int MaxWith(this int self, int max)
         {
             return Mathf.Max(self, max);
+        }
+
+        public static Vector2 Deg2Direction2D(this float self)
+        {
+            return new Vector2(Mathf.Cos(self.Deg2Rad()), Mathf.Sin(self.Deg2Rad()));
+        }
+
+        public static Vector2 Rad2Direction2D(this float self)
+        {
+            return new Vector2(Mathf.Cos(self), Mathf.Sin(self));
         }
     }
 }

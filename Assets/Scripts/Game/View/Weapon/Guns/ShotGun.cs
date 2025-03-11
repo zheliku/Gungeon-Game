@@ -53,22 +53,11 @@ namespace Game
 
                 var bullet = Bullet.Instantiate(Bullet.transform.position)
                    .Enable()
-                   .SetTransformRight(direction);
+                   .SetTransformRight(direction)
+                   .GetComponent<PlayerBullet>();
 
-                var rigidbody2D = bullet.GetComponent<Rigidbody2D>();
-
-                rigidbody2D.linearVelocity = eachDirection * _BulletSpeed;
-
-                bullet.OnCollisionEnter2DEvent(collider2D =>
-                {
-                    var enemy = collider2D.gameObject.GetComponent<EnemyA>();
-                    if (enemy)
-                    {
-                        enemy.Hurt(1);
-                    }
-
-                    bullet.Destroy();
-                });
+                bullet.Damage   = 1;
+                bullet.Velocity = eachDirection * _BulletSpeed;
             }
 
             ShowGunShootLight(direction);

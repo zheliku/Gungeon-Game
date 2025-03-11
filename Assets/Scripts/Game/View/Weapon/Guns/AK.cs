@@ -68,7 +68,7 @@ namespace Game
 
         public override void ShootUp(Vector2 direction)
         {
-            _audioPlayer.Stop();
+            _audioPlayer?.Stop();
             AudioKit.PlaySound(ShootSounds[1], volume: 0.3f);
             IsShooting = false;
         }

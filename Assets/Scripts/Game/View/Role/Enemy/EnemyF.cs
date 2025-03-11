@@ -16,7 +16,7 @@ namespace Game
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class EnemyC : Enemy
+    public class EnemyF : Enemy
     {
         public enum State
         {
@@ -24,6 +24,7 @@ namespace Game
             Shoot
         }
 
+        public int   FireCount    = 15;   // 一次射击发射的子弹个数
         public float IntervalTime = 0.2f; // 发射间隔时间
 
         public FSM<State> FSM = new FSM<State>();
@@ -96,17 +97,15 @@ namespace Game
 
         public void Fire()
         {
-            var direction = Player.Instance.Direction2DFrom(this);
-
             ActionKit.Repeat(3)
                .Callback(() =>
                 {
-                    var bullet = Bullet.Instantiate(transform.position)
-                       .Enable()
-                       .GetComponent<EnemyBullet>();
-
-                    bullet.Damage   = 1f;
-                    bullet.Velocity = direction * BulletSpeed;
+                    BulletHelper.CircleShoot(
+                        fireCount: FireCount,
+                        center: transform.position,
+                        radius: 0.5f,
+                        bulletPrefab: Bullet,
+                        speed: BulletSpeed);
                     AudioKit.PlaySound(ShootSounds.RandomTakeOne());
                 })
                .Delay(IntervalTime)

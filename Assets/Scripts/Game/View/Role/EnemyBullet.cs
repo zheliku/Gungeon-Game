@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
@@ -15,6 +16,20 @@ namespace Game
     public class EnemyBullet : AbstractView
     {
         public float Damage;
+
+        [HierarchyPath]
+        public Rigidbody2D Rigidbody;
+
+        public Vector2 Velocity
+        {
+            get => Rigidbody.linearVelocity;
+            set => Rigidbody.linearVelocity = value;
+        }
+
+        private void Awake()
+        {
+            this.BindHierarchyComponent();
+        }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
@@ -26,7 +41,7 @@ namespace Game
 
             this.DestroyGameObject();
         }
-        
+
         protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }
