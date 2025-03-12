@@ -9,14 +9,13 @@
 namespace Game
 {
     using Framework.Core;
-    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class EnemyF : Enemy
+    public class EnemyB_Big : Enemy
     {
         public enum State
         {
@@ -24,14 +23,17 @@ namespace Game
             Shoot
         }
 
-        public int   FireCount    = 15;   // 一次射击发射的子弹个数
-        public float IntervalTime = 0.2f; // 发射间隔时间
+        public int   FireCount     = 9;  // 一次射击发射的子弹个数
+        public float IntervalAngle = 15; // 间隔角度
 
         public FSM<State> FSM = new FSM<State>();
 
         protected override void Awake()
         {
             base.Awake();
+            
+            BulletSpeed = 8f;                     // 子弹速度更快
+            _property.Hp.SetValueWithoutEvent(10); // 血量更高
 
             FSM.State(State.Follow)
                .OnEnter(() =>
@@ -97,20 +99,19 @@ namespace Game
 
         public void Fire()
         {
-            ActionKit.Repeat(3)
-               .Callback(() =>
-                {
-                    BulletHelper.CircleShoot(
-                        fireCount: FireCount,
-                        center: transform.position,
-                        radius: 0.5f,
-                        bulletPrefab: Bullet,
-                        damage: 1f,
-                        speed: BulletSpeed);
-                    AudioKit.PlaySound(ShootSounds.RandomTakeOne());
-                })
-               .Delay(IntervalTime)
-               .Start(this);
+            var direction = Player.Instance.Direction2DFrom(this);
+
+            BulletHelper.SpreadShoot(
+                fireCount: FireCount,
+                center: transform.position,
+                radius: 0.5f,
+                direction: direction,
+                intervalAngle: IntervalAngle,
+                bulletPrefab: Bullet,
+                damage: 1f,
+                speed: BulletSpeed);
+
+            AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

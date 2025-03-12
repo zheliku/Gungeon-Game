@@ -14,7 +14,6 @@ namespace Game
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.TimerKit;
     using UnityEngine;
-    using UnityEngine.Serialization;
     using Random = UnityEngine.Random;
 
     public class EnemyH : Enemy
@@ -119,6 +118,7 @@ namespace Game
                 direction: direction,
                 intervalAngle: IntervalAngle,
                 bulletPrefab: Bullet,
+                damage: 1f,
                 speed: BulletSpeed);
 
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());

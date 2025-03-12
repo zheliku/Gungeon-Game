@@ -46,19 +46,15 @@ namespace Game
             Clip.Use();             // 弹夹使用子弹
             _ShootInterval.Reset(); // 射击间隔重置
 
-            for (int i = 0; i < OneShootCount; i++)
-            {
-                var angle         = (i - (OneShootCount - 1) / 2f) * IntervalAngle;
-                var eachDirection = direction.Rotate(angle);
-
-                var bullet = Bullet.Instantiate(Bullet.transform.position)
-                   .Enable()
-                   .SetTransformRight(direction)
-                   .GetComponent<PlayerBullet>();
-
-                bullet.Damage   = 1;
-                bullet.Velocity = eachDirection * _BulletSpeed;
-            }
+            BulletHelper.SpreadShoot(
+                fireCount: OneShootCount,
+                center: ShootPos.position,
+                radius: 0f,
+                direction: direction,
+                intervalAngle: IntervalAngle,
+                bulletPrefab: BulletFactory.Instance.GunBullet.gameObject,
+                damage: 1f,
+                speed: _BulletSpeed);
 
             ShowGunShootLight(direction);
 

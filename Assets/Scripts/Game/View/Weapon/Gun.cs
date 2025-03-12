@@ -8,7 +8,6 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Framework.Core;
@@ -25,14 +24,12 @@ namespace Game
     {
         protected BG_GunData _gunData;
 
-        [HierarchyPath("Bullet")]
-        public GameObject Bullet;
+        [HierarchyPath("ShootPos")]
+        public Transform ShootPos;
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
         public AudioClip ReloadSound;
-
-        // public AudioClip EmptyBulletSound;
 
         [HierarchyPath("/Player/Weapon/GunShootLight")]
         public SpriteRenderer GunShootLight;
@@ -120,7 +117,6 @@ namespace Game
             Clip           = new GunClip(this, _gunData.ClipBulletCount);
             Bag            = new BulletBag(this, _gunData.BagBulletCount);
 
-            Bullet.Disable();
             GunShootLight.DisableGameObject();
         }
 
@@ -157,7 +153,7 @@ namespace Game
             this.SetLocalScale(y: ShootDirection.x.Sign()); // 使 Weapon 随鼠标左右翻转
         }
 
-        protected virtual void OnDestroy()
+        protected virtual void OnDisable()
         {
             ShootUp(Vector2.zero); // 销毁时抬枪，否则死后可能会一直播放射击声音
         }
@@ -173,13 +169,12 @@ namespace Game
             Clip.Use();             // 弹夹使用子弹
             _ShootInterval.Reset(); // 射击间隔重置
 
-            var bullet = Bullet.Instantiate(Bullet.GetPosition())
-               .Enable()
-               .SetTransformRight(direction)
-               .GetComponent<PlayerBullet>();
-            
-            bullet.Damage   = _gunData.DamageRange.RandomSelect();
-            bullet.Velocity = direction * _BulletSpeed;
+            BulletHelper.Shoot(
+                ShootPos.position,
+                direction,
+                BulletFactory.Instance.GunBullet.gameObject,
+                _gunData.DamageRange.RandomSelect(),
+                _BulletSpeed);
 
             ShowGunShootLight(direction);
 
@@ -188,7 +183,7 @@ namespace Game
 
         protected void ShowGunShootLight(Vector2 direction)
         {
-            GunShootLight.SetPosition(Bullet.GetPosition())
+            GunShootLight.SetPosition(ShootPos.position)
                .SetTransformRight(direction)
                .EnableGameObject();
 

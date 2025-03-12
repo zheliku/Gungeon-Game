@@ -13,6 +13,17 @@ namespace Game
 
     public class BulletHelper
     {
+        public static void Shoot(Vector2 pos, Vector2 direction, GameObject bulletPrefab, float damage, float speed)
+        {
+            var bullet = bulletPrefab.Instantiate(pos)
+               .Enable()
+               .SetTransformRight(direction)
+               .GetComponent<PlayerBullet>();
+
+            bullet.Damage   = damage;
+            bullet.Velocity = direction * speed;
+        }
+
         /// <summary>
         /// 圆圈攻击
         /// </summary>
@@ -21,6 +32,7 @@ namespace Game
             Vector2    center,
             float      radius,
             GameObject bulletPrefab,
+            float      damage,
             float      speed)
         {
             var angleOffset = (0f, 360f).RandomSelect();
@@ -34,7 +46,7 @@ namespace Game
                    .Enable()
                    .GetComponent<EnemyBullet>();
 
-                bullet.Damage   = 1f;
+                bullet.Damage   = damage;
                 bullet.Velocity = direction * speed;
             }
         }
@@ -49,18 +61,19 @@ namespace Game
             Vector2    direction,
             float      intervalAngle,
             GameObject bulletPrefab,
+            float      damage,
             float      speed)
         {
             for (int i = -fireCount / 2; i <= fireCount / 2; i++)
             {
                 var eachDir = direction.Rotate(i * intervalAngle);
                 var initPos = center + eachDir * radius; // 中心偏移 radius 个单位
-                
+
                 var bullet = bulletPrefab.Instantiate(initPos)
                    .Enable()
                    .GetComponent<EnemyBullet>();
 
-                bullet.Damage   = 1f;
+                bullet.Damage   = damage;
                 bullet.Velocity = eachDir * speed;
             }
         }

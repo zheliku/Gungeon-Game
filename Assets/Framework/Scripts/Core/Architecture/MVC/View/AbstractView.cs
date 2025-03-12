@@ -40,14 +40,22 @@ namespace Framework.Core
     {
         public readonly string HierarchyPath;
         
+        public readonly bool LogErrorIfNotFound = true;
+        
         public HierarchyPathAttribute()
         {
             HierarchyPath = string.Empty;
         }
+        
+        public HierarchyPathAttribute(bool logErrorIfNotFound)
+        {
+            LogErrorIfNotFound = logErrorIfNotFound;
+        }
 
-        public HierarchyPathAttribute(string hierarchyPath)
+        public HierarchyPathAttribute(string hierarchyPath, bool logErrorIfNotFound = true)
         {
             HierarchyPath = hierarchyPath;
+            LogErrorIfNotFound = logErrorIfNotFound;
         }
     }
 }

@@ -12,13 +12,12 @@ namespace Game
     using UnityEngine;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
-    using Framework.Toolkits.TimerKit;
 
-    public class Laser : Gun
+    public class LaserGun : Gun
     {
         public float Distance = 10;
 
-        [HierarchyPath("Bullet")]
+        [HierarchyPath("Laser")]
         public LineRenderer LineRenderer;
 
         private AudioPlayer _audioPlayer;
@@ -73,9 +72,9 @@ namespace Game
 
             // 有子弹，才更新激光位置
             var layers   = LayerMask.GetMask("Wall", "Enemy");
-            var hit      = Physics2D.Raycast(Bullet.GetPosition(), direction, Distance, layers);
-            var hitPoint = hit ? hit.point : Bullet.GetPosition().ToVector2() + direction * Distance;
-            LineRenderer.SetPositions(new Vector3[] { Bullet.GetPosition(), hitPoint });
+            var hit      = Physics2D.Raycast(ShootPos.GetPosition(), direction, Distance, layers);
+            var hitPoint = hit ? hit.point : ShootPos.GetPosition().ToVector2() + direction * Distance;
+            LineRenderer.SetPositions(new Vector3[] { ShootPos.GetPosition(), hitPoint });
 
             if (_CanShoot)
             {
@@ -98,7 +97,7 @@ namespace Game
 
         public override void ShootUp(Vector2 direction)
         {
-            _audioPlayer.Stop();
+            _audioPlayer?.Stop();
             LineRenderer.DisableGameObject();
             IsShooting = false;
         }

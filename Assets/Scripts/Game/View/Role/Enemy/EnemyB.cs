@@ -105,6 +105,7 @@ namespace Game
                 direction: direction,
                 intervalAngle: IntervalAngle,
                 bulletPrefab: Bullet,
+                damage: 1f,
                 speed: BulletSpeed);
 
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());

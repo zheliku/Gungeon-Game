@@ -60,5 +60,22 @@ namespace Game
 
             IsShooting = false;
         }
+        
+        public override void ShootOnce(Vector2 direction)
+        {
+            Clip.Use();             // 弹夹使用子弹
+            _ShootInterval.Reset(); // 射击间隔重置
+
+            BulletHelper.Shoot(
+                ShootPos.position,
+                direction,
+                BulletFactory.Instance.BowArrow.gameObject,
+                _gunData.DamageRange.RandomSelect(),
+                _BulletSpeed);
+
+            ShowGunShootLight(direction);
+
+            TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
+        }
     }
 }

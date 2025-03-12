@@ -63,7 +63,10 @@ namespace Framework.Core
 
                 if (targetTransform == null)
                 {
-                    Debug.LogError($"Path resolve failed: {attribute.HierarchyPath}", view.gameObject);
+                    if (attribute.LogErrorIfNotFound)
+                    {
+                        Debug.LogError($"Path resolve failed: {attribute.HierarchyPath}", view.gameObject);
+                    }
                     continue;
                 }
 

@@ -16,7 +16,7 @@ namespace Game
     using UnityEngine;
     using Random = UnityEngine.Random;
 
-    public class EnemyF : Enemy
+    public class EnemyC_Big : Enemy
     {
         public enum State
         {
@@ -24,7 +24,6 @@ namespace Game
             Shoot
         }
 
-        public int   FireCount    = 15;   // 一次射击发射的子弹个数
         public float IntervalTime = 0.2f; // 发射间隔时间
 
         public FSM<State> FSM = new FSM<State>();
@@ -32,6 +31,9 @@ namespace Game
         protected override void Awake()
         {
             base.Awake();
+            
+            BulletSpeed = 8f;                     // 子弹速度更快
+            _property.Hp.SetValueWithoutEvent(10); // 血量更高
 
             FSM.State(State.Follow)
                .OnEnter(() =>
@@ -97,16 +99,17 @@ namespace Game
 
         public void Fire()
         {
+            var direction = Player.Instance.Direction2DFrom(this);
+
             ActionKit.Repeat(3)
                .Callback(() =>
                 {
-                    BulletHelper.CircleShoot(
-                        fireCount: FireCount,
-                        center: transform.position,
-                        radius: 0.5f,
-                        bulletPrefab: Bullet,
-                        damage: 1f,
-                        speed: BulletSpeed);
+                    var bullet = Bullet.Instantiate(transform.position)
+                       .Enable()
+                       .GetComponent<EnemyBullet>();
+
+                    bullet.Damage   = 1f;
+                    bullet.Velocity = direction * BulletSpeed;
                     AudioKit.PlaySound(ShootSounds.RandomTakeOne());
                 })
                .Delay(IntervalTime)

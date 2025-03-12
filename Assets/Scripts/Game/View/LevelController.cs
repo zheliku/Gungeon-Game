@@ -30,10 +30,14 @@ namespace Game
 
         [HierarchyPath("Grid/Floor")]
         public Tilemap FloorTilemap;
-
+        
         [ShowInInspector]
-        [HierarchyPath("/EnemyDB/EnemyA_Big")]
-        public IEnemy Enemy;
+        public List<Enemy> TemplateEnemies = new List<Enemy>();
+
+        public IEnemy Enemy
+        {
+            get => TemplateEnemies.RandomTakeOne();
+        }
 
         [HierarchyPath("Template/Final")]
         public Final FinalTemplate;
