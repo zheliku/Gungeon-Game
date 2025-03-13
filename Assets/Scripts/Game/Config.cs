@@ -16,6 +16,7 @@ namespace Game
             public const string HP1          = "Hp1";
             public const string CHEST        = "Chest";
             public const string DOOR_OPEN    = "DoorOpen";
+            public const string PLAYER_HURT  = "PlayerHurt";
         }
     }
 }

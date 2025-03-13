@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c844d70b21bc8c94f95e0afaf019d7a6
+    m_Address: PlayerHurt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 371a3e3f2b55c8e44b1b84bc9849f268, type: 2}
   m_SchemaSet:

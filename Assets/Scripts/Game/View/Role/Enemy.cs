@@ -10,6 +10,7 @@ namespace Game
 {
     using System.Collections.Generic;
     using Framework.Core;
+    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.FluentAPI;
     using Sirenix.OdinInspector;
     using UnityEngine;
@@ -20,14 +21,14 @@ namespace Game
         public GameObject Bullet;
 
         public float FollowSeconds = 3;
-        
+
         public float BulletSpeed = 5;
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
         [ShowInInspector]
         protected Property _property = new Property() { Hp = { Value = 2 } };
-        
+
         public GameObject GameObject { get => gameObject; }
 
         public Transform Transform { get => transform; }
@@ -37,7 +38,7 @@ namespace Game
             base.Awake();
 
             Bullet.Disable();
-            
+
             _property.Hp.Register((oldValue, value) =>
             {
                 if (value <= 0)
@@ -49,16 +50,20 @@ namespace Game
             // 生成时发送生成事件
             TypeEventSystem.GLOBAL.Send(new EnemyCreateEvent(this));
         }
-        
+
         protected virtual void OnDestroy()
         {
             // 死亡时发送死亡事件
             TypeEventSystem.GLOBAL.Send(new EnemyDieEvent(this));
         }
-        
+
         public override void Hurt(float damage)
         {
             _property.Hp.Value -= damage;
+
+            FxFactory.PlayHurtFx(this.GetPosition(), Color.red);
+
+            FxFactory.PlayEnemyBlood(this.GetPosition());
         }
     }
 }

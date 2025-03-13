@@ -167,6 +167,11 @@ namespace Game
         public override void Hurt(float damage)
         {
             _Property.Hp.Value -= damage;
+            
+            FxFactory.PlayHurtFx(this.GetPosition(), Color.green);
+            FxFactory.PlayPlayerBlood(this.GetPosition());
+
+            AudioKit.PlaySound(Config.Sound.PLAYER_HURT);
         }
 
         public void UseGun(int gunIndex)
