@@ -26,6 +26,8 @@ public partial class BG_GunData : BGEntity
 		public const string ClipBulletCount = "ClipBulletCount";
 		public const string BagBulletCount = "BagBulletCount";
 		public const string DamageRange = "DamageRange";
+		public const string ShootShakeA = "ShootShakeA";
+		public const string ShootShakeFrames = "ShootShakeFrames";
 	}
 	private static BansheeGz.BGDatabase.BGMetaRow _metaDefault;
 	public static BansheeGz.BGDatabase.BGMetaRow MetaDefault => _metaDefault ?? (_metaDefault = BGCodeGenUtils.GetMeta<BansheeGz.BGDatabase.BGMetaRow>(new BGId(5597011547648622931UL,113604648607007155UL), () => _metaDefault = null));
@@ -61,6 +63,16 @@ public partial class BG_GunData : BGEntity
 		get => _DamageRange[Index];
 		set => _DamageRange[Index] = value;
 	}
+	public System.Single ShootShakeA
+	{
+		get => _ShootShakeA[Index];
+		set => _ShootShakeA[Index] = value;
+	}
+	public System.Int32 ShootShakeFrames
+	{
+		get => _ShootShakeFrames[Index];
+		set => _ShootShakeFrames[Index] = value;
+	}
 	private static BansheeGz.BGDatabase.BGFieldEntityName _ufle12jhs77_name;
 	public static BansheeGz.BGDatabase.BGFieldEntityName _name => _ufle12jhs77_name ?? (_ufle12jhs77_name = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldEntityName>(MetaDefault, new BGId(5503755016982348342UL, 8535430791740521915UL), () => _ufle12jhs77_name = null));
 	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_ShootInterval;
@@ -73,6 +85,10 @@ public partial class BG_GunData : BGEntity
 	public static BansheeGz.BGDatabase.BGFieldInt _BagBulletCount => _ufle12jhs77_BagBulletCount ?? (_ufle12jhs77_BagBulletCount = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(5642778611852160909UL, 9373558691069362613UL), () => _ufle12jhs77_BagBulletCount = null));
 	private static BansheeGz.BGDatabase.BGFieldVector2 _ufle12jhs77_DamageRange;
 	public static BansheeGz.BGDatabase.BGFieldVector2 _DamageRange => _ufle12jhs77_DamageRange ?? (_ufle12jhs77_DamageRange = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldVector2>(MetaDefault, new BGId(4622297054919943538UL, 10879492899221037731UL), () => _ufle12jhs77_DamageRange = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_ShootShakeA;
+	public static BansheeGz.BGDatabase.BGFieldFloat _ShootShakeA => _ufle12jhs77_ShootShakeA ?? (_ufle12jhs77_ShootShakeA = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5293072169377533873UL, 2755221425414645157UL), () => _ufle12jhs77_ShootShakeA = null));
+	private static BansheeGz.BGDatabase.BGFieldInt _ufle12jhs77_ShootShakeFrames;
+	public static BansheeGz.BGDatabase.BGFieldInt _ShootShakeFrames => _ufle12jhs77_ShootShakeFrames ?? (_ufle12jhs77_ShootShakeFrames = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(5214552449015445016UL, 5898427276458699947UL), () => _ufle12jhs77_ShootShakeFrames = null));
 	private static readonly BG_GunData.Factory _factory0_PFS = new BG_GunData.Factory();
 	private BG_GunData() : base(MetaDefault) {}
 	private BG_GunData(BGId id) : base(MetaDefault, id) {}

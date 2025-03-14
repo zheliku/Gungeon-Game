@@ -12,7 +12,6 @@ namespace Game
     using Framework.Core;
     using Framework.Toolkits.SingletonKit;
     using UnityEngine;
-    using UnityEngine.Serialization;
 
     public class BulletFactory : MonoSingleton<BulletFactory>
     {

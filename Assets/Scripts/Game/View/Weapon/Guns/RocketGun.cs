@@ -48,6 +48,8 @@ namespace Game
                 _gunData.DamageRange.RandomSelect(),
                 _BulletSpeed);
 
+            CameraController.Instance.Shake.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
+
             ShowGunShootLight(direction);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));

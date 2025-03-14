@@ -178,6 +178,8 @@ namespace Game
 
             ShowGunShootLight(direction);
 
+            CameraController.Instance.Shake.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
+
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
         }
 

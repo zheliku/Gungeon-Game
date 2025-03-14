@@ -18,7 +18,7 @@ namespace Game
             var bullet = bulletPrefab.Instantiate(pos)
                .Enable()
                .SetTransformRight(direction)
-               .GetComponent<PlayerBullet>();
+               .GetComponent<Bullet>();
 
             bullet.Damage   = damage;
             bullet.Velocity = direction * speed;
@@ -44,7 +44,7 @@ namespace Game
                 var initPos   = center + direction * radius; // 中心偏移 radius 个单位
                 var bullet = bulletPrefab.Instantiate(initPos)
                    .Enable()
-                   .GetComponent<EnemyBullet>();
+                   .GetComponent<Bullet>();
 
                 bullet.Damage   = damage;
                 bullet.Velocity = direction * speed;
@@ -71,7 +71,7 @@ namespace Game
 
                 var bullet = bulletPrefab.Instantiate(initPos)
                    .Enable()
-                   .GetComponent<EnemyBullet>();
+                   .GetComponent<Bullet>();
 
                 bullet.Damage   = damage;
                 bullet.Velocity = eachDir * speed;

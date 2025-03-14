@@ -8,30 +8,13 @@
 
 namespace Game
 {
-    using System;
-    using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class PlayerBullet : AbstractView
+    public class PlayerBullet : Bullet
     {
-        public float Damage;
-
-        public Rigidbody2D Rigidbody; // 不用 HierarchyPath，因为有些子弹没有 Rigidbody
-
-        public Vector2 Velocity
-        {
-            get => Rigidbody.linearVelocity;
-            set => Rigidbody.linearVelocity = value;
-        }
-
-        private void Awake()
-        {
-            Rigidbody = GetComponent<Rigidbody2D>();
-        }
-
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("Enemy"))
