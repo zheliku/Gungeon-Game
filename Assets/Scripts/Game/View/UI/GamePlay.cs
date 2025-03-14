@@ -9,8 +9,11 @@
 namespace Game
 {
     using Framework.Core;
+    using Framework.Toolkits.ActionKit;
+    using Framework.Toolkits.InputKit;
     using Framework.Toolkits.UIKit;
     using TMPro;
+    using UnityEngine;
 
     public class GamePlay : UIPanel
     {
@@ -49,6 +52,20 @@ namespace Game
             {
                 UpdateGunInfo(e.Gun);
             }).UnRegisterWhenGameObjectDisabled(this);
+
+            InputKit.BindPerformed("OpenMap", context =>
+            {
+                if (!UIMap.IsOpen)
+                {
+                    UIKit.ShowPanelAsync<UIMap>();
+                    UIMap.IsOpen = true;
+                }
+                else
+                {
+                    UIKit.HidePanel<UIMap>();
+                    UIMap.IsOpen = false;
+                }
+            }).UnBindAllPerformedWhenGameObjectDisabled(this);
         }
 
         private void UpdateGunInfo(Gun gun)

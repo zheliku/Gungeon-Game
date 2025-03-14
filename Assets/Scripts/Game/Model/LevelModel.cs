@@ -11,9 +11,12 @@ namespace Game
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Core.Model;
+    using Framework.Toolkits.GridKit;
 
     public class LevelModel : AbstractModel
     {
+        public DynamicGrid<Room> GeneratedRooms = new DynamicGrid<Room>();
+        
         /// <summary>
         /// 1：地块
         /// @：主角

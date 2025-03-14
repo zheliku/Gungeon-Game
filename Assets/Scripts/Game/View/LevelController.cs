@@ -30,7 +30,7 @@ namespace Game
 
         [HierarchyPath("Grid/Floor")]
         public Tilemap FloorTilemap;
-        
+
         [ShowInInspector]
         public List<Enemy> TemplateEnemies = new List<Enemy>();
 
@@ -126,18 +126,20 @@ namespace Game
             {
                 predictWeight++;
             }
-            
+
             Debug.Log(predictWeight + " weight!");
 
-            var queue       = new Queue<RoomNode>();
-            var visitedRoom = new HashSet<RoomNode>(); // 记录已生成的房间
+            var queue          = new Queue<RoomNode>();
+            var visitedRoom    = new HashSet<RoomNode>(); // 记录已生成的房间
+            var generatedRooms = this.GetModel<LevelModel>().GeneratedRooms;
             queue.Enqueue(roomNode);
 
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
                 visitedRoom.Add(node);
-                GenerateRoomByNode(node);
+                var room = GenerateRoomByNode(node);
+                generatedRooms[node.Index] = room;
 
                 foreach (var pair in node.ConnectNodes)
                 {
@@ -213,7 +215,7 @@ namespace Game
             return true;
         }
 
-        private void GenerateRoomByNode(RoomNode node)
+        private Room GenerateRoomByNode(RoomNode node)
         {
             var roomGrid = node.RoomType switch
             {
@@ -355,6 +357,8 @@ namespace Game
                 var doorPosY = direction.ToVector2Int().y * roomHeight / 2 + pos.y;
                 WallTilemap.SetTile(new Vector3Int(doorPosX, doorPosY, 0), WallTile);
             }
+
+            return room;
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

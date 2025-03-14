@@ -51,6 +51,7 @@ namespace Game
 
         public RoomType RoomType { get => _grid.RoomType; }
 
+        [ShowInInspector]
         public RoomState State { get; private set; } = RoomState.Closed;
         
         public List<IEnemy> EnemiesInRoom
@@ -71,10 +72,10 @@ namespace Game
                     {
                         GenerateEnemies();
                     }
-                    else // 没有下一波敌人，房间状态变为 Unlocked
+                    else // 没有下一波敌人
                     {
                         State = RoomState.Unlocked;
-
+                        
                         foreach (var door in _doors) // 开门
                         {
                             door.State.ChangeState(DoorState.Open);
@@ -122,6 +123,10 @@ namespace Game
                             door.State.ChangeState(DoorState.BattleClose);
                         }
                     }
+                }
+                else
+                {
+                    State = RoomState.Unlocked; // 进入房间直接解锁
                 }
             }
         }
