@@ -11,6 +11,7 @@ namespace Game
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
+    using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Sirenix.OdinInspector;
     using UnityEngine;
@@ -43,6 +44,8 @@ namespace Game
             {
                 if (value <= 0)
                 {
+                    AudioKit.PlaySound(Config.Sound.ENEMY_DIE);
+                    
                     this.DestroyGameObject();
                 }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
@@ -57,13 +60,18 @@ namespace Game
             TypeEventSystem.GLOBAL.Send(new EnemyDieEvent(this));
         }
 
-        public override void Hurt(float damage)
+        public override void Hurt(float damage, HitInfo info)
         {
             _property.Hp.Value -= damage;
 
             FxFactory.PlayHurtFx(this.GetPosition(), Color.red);
 
             FxFactory.PlayEnemyBlood(this.GetPosition());
+
+            if (_property.Hp.Value <= 0)
+            {
+                FxFactory.PlayDieBody(this.GetPosition(), GetType().Name.Substring(0, 6) + "Die", info, SpriteRenderer.GetLocalScaleX());
+            }
         }
     }
 }

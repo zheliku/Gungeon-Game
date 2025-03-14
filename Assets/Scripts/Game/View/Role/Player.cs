@@ -164,7 +164,7 @@ namespace Game
             }
         }
 
-        public override void Hurt(float damage)
+        public override void Hurt(float damage, HitInfo info)
         {
             _Property.Hp.Value -= damage;
             

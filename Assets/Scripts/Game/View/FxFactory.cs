@@ -9,6 +9,8 @@
 namespace Game
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.SingletonKit;
@@ -25,6 +27,8 @@ namespace Game
 
         [HierarchyPath("PlayerBlood")]
         public SpriteRenderer PlayerBlood;
+
+        public List<SpriteRenderer> DieBodies = new List<SpriteRenderer>();
 
         private void Awake()
         {
@@ -66,7 +70,7 @@ namespace Game
                 blood.SetLocalScale(Vector3.one * (randomScale * f));
             }).Start(Instance);
         }
-        
+
         public static void PlayPlayerBlood(Vector3 position)
         {
             var blood = Instance.PlayerBlood
@@ -86,6 +90,34 @@ namespace Game
                 f = EasyTween.InCubic(0, 1, f);
                 blood.SetPosition(originPos + (Vector3) moveVec * f);
                 blood.SetLocalScale(Vector3.one * (randomScale * f));
+            }).Start(Instance);
+        }
+
+        public static void PlayDieBody(Vector3 position, string dieBodyName, HitInfo hitInfo, float scale)
+        {
+            var dieSprite = Instance.DieBodies.FirstOrDefault(b => b.name == dieBodyName);
+            if (dieSprite == null)
+            {
+                return;
+            }
+
+            var dieBody = dieSprite.Instantiate(position)
+               .SetLocalScale(Vector3.one * scale)
+               .SetLocalEulerAngles(z: (-45f, 45f).RandomSelect())
+               .Self(self =>
+                {
+                    self.flipX = new[] { true, false }.RandomTakeOne();
+                    self.flipY = new[] { true, false }.RandomTakeOne();
+                })
+               .EnableGameObject();
+
+            var originPos      = position;
+            var moveToDistance = (0.5f, 1.5f).RandomSelect();
+
+            ActionKit.Lerp01(0.3f, f =>
+            {
+                var targetPos = originPos.Lerp(originPos - (Vector3) (moveToDistance * hitInfo.HitNormal), f);
+                dieBody.SetPosition(targetPos);
             }).Start(Instance);
         }
 

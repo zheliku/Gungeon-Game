@@ -78,7 +78,7 @@ namespace Framework.Toolkits.FluentAPI
 
             return newList;
         }
-        
+
         /// <summary>
         /// 对 IList 进行随机打乱顺序
         /// </summary>

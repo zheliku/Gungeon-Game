@@ -36,7 +36,7 @@ namespace Game
             var player = other.gameObject.GetComponent<Player>();
             if (player)
             {
-                player.Hurt(Damage);
+                player.Hurt(Damage, other.ToHitInfo());
             }
 
             this.DestroyGameObject();

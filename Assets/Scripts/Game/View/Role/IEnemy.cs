@@ -21,6 +21,6 @@ namespace Game
             get => Transform.position;
         }
         
-        void Hurt(float damage);
+        void Hurt(float damage, HitInfo hitInfo);
     }
 }

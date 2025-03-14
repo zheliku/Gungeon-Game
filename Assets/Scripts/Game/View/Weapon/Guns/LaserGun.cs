@@ -83,11 +83,11 @@ namespace Game
 
                 if (hit)
                 {
-                    var enemy = hit.collider.gameObject.GetComponent<EnemyA>();
-                    if (enemy)
+                    var enemy = hit.collider.gameObject.GetComponent<IEnemy>();
+                    if (enemy != null)
                     {
                         var damage = _gunData.DamageRange.RandomSelect();
-                        enemy.Hurt(damage);
+                        enemy.Hurt(damage, hit.ToHitInfo());
                     }
                 }
 

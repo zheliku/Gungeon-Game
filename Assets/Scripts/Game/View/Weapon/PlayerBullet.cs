@@ -38,7 +38,7 @@ namespace Game
             {
                 this.DisableGameObject();
                 var enemy = other.gameObject.GetComponent<IEnemy>();
-                enemy.Hurt(Damage);
+                enemy.Hurt(Damage, other.ToHitInfo());
                 var soundClip = BulletFactory.Instance.HitEnemySounds.RandomTakeOne();
                 AudioKit.PlaySound(soundClip, 0.3f, onPlayFinish: _ =>
                 {

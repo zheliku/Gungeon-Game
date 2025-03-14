@@ -24,7 +24,7 @@ namespace Game
             this.BindHierarchyComponent();
         }
 
-        public abstract void Hurt(float damage);
+        public abstract void Hurt(float damage, HitInfo info);
 
         protected override IArchitecture _Architecture { get => Game.Interface; }
     }
