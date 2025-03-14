@@ -20,11 +20,19 @@ namespace Game
         [HierarchyPath("txtGun")]
         private TextMeshProUGUI _txtGun;
 
+        [HierarchyPath("Coin/txtCoin")]
+        private TextMeshProUGUI _textCoin;
+
         protected override void OnShow()
         {
             this.GetModel<PlayerModel>().Property.Hp.RegisterWithInitValue((oldValue, value) =>
             {
                 _txtHp.text = $"HP:{value}";
+            }).UnRegisterWhenGameObjectDisabled(gameObject);
+            
+            this.GetModel<PlayerModel>().Coin.RegisterWithInitValue((oldValue, value) =>
+            {
+                _textCoin.text = $"{value}";
             }).UnRegisterWhenGameObjectDisabled(gameObject);
 
             TypeEventSystem.GLOBAL.Register<GunShootEvent>(e =>

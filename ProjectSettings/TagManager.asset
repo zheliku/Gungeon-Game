@@ -55,5 +55,8 @@ TagManager:
   - name: Wall
     uniqueID: 3213600713
     locked: 0
+  - name: Fx
+    uniqueID: 822015881
+    locked: 0
   m_RenderingLayers:
   - Default

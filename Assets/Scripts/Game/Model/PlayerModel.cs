@@ -8,11 +8,14 @@
 
 namespace Game
 {
+    using Framework.Core;
     using Framework.Core.Model;
 
     public class PlayerModel : AbstractModel
     {
         public Property Property = new Property();
+
+        public BindableProperty<int> Coin = new BindableProperty<int>();
         
         protected override void OnInit()
         {
