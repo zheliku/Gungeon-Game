@@ -43,7 +43,7 @@ namespace Framework.Toolkits.UIKit
 
         void IPanel.Load() // 对自己隐藏
         {
-            State = PanelState.Opened;
+            State = PanelState.Loaded;
             this.BindHierarchyComponent();
             OnLoad();
             gameObject.SetActive(false);
@@ -65,7 +65,7 @@ namespace Framework.Toolkits.UIKit
 
         void IPanel.Unload() // 对自己隐藏
         {
-            State = PanelState.Closed;
+            State = PanelState.Unloaded;
             OnUnload();
         }
 

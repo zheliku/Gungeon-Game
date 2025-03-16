@@ -11,6 +11,7 @@ namespace Game
     using System;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
+    using Framework.Toolkits.UIKit;
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
@@ -47,13 +48,19 @@ namespace Game
         {
             this.BindHierarchyComponent();
 
+            BtnGo.onClick.AddListener(() =>
+            {
+                UIKit.HidePanel<UIMap>();
+                Player.Instance.SetPosition(Room.GetPosition());
+            });
+
             Init();
         }
 
         public MapItem SetData(Room room)
         {
             Room = room;
-            
+
             return this;
         }
 
@@ -80,6 +87,9 @@ namespace Game
                 }
             }
 
+            IconGroup.DisableGameObject();
+            Icon.DisableGameObject();
+
             switch (Room.RoomType)
             {
                 case RoomType.Init:
@@ -92,14 +102,21 @@ namespace Game
                     TxtType.text = "终点";
                     break;
                 case RoomType.Chest:
-                    TxtType.text = "宝箱";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            IconGroup.DisableGameObject();
-            Icon.DisableGameObject();
+            foreach (var powerUp in Room.PowerUps)
+            {
+                Icon.Instantiate(IconGroup)
+                   .Self(self =>
+                    {
+                        self.sprite = powerUp.SpriteRenderer.sprite;
+                    })
+                   .EnableGameObject();
+                IconGroup.EnableGameObject();
+            }
 
             if (this.GetModel<LevelModel>().CurrentRoom == Room)
             {

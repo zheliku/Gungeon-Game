@@ -16,6 +16,7 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
     using Framework.Toolkits.TimerKit;
+    using Framework.Toolkits.UIKit;
     using Sirenix.OdinInspector;
     using UnityEngine;
     using UnityEngine.InputSystem;
@@ -124,7 +125,10 @@ namespace Game
         {
             AttackAction = InputKit.BindPerformed("Attack", context =>
             {
-                ShootDown(ShootDirection);
+                if (!UIKit.IsPanelShown<UIMap>()) // 地图界面打开时，不允许射击
+                {
+                    ShootDown(ShootDirection);
+                }
             }).BindCanceled(context =>
             {
                 // 松手时检查是否还在射击，如果还在射击，则抬枪

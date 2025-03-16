@@ -13,12 +13,16 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class Coin : AbstractView
+    public class Coin : AbstractView, IPowerUp
     {
+        public SpriteRenderer SpriteRenderer { get => GetComponent<SpriteRenderer>(); }
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
             {
+                this.GetModel<LevelModel>().CurrentRoom.PowerUps.Remove(this); // 从房间中移除
+                
                 AudioKit.PlaySound(Config.Sound.COIN);
                 this.GetModel<PlayerModel>().Coin.Value += 1;
                 this.DestroyGameObject();

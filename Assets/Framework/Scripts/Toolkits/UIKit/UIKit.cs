@@ -34,6 +34,16 @@ namespace Framework.Toolkits.UIKit
             var handle = LoadPanelAsync<T>(panelName, null, level);
             return handle.WaitForCompletion().GetComponent<T>();
         }
+        
+        public static T GetPanel<T>(string panelName) where T : IPanel
+        {
+            return UIManager.Instance.GetPanel<T>(panelName);
+        }
+        
+        public static T GetPanel<T>() where T : IPanel
+        {
+            return UIManager.Instance.GetPanel<T>(typeof(T).Name);
+        }
 
         public static void UnloadPanel<T>(Action callback = null) where T : IPanel
         {
@@ -84,6 +94,17 @@ namespace Framework.Toolkits.UIKit
         public static void UnloadAllPanel(Action callback = null)
         {
             UIManager.Instance.UnloadAllPanel(callback);
+        }
+
+        public static bool IsPanelShown<T>(string panelName) where T : IPanel
+        {
+            var panel = GetPanel<T>(panelName);
+            return panel != null && panel.State == PanelState.Shown;
+        }
+        
+        public static bool IsPanelShown<T>() where T : IPanel
+        {
+            return IsPanelShown<T>(typeof(T).Name);
         }
     }
 }

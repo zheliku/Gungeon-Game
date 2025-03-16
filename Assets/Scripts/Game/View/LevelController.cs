@@ -74,7 +74,7 @@ namespace Game
         private void Start()
         {
             var tree = new Tree<RoomType>(RoomType.Init);
-            tree.Root.AddChild(RoomType.Normal)
+            tree.Root.AddChild(RoomType.Chest)
                .AddChild(RoomType.Normal, child =>
                 {
                     child.AddChild(RoomType.Normal)
@@ -284,9 +284,11 @@ namespace Game
                     }
                     else if (code == 'c')
                     {
-                        ChestTemplate.Instantiate(parent: room)
+                        var chest = ChestTemplate.Instantiate(parent: room)
                            .EnableGameObject()
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+
+                        room.PowerUps.Add(chest);
                     }
                 }
             }

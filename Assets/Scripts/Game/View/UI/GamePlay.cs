@@ -55,15 +55,13 @@ namespace Game
 
             InputKit.BindPerformed("OpenMap", context =>
             {
-                if (!UIMap.IsOpen)
+                if (!UIKit.IsPanelShown<UIMap>())
                 {
                     UIKit.ShowPanelAsync<UIMap>();
-                    UIMap.IsOpen = true;
                 }
                 else
                 {
                     UIKit.HidePanel<UIMap>();
-                    UIMap.IsOpen = false;
                 }
             }).UnBindAllPerformedWhenGameObjectDisabled(this);
         }

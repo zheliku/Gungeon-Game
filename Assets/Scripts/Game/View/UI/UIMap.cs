@@ -15,8 +15,6 @@ namespace Game
 
     public class UIMap : UIPanel
     {
-        public static bool IsOpen = false;
-        
         [HierarchyPath("MapItemRoot")]
         public Transform MapItemRoot;
 
@@ -28,7 +26,9 @@ namespace Game
             Time.timeScale = 0;
             MapItemRoot.DestroyChildren();
 
-            var generatedRooms = this.GetModel<LevelModel>().GeneratedRooms;
+            var levelModel = this.GetModel<LevelModel>();
+
+            var generatedRooms = levelModel.GeneratedRooms;
             foreach (var pair in generatedRooms)
             {
                 var room = pair.Value;
@@ -40,6 +40,11 @@ namespace Game
                        .SetData(room)
                        .SetLocalPosition(x: x * 60, y: y * 60)
                        .EnableGameObject();
+                }
+
+                if (room == levelModel.CurrentRoom)
+                {
+                    MapItemRoot.SetLocalPosition(x: -x * 60, y: -y * 60); // 将当前房间移动到屏幕中心
                 }
             }
         }

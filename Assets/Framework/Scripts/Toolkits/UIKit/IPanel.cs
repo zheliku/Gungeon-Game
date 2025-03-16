@@ -12,10 +12,10 @@ namespace Framework.Toolkits.UIKit
 
     public enum PanelState
     {
-        Opened,
+        Loaded,
         Shown,
         Hide,
-        Closed,
+        Unloaded,
     }
 
     public enum UILevel

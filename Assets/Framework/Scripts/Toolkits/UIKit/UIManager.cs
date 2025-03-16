@@ -72,7 +72,7 @@ namespace Framework.Toolkits.UIKit
 
                 value = new PanelInfo(null, handle);
                 _panels.Add(panelName, value);
-                
+
                 handle.OnCompleted(obj =>
                 {
                     obj.name = panelName;
@@ -85,6 +85,18 @@ namespace Framework.Toolkits.UIKit
             }
 
             return value.Handle.Convert<GameObject>();
+        }
+
+        public T GetPanel<T>(string panelName) where T : IPanel
+        {
+            if (_panels.TryGetValue(panelName, out var value))
+            {
+                if (value.Handle.IsDone)
+                {
+                    return (T) value.Panel;
+                }
+            }
+            return default;
         }
 
         public void UnloadPanel(string panelName, Action callback = null)

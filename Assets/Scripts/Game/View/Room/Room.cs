@@ -54,6 +54,8 @@ namespace Game
         [ShowInInspector]
         public RoomState State { get; private set; } = RoomState.Closed;
         
+        public HashSet<IPowerUp> PowerUps { get; private set; } = new HashSet<IPowerUp>();
+        
         public List<IEnemy> EnemiesInRoom
         {
             get => _enemiesInRoom;
