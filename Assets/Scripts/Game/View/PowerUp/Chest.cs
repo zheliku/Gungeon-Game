@@ -13,10 +13,8 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class Chest : AbstractView, IPowerUp
+    public class Chest : PowerUp
     {
-        public SpriteRenderer SpriteRenderer { get => GetComponent<SpriteRenderer>(); }
-
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
@@ -29,11 +27,9 @@ namespace Game
 
                 this.GetModel<LevelModel>().CurrentRoom.PowerUps.Add(hp1);
 
-                AudioKit.PlaySound(Config.Sound.CHEST, 0.6f);
+                AudioKit.PlaySound(AssetConfig.Sound.CHEST, 0.6f);
                 this.DestroyGameObject();
             }
         }
-
-        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

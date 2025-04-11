@@ -44,7 +44,7 @@ namespace Game
             {
                 if (value <= 0)
                 {
-                    AudioKit.PlaySound(Config.Sound.ENEMY_DIE);
+                    AudioKit.PlaySound(AssetConfig.Sound.ENEMY_DIE);
 
                     var coin = PowerUpFactory.Instance.Coin.Instantiate(this.GetPosition()) // 生成金币
                        .EnableGameObject();

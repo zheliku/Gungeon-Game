@@ -66,7 +66,7 @@ namespace Game
                 UpdateGunInfo(e.Gun);
             }).UnRegisterWhenGameObjectDisabled(this);
 
-            InputKit.BindPerformed(Config.Action.OPEN_MAP, context =>
+            InputKit.BindPerformed(AssetConfig.Action.OPEN_MAP, context =>
             {
                 if (!UIKit.IsPanelShown<UIMap>())
                 {

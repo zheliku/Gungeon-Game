@@ -44,7 +44,7 @@ namespace Game
                 {
                     Collider.Disable();
                     SpriteRenderer.sprite = OpenSprite;
-                    AudioKit.PlaySound(Config.Sound.DOOR_OPEN);
+                    AudioKit.PlaySound(AssetConfig.Sound.DOOR_OPEN);
                 });
             State.State(DoorState.IdleClose)
                .OnEnter(() =>

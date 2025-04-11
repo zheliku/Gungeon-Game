@@ -28,6 +28,7 @@ public partial class BG_GunData : BGEntity
 		public const string DamageRange = "DamageRange";
 		public const string ShootShakeA = "ShootShakeA";
 		public const string ShootShakeFrames = "ShootShakeFrames";
+		public const string UnstableAngle = "UnstableAngle";
 	}
 	private static BansheeGz.BGDatabase.BGMetaRow _metaDefault;
 	public static BansheeGz.BGDatabase.BGMetaRow MetaDefault => _metaDefault ?? (_metaDefault = BGCodeGenUtils.GetMeta<BansheeGz.BGDatabase.BGMetaRow>(new BGId(5597011547648622931UL,113604648607007155UL), () => _metaDefault = null));
@@ -73,6 +74,11 @@ public partial class BG_GunData : BGEntity
 		get => _ShootShakeFrames[Index];
 		set => _ShootShakeFrames[Index] = value;
 	}
+	public System.Single UnstableAngle
+	{
+		get => _UnstableAngle[Index];
+		set => _UnstableAngle[Index] = value;
+	}
 	private static BansheeGz.BGDatabase.BGFieldEntityName _ufle12jhs77_name;
 	public static BansheeGz.BGDatabase.BGFieldEntityName _name => _ufle12jhs77_name ?? (_ufle12jhs77_name = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldEntityName>(MetaDefault, new BGId(5503755016982348342UL, 8535430791740521915UL), () => _ufle12jhs77_name = null));
 	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_ShootInterval;
@@ -89,6 +95,8 @@ public partial class BG_GunData : BGEntity
 	public static BansheeGz.BGDatabase.BGFieldFloat _ShootShakeA => _ufle12jhs77_ShootShakeA ?? (_ufle12jhs77_ShootShakeA = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5293072169377533873UL, 2755221425414645157UL), () => _ufle12jhs77_ShootShakeA = null));
 	private static BansheeGz.BGDatabase.BGFieldInt _ufle12jhs77_ShootShakeFrames;
 	public static BansheeGz.BGDatabase.BGFieldInt _ShootShakeFrames => _ufle12jhs77_ShootShakeFrames ?? (_ufle12jhs77_ShootShakeFrames = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(5214552449015445016UL, 5898427276458699947UL), () => _ufle12jhs77_ShootShakeFrames = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_UnstableAngle;
+	public static BansheeGz.BGDatabase.BGFieldFloat _UnstableAngle => _ufle12jhs77_UnstableAngle ?? (_ufle12jhs77_UnstableAngle = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5756867271433461093UL, 3127323194496785583UL), () => _ufle12jhs77_UnstableAngle = null));
 	private static readonly BG_GunData.Factory _factory0_PFS = new BG_GunData.Factory();
 	private BG_GunData() : base(MetaDefault) {}
 	private BG_GunData(BGId id) : base(MetaDefault, id) {}

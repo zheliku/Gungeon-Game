@@ -11,8 +11,6 @@ namespace Game
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Framework.Core;
-    using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.GridKit;
     using Sirenix.OdinInspector;
     using UnityEngine;

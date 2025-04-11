@@ -13,10 +13,8 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class AllGunHalfBullet : AbstractView, IPowerUp
+    public class AllGunHalfBullet : PowerUp
     {
-        public SpriteRenderer SpriteRenderer { get => GetComponent<SpriteRenderer>(); }
-        
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
@@ -31,11 +29,9 @@ namespace Game
                 }
                 
                 TypeEventSystem.GLOBAL.Send(new GunBulletChangeEvent(Player.Instance.CurrentGun));
-                AudioKit.PlaySound(Config.Sound.POWER_UP_HALF_BULLET);
+                AudioKit.PlaySound(AssetConfig.Sound.POWER_UP_HALF_BULLET);
                 this.DestroyGameObject();
             }
         }
-
-        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

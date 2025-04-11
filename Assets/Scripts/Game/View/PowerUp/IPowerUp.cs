@@ -13,5 +13,7 @@ namespace Game
     public interface IPowerUp
     {
         SpriteRenderer SpriteRenderer { get; }
+        
+        Room Room { get; set; }
     }
 }

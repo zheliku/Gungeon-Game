@@ -46,6 +46,9 @@ namespace Game
         protected float _BulletSpeed { get; set; }
 
         [ShowInInspector]
+        protected float _UnstableAngle { get; set; } // 弹道不稳定角度
+
+        [ShowInInspector]
         protected GunShootInterval _ShootInterval { get; set; }
 
         [ShowInInspector]
@@ -114,6 +117,7 @@ namespace Game
             _gunData = BG_GunData.GetEntity(GetType().Name);
 
             _BulletSpeed   = _gunData.BulletSpeed;
+            _UnstableAngle = _gunData.UnstableAngle;
             _ShootInterval = new GunShootInterval(_gunData.ShootInterval);
             Clip           = new GunClip(this, _gunData.ClipBulletCount);
             Bag            = new BulletBag(this, _gunData.BagBulletCount);
@@ -123,7 +127,7 @@ namespace Game
 
         private void OnEnable()
         {
-            AttackAction = InputKit.BindPerformed(Config.Action.ATTACK, context =>
+            AttackAction = InputKit.BindPerformed(AssetConfig.Action.ATTACK, context =>
             {
                 if (!UIKit.IsPanelShown<UIMap>()) // 地图界面打开时，不允许射击
                 {
@@ -138,7 +142,7 @@ namespace Game
                 }
             }).UnBindAllWhenGameObjectDisabled(gameObject);
 
-            InputKit.BindPerformed(Config.Action.LOAD_BULLET, context =>
+            InputKit.BindPerformed(AssetConfig.Action.LOAD_BULLET, context =>
             {
                 // 重装子弹
                 Reload();
@@ -178,7 +182,8 @@ namespace Game
                 direction,
                 BulletFactory.Instance.GunBullet.gameObject,
                 _gunData.DamageRange.RandomSelect(),
-                _BulletSpeed);
+                _BulletSpeed,
+                _UnstableAngle);
 
             ShowGunShootLight(direction);
 
@@ -208,7 +213,7 @@ namespace Game
         {
             if (TimerKit.HasPassedInterval(this, 0.3f)) // 每隔 2 倍冷却间隔播放空弹夹音效
             {
-                AudioKit.PlaySound(Config.Sound.EMPTY_BULLET);
+                AudioKit.PlaySound(AssetConfig.Sound.EMPTY_BULLET);
             }
         }
 

@@ -52,7 +52,7 @@ namespace Game
         {
             if (TxtKeyboard.IsGameObjectEnabledSelf())
             {
-                if (InputKit.WasPressedThisFrame(Config.Action.BUY))
+                if (InputKit.WasPressedThisFrame(AssetConfig.Action.BUY))
                 {
                     if (this.GetModel<PlayerModel>().Coin >= Price)
                     {
@@ -65,9 +65,16 @@ namespace Game
                     else
                     {
                         // 金币不足的提示
+                        Player.DisplayText("金币不足", 1f);
                     }
                 }
             }
+        }
+
+        public ShopItem UpdateInfo()
+        {
+            TxtPrice.text = $"${Price}";
+            return this;
         }
 
         protected override IArchitecture _Architecture { get => Game.Interface; }

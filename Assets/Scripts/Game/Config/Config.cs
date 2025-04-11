@@ -8,7 +8,7 @@
 
 namespace Game
 {
-    public class Config
+    public class AssetConfig
     {
         public class Sound
         {
@@ -27,7 +27,7 @@ namespace Game
         public class Action
         {
             public const string ATTACK      = "Attack";
-            public const string MOVE      = "Move";
+            public const string MOVE        = "Move";
             public const string BUY         = "Buy";
             public const string LOAD_BULLET = "LoadBullet";
             public const string OPEN_MAP    = "OpenMap";

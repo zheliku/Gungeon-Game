@@ -13,25 +13,18 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class Armor1 : AbstractView, IPowerUp
+    public class Armor1 : PowerUp
     {
-        public SpriteRenderer SpriteRenderer
-        {
-            get => GetComponent<SpriteRenderer>();
-        }
-        
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
             {
                 this.GetModel<LevelModel>().CurrentRoom.PowerUps.Remove(this); // 从房间中移除
                 
-                AudioKit.PlaySound(Config.Sound.ARMOR1);
+                AudioKit.PlaySound(AssetConfig.Sound.ARMOR1);
                 this.GetModel<PlayerModel>().Property.Armor.Value += 1;
                 this.DestroyGameObject();
             }
         }
-        
-        protected override IArchitecture _Architecture { get => Game.Interface; }
     }
 }

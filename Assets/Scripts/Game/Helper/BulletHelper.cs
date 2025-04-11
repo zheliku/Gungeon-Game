@@ -13,15 +13,24 @@ namespace Game
 
     public class BulletHelper
     {
-        public static void Shoot(Vector2 pos, Vector2 direction, GameObject bulletPrefab, float damage, float speed)
+        public static void Shoot(
+            Vector2    pos,
+            Vector2    direction,
+            GameObject bulletPrefab, 
+            float      damage, 
+            float      speed,
+            float      unstableAngle = 0)
         {
+            var shootAngle  = direction.ToAngle() + (-unstableAngle, unstableAngle).RandomSelect();
+            var unstableDir = shootAngle.Deg2Direction2D();
+
             var bullet = bulletPrefab.Instantiate(pos)
                .Enable()
-               .SetTransformRight(direction)
+               .SetTransformRight(unstableDir)
                .GetComponent<Bullet>();
 
             bullet.Damage   = damage;
-            bullet.Velocity = direction * speed;
+            bullet.Velocity = unstableDir * speed;
         }
 
         /// <summary>
@@ -33,21 +42,25 @@ namespace Game
             float      radius,
             GameObject bulletPrefab,
             float      damage,
-            float      speed)
+            float      speed,
+            float      unstableAngle = 0)
         {
             var angleOffset = (0f, 360f).RandomSelect();
             var stepAngle   = 360f / fireCount;
 
             for (int i = 0; i < fireCount; i++)
             {
-                var direction = (angleOffset + stepAngle * i).Deg2Direction2D();
-                var initPos   = center + direction * radius; // 中心偏移 radius 个单位
+                var direction   = (angleOffset + stepAngle * i).Deg2Direction2D();
+                var shootAngle  = direction.ToAngle() + (-unstableAngle, unstableAngle).RandomSelect();
+                var unstableDir = shootAngle.Deg2Direction2D();
+
+                var initPos    = center + unstableDir * radius; // 中心偏移 radius 个单位
                 var bullet = bulletPrefab.Instantiate(initPos)
                    .Enable()
                    .GetComponent<Bullet>();
 
                 bullet.Damage   = damage;
-                bullet.Velocity = direction * speed;
+                bullet.Velocity = unstableDir * speed;
             }
         }
 
@@ -62,19 +75,23 @@ namespace Game
             float      intervalAngle,
             GameObject bulletPrefab,
             float      damage,
-            float      speed)
+            float      speed,
+            float      unstableAngle = 0)
         {
             for (int i = -fireCount / 2; i <= fireCount / 2; i++)
             {
-                var eachDir = direction.Rotate(i * intervalAngle);
-                var initPos = center + eachDir * radius; // 中心偏移 radius 个单位
+                var eachDir     = direction.Rotate(i * intervalAngle);
+                var shootAngle  = eachDir.ToAngle() + (-unstableAngle, unstableAngle).RandomSelect();
+                var unstableDir = shootAngle.Deg2Direction2D();
+                
+                var initPos    = center + unstableDir * radius; // 中心偏移 radius 个单位
 
                 var bullet = bulletPrefab.Instantiate(initPos)
                    .Enable()
                    .GetComponent<Bullet>();
 
                 bullet.Damage   = damage;
-                bullet.Velocity = eachDir * speed;
+                bullet.Velocity = unstableDir * speed;
             }
         }
     }

@@ -88,7 +88,7 @@ namespace Game
 
             _playerModel = this.GetModel<PlayerModel>();
 
-            _moveAction = InputKit.GetInputAction(Config.Action.MOVE);
+            _moveAction = InputKit.GetInputAction(AssetConfig.Action.MOVE);
 
             _Property.Hp.Register((oldValue, value) =>
             {
@@ -123,7 +123,7 @@ namespace Game
 
         private void OnEnable()
         {
-            InputKit.BindPerformed(Config.Action.CHANGE_GUN, context =>
+            InputKit.BindPerformed(AssetConfig.Action.CHANGE_GUN, context =>
             {
                 var currentGun = Guns[CurrentGunIndex];
 
@@ -180,7 +180,7 @@ namespace Game
                 }
 
                 // 播放使用 Armor 音效
-                AudioKit.PlaySound(Config.Sound.USE_ARMOR);
+                AudioKit.PlaySound(AssetConfig.Sound.USE_ARMOR);
             }
 
             if (damage <= 0)
@@ -193,7 +193,7 @@ namespace Game
             FxFactory.PlayHurtFx(this.GetPosition(), Color.green);
             FxFactory.PlayPlayerBlood(this.GetPosition());
 
-            AudioKit.PlaySound(Config.Sound.PLAYER_HURT);
+            AudioKit.PlaySound(AssetConfig.Sound.PLAYER_HURT);
         }
 
         public void UseGun(int gunIndex)

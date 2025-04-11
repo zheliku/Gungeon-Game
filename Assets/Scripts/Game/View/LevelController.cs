@@ -17,7 +17,6 @@ namespace Game
     using Framework.Toolkits.TreeKit;
     using Sirenix.OdinInspector;
     using UnityEngine;
-    using UnityEngine.Serialization;
     using UnityEngine.Tilemaps;
 
     public class LevelController : MonoSingleton<LevelController>
@@ -77,56 +76,16 @@ namespace Game
 
         private void Start()
         {
-            var tree = new Tree<RoomType>(RoomType.Init);
-            tree.Root.AddChild(RoomType.Shop)
-               .AddChild(RoomType.Normal, child =>
-                {
-                    child.AddChild(RoomType.Normal)
-                       .AddChild(RoomType.Normal)
-                       .AddChild(RoomType.Chest)
-                       .AddChild(RoomType.Normal);
-                })
-               .AddChild(RoomType.Chest)
-               .AddChild(RoomType.Normal)
-               .AddChild(RoomType.Normal, child =>
-                {
-                    child.AddChild(RoomType.Normal)
-                       .AddChild(RoomType.Normal)
-                       .AddChild(RoomType.Chest, child =>
-                        {
-                            child.AddChild(RoomType.Normal)
-                               .AddChild(RoomType.Normal)
-                               .AddChild(RoomType.Chest)
-                               .AddChild(RoomType.Normal);
-                        })
-                       .AddChild(RoomType.Normal);
-                })
-               .AddChild(RoomType.Normal)
-               .AddChild(RoomType.Normal, child =>
-                {
-                    child.AddChild(RoomType.Normal)
-                       .AddChild(RoomType.Normal)
-                       .AddChild(RoomType.Chest, child =>
-                        {
-                            child.AddChild(RoomType.Normal)
-                               .AddChild(RoomType.Normal)
-                               .AddChild(RoomType.Chest)
-                               .AddChild(RoomType.Normal);
-                        })
-                       .AddChild(RoomType.Normal);
-                })
-               .AddChild(RoomType.Final);
-
-            GenerateRoomMap(tree.Root);
+            GenerateRoomMap(Level1.Config.RoomTree);
         }
 
-        private RoomNode GenerateRoomMap(TreeNode<RoomType> tree)
+        private RoomNode GenerateRoomMap(Tree<RoomType> tree)
         {
-            var roomNode = new RoomNode(tree.Data);
+            var roomNode = new RoomNode(tree.Root.Data);
 
             // 基于权重生成网格
             var predictWeight = 0;
-            while (!GenerateRoomMapBFS(tree, roomNode, predictWeight))
+            while (!GenerateRoomMapBFS(tree.Root, roomNode, predictWeight))
             {
                 predictWeight++;
                 roomNode.ClearConnect(); // 每次重新生成需要清除上次的结果
@@ -224,11 +183,11 @@ namespace Game
         {
             var roomGrid = node.RoomType switch
             {
-                RoomType.Init   => _levelModel.InitRoom,
-                RoomType.Normal => _levelModel.NormalRoom.RandomTakeOne(),
-                RoomType.Final  => _levelModel.FinalRoom,
-                RoomType.Chest  => _levelModel.ChestRoom,
-                RoomType.Shop   => _levelModel.ShopRoom,
+                RoomType.Init   => LevelConfig.INIT_ROOM,
+                RoomType.Normal => LevelConfig.NORMAL_ROOM.RandomTakeOne(),
+                RoomType.Final  => LevelConfig.FINAL_ROOM,
+                RoomType.Chest  => LevelConfig.CHEST_ROOM,
+                RoomType.Shop   => LevelConfig.SHOP_ROOM,
                 _               => throw new ArgumentOutOfRangeException()
             };
 
@@ -236,8 +195,8 @@ namespace Game
             var roomHeight = roomGrid.Row;
 
             var pos = new Vector2Int(
-                node.Index.x * (roomWidth + 2),
-                node.Index.y * (roomHeight + 2) // 每个房间目前间距为 2
+                node.Index.x * (roomWidth + LevelConfig.ROOM_INTERVAL.x),
+                node.Index.y * (roomHeight + LevelConfig.ROOM_INTERVAL.y)
             );
 
             var room = RoomTemplate.Instantiate(this)
@@ -305,6 +264,7 @@ namespace Game
                                 self.PowerUp = Instance.Hp1Template;
                                 self.Price   = 1;
                             })
+                           .UpdateInfo()
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                     }
                 }
@@ -361,12 +321,6 @@ namespace Game
                 WallTilemap.SetTile((Vector3Int) (startPos - normalVector), null);
                 WallTilemap.SetTile((Vector3Int) (endPos + normalVector), null);
                 WallTilemap.SetTile((Vector3Int) (endPos - normalVector), null);
-
-                // var door = DoorTemplate.Instantiate(parent: room)
-                //    .DisableGameObject()
-                //    .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
-                //
-                // room.AddDoor(door);
             }
 
             // 关闭的方向绘制墙壁

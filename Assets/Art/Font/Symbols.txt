@@ -12,3 +12,4 @@ abcdefghijklmnopqrstuvwxyz
 终点
 宝箱
 我
+金币不足

@@ -54,7 +54,8 @@ namespace Game
                 intervalAngle: IntervalAngle,
                 bulletPrefab: BulletFactory.Instance.GunBullet.gameObject,
                 damage: 1f,
-                speed: _BulletSpeed);
+                speed: _BulletSpeed,
+                _UnstableAngle);
 
             ShowGunShootLight(direction);
 

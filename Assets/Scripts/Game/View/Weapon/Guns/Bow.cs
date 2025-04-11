@@ -71,7 +71,8 @@ namespace Game
                 direction,
                 BulletFactory.Instance.BowArrow.gameObject,
                 _gunData.DamageRange.RandomSelect(),
-                _BulletSpeed);
+                _BulletSpeed,
+                _UnstableAngle);
 
             ShowGunShootLight(direction);
 

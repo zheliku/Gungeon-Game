@@ -46,7 +46,8 @@ namespace Game
                 direction,
                 BulletFactory.Instance.RocketBullet.gameObject,
                 _gunData.DamageRange.RandomSelect(),
-                _BulletSpeed);
+                _BulletSpeed,
+                _UnstableAngle);
 
             CameraController.Instance.Shake.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
 
