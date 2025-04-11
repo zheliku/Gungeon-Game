@@ -15,14 +15,27 @@ namespace Game
     {
         public static void UpDownAnimation(
             Component component,
+            float     totalTime,    // 游戏总时长
             float     upDownTime,   // 动画周期时长
             float     upDownOffset, // 动画偏移量
             float     A)
         {
-            var t    = (Time.time % upDownTime - upDownTime * 0.5f).Abs() / (upDownTime * 0.5f);
+            var t    = (totalTime % upDownTime - upDownTime * 0.5f).Abs() / (upDownTime * 0.5f);
             var posY = t.Lerp(-A, A);
 
             component.SetLocalPosition(y: posY + upDownOffset);
+        }
+
+        public static void RotateAnimation(
+            Component component,
+            float     totalTime,  // 游戏总时长
+            float     rotateTime, // 动画周期时长
+            float     angle)
+        {
+            var t      = (totalTime % rotateTime - rotateTime * 0.5f).Abs() / (rotateTime * 0.5f);
+            var angleZ = t.Lerp(-angle, angle);
+
+            component.SetLocalEulerAngles(z: angleZ);
         }
     }
 }

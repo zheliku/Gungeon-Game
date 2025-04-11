@@ -160,8 +160,10 @@ namespace Game
 
             if (moveDirection != Vector2.zero)
             {
-                AnimationHelper.UpDownAnimation(SpriteRenderer, 0.16f, _playerSpriteOriginLocalPosY, 0.02f);
-                AnimationHelper.UpDownAnimation(WeaponTransform, 0.16f, _weaponTransformOriginLocalPosY, 0.02f);
+                AnimationHelper.UpDownAnimation(SpriteRenderer, Time.time, 0.2f, _playerSpriteOriginLocalPosY, 0.05f);
+                AnimationHelper.UpDownAnimation(WeaponTransform, Time.time, 0.2f, _weaponTransformOriginLocalPosY, 0.05f);
+
+                AnimationHelper.RotateAnimation(SpriteRenderer, Time.time, 0.4f, 3);
             }
 
             if (CurrentGun)

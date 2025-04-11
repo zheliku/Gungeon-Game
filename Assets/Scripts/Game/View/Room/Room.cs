@@ -176,8 +176,7 @@ namespace Game
                             
                             _enemyWaves.Add(waveConfig);
                         }
-
-
+                        
                         _currentWave = _enemyWaves[0];
                         GenerateEnemies(_currentWave);
                         _enemyWaves.RemoveAt(0);
@@ -216,6 +215,11 @@ namespace Game
 
             foreach (var enemyName in waveData.EnemyNames)
             {
+                if (posGen.Count == 0)
+                {
+                    break;
+                }
+                
                 var enemy = EnemyFactory.GetEnemyByName(enemyName).GameObject
                    .Instantiate(keepName: true)
                    .SetPosition(posGen.RandomTakeOneAndRemove())

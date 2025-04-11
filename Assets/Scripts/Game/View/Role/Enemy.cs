@@ -24,6 +24,8 @@ namespace Game
 
         public float BulletSpeed = 5;
 
+        protected Vector2 _playerSpriteOriginLocalPos;
+
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
         [ShowInInspector]
@@ -49,6 +51,8 @@ namespace Game
         protected override void Awake()
         {
             base.Awake();
+            
+            _playerSpriteOriginLocalPos = SpriteRenderer.GetLocalPosition();
 
             Bullet.Disable();
 

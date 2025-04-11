@@ -22,6 +22,7 @@ namespace Game
         public enum State
         {
             Follow,
+            PrepareToShoot,
             Shoot
         }
 
@@ -48,9 +49,12 @@ namespace Game
                 })
                .OnUpdate(() =>
                 {
+                    AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, _playerSpriteOriginLocalPos.y, 0.05f);
+                    AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
+
                     if (FSM.SecondsOfCurrentState >= FollowSeconds)
                     {
-                        FSM.ChangeState(State.Shoot);
+                        FSM.ChangeState(State.PrepareToShoot);
                     }
                 })
                .OnFixedUpdate(() =>
@@ -61,6 +65,28 @@ namespace Game
                     {
                         Rigidbody2D.linearVelocity = player.Direction2DFrom(transform) * _property.MoveSpeed;
                     }
+                });
+            
+            Vector2 onEnterPrepareToShootLocalPos = SpriteRenderer.GetLocalPosition();
+            FSM.State(State.PrepareToShoot)
+               .OnEnter(() =>
+                {
+                    onEnterPrepareToShootLocalPos = SpriteRenderer.GetLocalPosition();
+                })
+               .OnUpdate(() =>
+                {
+                    var shakeRate = (FSM.SecondsOfCurrentState / 0.25f).Lerp(0.05f, 0.1f);
+                    var shakePos  = new Vector2(shakeRate.RandomTo0(), shakeRate.RandomTo0());
+                    SpriteRenderer.SetLocalPosition(onEnterPrepareToShootLocalPos + shakePos);
+
+                    if (FSM.SecondsOfCurrentState >= 0.3f)
+                    {
+                        FSM.ChangeState(State.Shoot);
+                    }    
+                })
+               .OnExit(() =>
+                {
+                    SpriteRenderer.SetLocalPosition(onEnterPrepareToShootLocalPos);
                 });
 
             FSM.State(State.Shoot)

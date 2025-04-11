@@ -171,9 +171,9 @@ namespace Framework.Toolkits.FluentAPI
         }
 
         /// <summary>
-        /// 从区间 [0, 1] 随机选择一个数
+        /// 判断是否比区间 [0, 1] 的随机数小
         /// </summary>
-        public static bool Random0To1(this float value)
+        public static bool IsLessThanRandom01(this float value)
         {
             return Random.Range(0f, 1f) <= value;
         }
