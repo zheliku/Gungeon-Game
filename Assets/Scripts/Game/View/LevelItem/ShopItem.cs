@@ -56,10 +56,13 @@ namespace Game
                 {
                     if (this.GetModel<PlayerModel>().Coin >= Price)
                     {
-                        PowerUp.SpriteRenderer.Instantiate()
+                        var powerUp = PowerUp.SpriteRenderer.Instantiate()
                            .SetPosition(transform.position)
-                           .EnableGameObject();
+                           .EnableGameObject()
+                           .GetComponent<IPowerUp>();
                         this.GetModel<PlayerModel>().Coin.Value -= Price;
+
+                        powerUp.Room = this.GetModel<LevelModel>().CurrentRoom;
                         this.DestroyGameObject();
                     }
                     else
