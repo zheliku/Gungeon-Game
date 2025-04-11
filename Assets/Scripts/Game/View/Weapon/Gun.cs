@@ -24,6 +24,9 @@ namespace Game
     public abstract class Gun : AbstractView
     {
         protected BG_GunData _gunData;
+        
+        [HierarchyPath("Sprite")]
+        public SpriteRenderer GunSprite;
 
         [HierarchyPath("ShootPos")]
         public Transform ShootPos;
@@ -47,17 +50,19 @@ namespace Game
 
         [ShowInInspector]
         protected float _UnstableAngle { get; set; } // 弹道不稳定角度
+        
+        [ShowInInspector]
+        protected IEnemy _TargetEnemy { get; set; }
 
         [ShowInInspector]
         protected GunShootInterval _ShootInterval { get; set; }
 
         [ShowInInspector]
-        protected IEnemy _TargetEnemy { get; set; }
-
-        [ShowInInspector]
         public GunClip Clip { get; set; }
 
         public BulletBag Bag { get; set; }
+        
+        public ShootBackForce BackForce { get; set; }
 
         /// <summary>
         /// 是否可以射击
@@ -121,6 +126,7 @@ namespace Game
             _ShootInterval = new GunShootInterval(_gunData.ShootInterval);
             Clip           = new GunClip(this, _gunData.ClipBulletCount);
             Bag            = new BulletBag(this, _gunData.BagBulletCount);
+            BackForce      = new ShootBackForce(GunSprite);
 
             GunShootLight.DisableGameObject();
         }
@@ -155,6 +161,8 @@ namespace Game
             {
                 Shooting(ShootDirection);
             }
+            
+            BackForce.Update();
 
             var angle = Mathf.Atan2(ShootDirection.y, ShootDirection.x).Rad2Deg();
             this.SetLocalEulerAngles(z: angle);             // 使 Weapon 方向跟手
@@ -184,6 +192,8 @@ namespace Game
                 _gunData.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
+            
+            BackForce.Shoot(_gunData.BackForceA, _gunData.BackForceFrames);
 
             ShowGunShootLight(direction);
 

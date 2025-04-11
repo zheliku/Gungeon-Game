@@ -196,7 +196,7 @@ namespace Framework.Toolkits.FluentAPI
         /// </code> </example>
         public static float GetLocalPositionY<T>(this T selfComponent) where T : Component
         {
-            return selfComponent.transform.localPosition.x;
+            return selfComponent.transform.localPosition.y;
         }
 
         /// <summary>

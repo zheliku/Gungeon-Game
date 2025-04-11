@@ -63,6 +63,9 @@ namespace Game
         [HierarchyPath("FloatingText")]
         public TextMeshPro FloatingText;
 
+        private float _playerSpriteOriginLocalPosY;
+        private float _weaponTransformOriginLocalPosY;
+
         public int CurrentGunIndex;
 
         private InputAction _moveAction;
@@ -83,6 +86,9 @@ namespace Game
         protected override void Awake()
         {
             base.Awake();
+
+            _playerSpriteOriginLocalPosY    = SpriteRenderer.GetLocalPositionY();
+            _weaponTransformOriginLocalPosY = WeaponTransform.GetLocalPositionY();
 
             FloatingText.DisableGameObject();
 
@@ -117,7 +123,7 @@ namespace Game
                     UseGun(i);
                 }
             }
-            
+
             UseGun(1);
         }
 
@@ -152,6 +158,12 @@ namespace Game
             var moveDirection = _moveAction.ReadValue<Vector2>();
             Rigidbody2D.linearVelocity = moveDirection * _Property.MoveSpeed;
 
+            if (moveDirection != Vector2.zero)
+            {
+                AnimationHelper.UpDownAnimation(SpriteRenderer, 0.16f, _playerSpriteOriginLocalPosY, 0.02f);
+                AnimationHelper.UpDownAnimation(WeaponTransform, 0.16f, _weaponTransformOriginLocalPosY, 0.02f);
+            }
+
             if (CurrentGun)
             {
                 if (CurrentGun.ShootDirection.x > 0)
@@ -168,7 +180,7 @@ namespace Game
         public override void Hurt(float damage, HitInfo info)
         {
             Debug.Log("Player Hurt");
-            
+
             if (_Property.Armor.Value > 0)
             {
                 damage                -= _Property.Armor;

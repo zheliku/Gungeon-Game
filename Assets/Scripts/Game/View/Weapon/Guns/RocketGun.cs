@@ -48,6 +48,8 @@ namespace Game
                 _gunData.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
+            
+            BackForce.Shoot(_gunData.BackForceA, _gunData.BackForceFrames);
 
             CameraController.Instance.Shake.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
 
