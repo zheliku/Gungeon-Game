@@ -15,8 +15,23 @@ MonoBehaviour:
   m_GroupName: Sound
   m_GUID: 5b77a8a61e12f9e4c94e81e0a1d14e8e
   m_SerializeEntries:
+  - m_GUID: 2ca95607c40a0da4e8e8b2fa18205ae4
+    m_Address: UseArmor
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 42d801490e8ae134fa6d657fd61d9e0e
     m_Address: EmptyBullet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5789ad67d7c527d479182e46d3684e46
+    m_Address: PowerUpHalfBullet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b3429356aabe0e4187ed3d8d300ad5b
+    m_Address: Armor1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

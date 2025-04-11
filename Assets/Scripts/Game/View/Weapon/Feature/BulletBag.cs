@@ -54,5 +54,11 @@ namespace Game
                 clip.Reload(reloadSound, reloadCount);
             }
         }
+
+        public void AddBulletCount(int bulletCountToAdd)
+        {
+            RemainBulletCount += bulletCountToAdd;
+            RemainBulletCount = RemainBulletCount.MinWith(MaxBulletCount);
+        }
     }
 }

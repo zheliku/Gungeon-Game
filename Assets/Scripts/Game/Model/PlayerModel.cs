@@ -13,14 +13,20 @@ namespace Game
 
     public class PlayerModel : AbstractModel
     {
-        public Property Property = new Property();
+        public PlayerProperty Property = new PlayerProperty();
 
         public BindableProperty<int> Coin = new BindableProperty<int>();
         
         protected override void OnInit()
         {
+            ResetData();
+        }
+
+        public void ResetData()
+        {
             Property.Hp.SetValueWithoutEvent(3);
             Property.MoveSpeed = 5;
+            Property.Armor.SetValueWithoutEvent(1);
         }
     }
 }

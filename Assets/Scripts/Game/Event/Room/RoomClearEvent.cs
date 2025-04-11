@@ -1,20 +1,20 @@
 // ------------------------------------------------------------
-// @file       GunLoadBulletEvent.cs
+// @file       RoomClearEvent.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-02-01 01:02:06
+// @Modified   2025-04-11 11:04:16
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
 namespace Game
 {
-    public struct GunBulletEmptyEvent
+    public struct RoomClearEvent
     {
-        public Gun Gun;
-
-        public GunBulletEmptyEvent(Gun gun)
+        public Room Room;
+        
+        public RoomClearEvent(Room room)
         {
-            Gun = gun;
+            Room = room;
         }
     }
 }

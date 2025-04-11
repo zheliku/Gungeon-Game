@@ -12,13 +12,16 @@ namespace Game
     {
         public class Sound
         {
-            public const string EMPTY_BULLET = "EmptyBullet";
-            public const string HP1          = "Hp1";
-            public const string CHEST        = "Chest";
-            public const string DOOR_OPEN    = "DoorOpen";
-            public const string PLAYER_HURT  = "PlayerHurt";
-            public const string ENEMY_DIE    = "EnemyDie";
-            public const string COIN         = "Coin";
+            public const string EMPTY_BULLET         = "EmptyBullet";
+            public const string HP1                  = "Hp1";
+            public const string CHEST                = "Chest";
+            public const string DOOR_OPEN            = "DoorOpen";
+            public const string PLAYER_HURT          = "PlayerHurt";
+            public const string ENEMY_DIE            = "EnemyDie";
+            public const string COIN                 = "Coin";
+            public const string ARMOR1               = "Armor1";
+            public const string USE_ARMOR            = "UseArmor";
+            public const string POWER_UP_HALF_BULLET = "PowerUpHalfBullet";
         }
     }
 }

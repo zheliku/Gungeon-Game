@@ -19,6 +19,9 @@ namespace Game
     {
         [HierarchyPath("txtHp")]
         private TextMeshProUGUI _txtHp;
+        
+        [HierarchyPath("txtArmor")]
+        private TextMeshProUGUI _txtArmor;
 
         [HierarchyPath("txtGun")]
         private TextMeshProUGUI _txtGun;
@@ -31,6 +34,11 @@ namespace Game
             this.GetModel<PlayerModel>().Property.Hp.RegisterWithInitValue((oldValue, value) =>
             {
                 _txtHp.text = $"HP:{value}";
+            }).UnRegisterWhenGameObjectDisabled(gameObject);
+            
+            this.GetModel<PlayerModel>().Property.Armor.RegisterWithInitValue((oldValue, value) =>
+            {
+                _txtArmor.text = $"Armor:{value}";
             }).UnRegisterWhenGameObjectDisabled(gameObject);
             
             this.GetModel<PlayerModel>().Coin.RegisterWithInitValue((oldValue, value) =>
@@ -52,6 +60,11 @@ namespace Game
             {
                 UpdateGunInfo(e.Gun);
             }).UnRegisterWhenGameObjectDisabled(this);
+            
+            TypeEventSystem.GLOBAL.Register<GunBulletChangeEvent>(e =>
+            {
+                UpdateGunInfo(e.Gun);
+            }).UnRegisterWhenGameObjectDisabled(this);
 
             InputKit.BindPerformed("OpenMap", context =>
             {
@@ -69,7 +82,7 @@ namespace Game
         private void UpdateGunInfo(Gun gun)
         {
             var clipInfo = $"{gun.Clip.CurrentBulletCount}/{gun.Clip.ClipBulletCount}";
-            var bagInfo  = gun.Bag.RemainBulletCount < 0 ? "(\u221e)" : $"({gun.Bag.RemainBulletCount}/{gun.Bag.MaxBulletCount})";
+            var bagInfo  = gun.Bag.MaxBulletCount < 0 ? "(\u221e)" : $"({gun.Bag.RemainBulletCount}/{gun.Bag.MaxBulletCount})";
             _txtGun.text = $"Bullet: {clipInfo} {bagInfo} R Reload!";
         }
 

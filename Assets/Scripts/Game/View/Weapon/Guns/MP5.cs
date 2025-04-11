@@ -23,7 +23,7 @@ namespace Game
             base.Awake();
 
             // 子弹空时，停止播放音效
-            TypeEventSystem.GLOBAL.Register<GunBulletEnmptyEvent>(e =>
+            TypeEventSystem.GLOBAL.Register<GunBulletEmptyEvent>(e =>
             {
                 if (e.Gun == this)
                 {
@@ -70,7 +70,7 @@ namespace Game
 
         public override void ShootUp(Vector2 direction)
         {
-            _audioPlayer.Stop();
+            _audioPlayer?.Stop();
             IsShooting = false;
         }
     }

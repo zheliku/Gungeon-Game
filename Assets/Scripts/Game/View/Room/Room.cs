@@ -12,6 +12,7 @@ namespace Game
     using System.Collections.Generic;
     using System.Linq;
     using Framework.Core;
+    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.FluentAPI;
     using Sirenix.OdinInspector;
     using UnityEngine;
@@ -53,9 +54,9 @@ namespace Game
 
         [ShowInInspector]
         public RoomState State { get; private set; } = RoomState.Closed;
-        
+
         public HashSet<IPowerUp> PowerUps { get; private set; } = new HashSet<IPowerUp>();
-        
+
         public List<IEnemy> EnemiesInRoom
         {
             get => _enemiesInRoom;
@@ -77,14 +78,38 @@ namespace Game
                     else // 没有下一波敌人
                     {
                         State = RoomState.Unlocked;
-                        
+
                         foreach (var door in _doors) // 开门
                         {
                             door.State.ChangeState(DoorState.Open);
                         }
+
+                        if (RoomType == RoomType.Normal)
+                        {
+                            TypeEventSystem.GLOBAL.Send(new RoomClearEvent(this)); // 房间被清空
+                        }
                     }
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);
+
+            TypeEventSystem.GLOBAL.Register<RoomClearEvent>(e =>
+            {
+                if (e.Room != this)
+                {
+                    return;
+                }
+                
+                foreach (var powerUp in PowerUps)
+                {
+                    var cachedPowerUp = powerUp;
+                    ActionKit.OnFixedUpdate.Register(() =>
+                    {
+                        var spriteRenderer = cachedPowerUp.SpriteRenderer;
+                        spriteRenderer.transform.Translate(
+                            spriteRenderer.Direction2DTo(Player.Instance) * Time.fixedDeltaTime * 5);
+                    }).UnRegisterWhenGameObjectDestroyed(powerUp.SpriteRenderer);
+                }
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
         private void Start()

@@ -19,7 +19,6 @@ namespace Game
     using TMPro;
     using UnityEngine;
     using UnityEngine.InputSystem;
-    using ISingleton = Framework.Toolkits.SingletonKit.ISingleton;
 
     public class Player : AbstractRole, ISingleton
     {
@@ -32,7 +31,7 @@ namespace Game
 
             var floatingText = Instance.FloatingText.Instantiate(Instance)
                .EnableGameObject();
-            
+
             // 播放显示动画
             ActionKit.Sequence()
                .Callback(() =>
@@ -70,7 +69,7 @@ namespace Game
 
         private PlayerModel _playerModel;
 
-        private Property _Property { get => _playerModel.Property; }
+        private PlayerProperty _Property { get => _playerModel.Property; }
 
         public List<Gun> Guns = new List<Gun>();
 
@@ -81,7 +80,7 @@ namespace Game
             get => Guns[CurrentGunIndex];
         }
 
-        protected override void Awake()
+        protected override async void Awake()
         {
             base.Awake();
 
@@ -101,7 +100,7 @@ namespace Game
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
             UIKit.ShowPanelAsync<GamePlay>();
-            
+
             for (int i = 0; i < WeaponTransform.childCount; i++)
             {
                 var gun = WeaponTransform.GetChild(i).GetComponent<Gun>();
@@ -118,6 +117,8 @@ namespace Game
                     UseGun(i);
                 }
             }
+            
+            UseGun(1);
         }
 
         private void OnEnable()
@@ -166,8 +167,29 @@ namespace Game
 
         public override void Hurt(float damage, HitInfo info)
         {
-            _Property.Hp.Value -= damage;
+            Debug.Log("Player Hurt");
             
+            if (_Property.Armor.Value > 0)
+            {
+                damage                -= _Property.Armor;
+                _Property.Armor.Value -= ((int) damage).MaxWith(1);
+
+                if (_Property.Armor.Value < 0)
+                {
+                    _Property.Armor.Value = 0; // 防止 Armor 为负数
+                }
+
+                // 播放使用 Armor 音效
+                AudioKit.PlaySound(Config.Sound.USE_ARMOR);
+            }
+
+            if (damage <= 0)
+            {
+                return;
+            }
+
+            _Property.Hp.Value -= damage;
+
             FxFactory.PlayHurtFx(this.GetPosition(), Color.green);
             FxFactory.PlayPlayerBlood(this.GetPosition());
 

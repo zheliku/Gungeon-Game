@@ -16,6 +16,12 @@ namespace Game
     {
         [HierarchyPath("Coin")]
         public Coin Coin;
+        
+        [HierarchyPath("Armor1")]
+        public Armor1 Armor1;
+        
+        [HierarchyPath("HalfBullet")]
+        public HalfBullet HalfBullet;
 
         private void Awake()
         {

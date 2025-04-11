@@ -1,18 +1,18 @@
 // ------------------------------------------------------------
-// @file       GunLoadBulletEvent.cs
+// @file       ShootEvent.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-02-01 01:02:06
+// @Modified   2025-02-01 00:02:49
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
 namespace Game
 {
-    public struct GunBulletEmptyEvent
+    public struct GunBulletChangeEvent
     {
         public Gun Gun;
 
-        public GunBulletEmptyEvent(Gun gun)
+        public GunBulletChangeEvent(Gun gun)
         {
             Gun = gun;
         }

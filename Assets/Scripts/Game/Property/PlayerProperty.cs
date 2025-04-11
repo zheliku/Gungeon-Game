@@ -1,20 +1,17 @@
 // ------------------------------------------------------------
-// @file       GunLoadBulletEvent.cs
+// @file       PlayerProperty.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-02-01 01:02:06
+// @Modified   2025-04-11 11:04:04
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
 namespace Game
 {
-    public struct GunBulletEmptyEvent
-    {
-        public Gun Gun;
+    using Framework.Core;
 
-        public GunBulletEmptyEvent(Gun gun)
-        {
-            Gun = gun;
-        }
+    public class PlayerProperty : Property
+    {
+        public BindableProperty<int> Armor = new BindableProperty<int>();
     }
 }

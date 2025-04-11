@@ -60,7 +60,7 @@ namespace Game
             {
                 Player.DisplayText("子弹用完了", 2f);
 
-                TypeEventSystem.GLOBAL.Send(new GunBulletEnmptyEvent(Gun));
+                TypeEventSystem.GLOBAL.Send(new GunBulletEmptyEvent(Gun));
             }
         }
 
