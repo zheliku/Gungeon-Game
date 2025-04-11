@@ -80,7 +80,7 @@ namespace Game
             get => Guns[CurrentGunIndex];
         }
 
-        protected override async void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -214,7 +214,7 @@ namespace Game
             }
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
 
         public void OnSingletonInit()
         {

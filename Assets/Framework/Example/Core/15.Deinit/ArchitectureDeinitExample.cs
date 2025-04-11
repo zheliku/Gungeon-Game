@@ -17,7 +17,7 @@ namespace Framework.Core.Example._15.Deinit
         private IEnumerator Start()
         {
             Debug.Log("Start Init");
-            var simpleArchitecture = SimpleArchitecture.Interface;
+            var simpleArchitecture = SimpleArchitecture.Architecture;
             yield return new WaitForSeconds(2.0f);
             Debug.Log("Start Deinit");
             simpleArchitecture.Deinit();

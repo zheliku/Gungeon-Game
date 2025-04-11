@@ -52,5 +52,30 @@ namespace Game
                 _  => null
             };
         }
+
+        public static int GenTargetEnemyScore()
+        {
+            var currentLevelData = Instance.GetModel<LevelModel>().CurrentLevel;
+
+            if (currentLevelData == Level1.DATA)
+            {
+                return new[] { 2, 2, 3, 3, 8 }.RandomTakeOne();
+            }
+            if (currentLevelData == Level2.DATA)
+            {
+                return new[] { 2, 2, 3, 3, 4, 4, 8, 9 }.RandomTakeOne();
+            }
+            if (currentLevelData == Level3.DATA)
+            {
+                return new[] { 2, 3, 4, 5, 9, }.RandomTakeOne();
+            }
+            if (currentLevelData == Level4.DATA) {
+                return new[] { 3, 4, 5, 6, 7, 9, 10 }.RandomTakeOne();
+            }
+            
+            return new[] { 2, 3, 4, 5, 6, 7, 8, 9, 10 }.RandomTakeOne();
+        }
+
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

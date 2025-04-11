@@ -34,6 +34,11 @@ namespace Game
             public const string CHANGE_GUN  = "ChangeGun";
         }
 
+        public class Scene
+        {
+            public const string GAME = "Game";
+        }
+
         public class EnemyName
         {
             public const string ENEMY_A = "EnemyA";

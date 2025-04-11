@@ -15,7 +15,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts
     using Model;
     using Utility;
 
-    public class PointGame : Architecture<PointGame>
+    public class PointGame : AbstractArchitecture<PointGame>
     {
         protected override void Init()
         {

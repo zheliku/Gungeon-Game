@@ -19,10 +19,10 @@ namespace Game
         
         protected override void OnInit()
         {
-            ResetData();
+            Reset();
         }
 
-        public void ResetData()
+        public void Reset()
         {
             Property.Hp.SetValueWithoutEvent(3);
             Property.MoveSpeed = 5;

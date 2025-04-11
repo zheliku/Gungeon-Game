@@ -86,6 +86,6 @@ namespace Game
             _txtGun.text = $"Bullet: {clipInfo} {bagInfo} R Reload!";
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

@@ -17,7 +17,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class WinPanel : AbstractView
     {
-        protected override IArchitecture _Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Architecture;
 
         private ICountDownSystem _countDownSystem;
         private IGameModel       _gameModel;

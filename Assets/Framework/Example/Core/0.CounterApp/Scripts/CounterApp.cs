@@ -14,7 +14,7 @@ namespace Framework.Core.Example._0.CounterApp.Scripts
     using UnityEngine;
     using Utility;
 
-    public class CounterApp : Architecture<CounterApp>
+    public class CounterApp : AbstractArchitecture<CounterApp>
     {
         protected override void Init()
         {

@@ -10,7 +10,7 @@ namespace Game
 {
     using System.Collections.Generic;
 
-    public class EnemyWaveConfig
+    public class EnemyWaveData
     {
         public List<string> EnemyNames = new List<string>();
     }

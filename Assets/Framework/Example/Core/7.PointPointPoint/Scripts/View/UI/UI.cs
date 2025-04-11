@@ -12,7 +12,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class UI : AbstractView
     {
-        protected override IArchitecture _Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Architecture;
 
         private AbstractView _startPanel;
         private AbstractView _gamePanel;

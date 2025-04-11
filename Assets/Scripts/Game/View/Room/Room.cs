@@ -44,9 +44,9 @@ namespace Game
 
         private List<IEnemy> _enemiesInRoom = new List<IEnemy>();
 
-        private List<EnemyWaveConfig> _enemyWaves = new List<EnemyWaveConfig>();
+        private List<EnemyWaveData> _enemyWaves = new List<EnemyWaveData>();
 
-        private EnemyWaveConfig _currentWave;
+        private EnemyWaveData _currentWave;
 
         [ShowInInspector]
         public RoomNode Node { get; set; }
@@ -103,16 +103,16 @@ namespace Game
                     return;
                 }
 
-                foreach (var powerUp in PowerUps)
-                {
-                    var cachedPowerUp = powerUp;
-                    ActionKit.OnFixedUpdate.Register(() =>
-                    {
-                        var spriteRenderer = cachedPowerUp.SpriteRenderer;
-                        spriteRenderer.transform.Translate(
-                            spriteRenderer.Direction2DTo(Player.Instance) * Time.fixedDeltaTime * 5);
-                    }).UnRegisterWhenGameObjectDestroyed(powerUp.SpriteRenderer);
-                }
+                // foreach (var powerUp in PowerUps)
+                // {
+                //     var cachedPowerUp = powerUp;
+                //     ActionKit.OnFixedUpdate.Register(() =>
+                //     {
+                //         var spriteRenderer = cachedPowerUp.SpriteRenderer;
+                //         spriteRenderer.transform.Translate(
+                //             spriteRenderer.Direction2DTo(Player.Instance) * Time.fixedDeltaTime * 5);
+                //     }).UnRegisterWhenGameObjectDestroyed(powerUp.SpriteRenderer);
+                // }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
@@ -149,7 +149,7 @@ namespace Game
                         State = RoomState.PlayerIn;
 
                         // 填充敌人
-                        var difficultyLevel = LevelConfig.PacingQueue.Dequeue();
+                        var difficultyLevel = this.GetModel<LevelModel>().PacingQueue.Dequeue();
                         var difficultyScore = 10 + difficultyLevel * 3;
                         var waveCount       = 0;
                         if (difficultyLevel <= 3)
@@ -165,11 +165,11 @@ namespace Game
                         {
                             var targetScore = difficultyScore / waveCount +
                                               (-difficultyScore / 10 * 2 + 1, difficultyScore / 20 + 1 + 1).RandomSelect();
-                            var waveConfig = new EnemyWaveConfig();
+                            var waveConfig = new EnemyWaveData();
 
                             while (targetScore > 0 && waveConfig.EnemyNames.Count < _enemyGeneratePoses.Count)
                             {
-                                var enemyScore = (2, 10 + 1).RandomSelect();
+                                var enemyScore = EnemyFactory.GenTargetEnemyScore();
                                 targetScore -= enemyScore;
                                 waveConfig.EnemyNames.Add(EnemyFactory.GetEnemyByScore(enemyScore));
                             }
@@ -208,13 +208,13 @@ namespace Game
             _enemyGeneratePoses.Add(generatePos);
         }
 
-        public void GenerateEnemies(EnemyWaveConfig waveConfig)
+        public void GenerateEnemies(EnemyWaveData waveData)
         {
             var posGen = _enemyGeneratePoses
                .OrderByDescending(p => Player.Instance.Distance(p))
                .ToList();
 
-            foreach (var enemyName in waveConfig.EnemyNames)
+            foreach (var enemyName in waveData.EnemyNames)
             {
                 var enemy = EnemyFactory.GetEnemyByName(enemyName).GameObject
                    .Instantiate(keepName: true)
@@ -238,6 +238,6 @@ namespace Game
             return this;
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

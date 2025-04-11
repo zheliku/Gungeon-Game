@@ -12,7 +12,7 @@ namespace Game
     using Framework.Core;
     using UnityEngine;
 
-    public class Game : Architecture<Game>
+    public class Game : AbstractArchitecture<Game>
     {
         protected override void Init()
         {
@@ -24,7 +24,7 @@ namespace Game
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void AutoInit()
         {
-            LevelConfig.PacingQueue = new Queue<int>(Level1.CONFIG.Pacing);
+            // this.GetModel<LevelModel>().PacingQueue = new Queue<int>(Level1.CONFIG.Pacing);
         }
     }
 }

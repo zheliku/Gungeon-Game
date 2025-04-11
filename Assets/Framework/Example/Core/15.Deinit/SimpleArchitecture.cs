@@ -10,7 +10,7 @@ namespace Framework.Core.Example._15.Deinit
 {
     using UnityEngine;
 
-    public class SimpleArchitecture : Architecture<SimpleArchitecture>
+    public class SimpleArchitecture : AbstractArchitecture<SimpleArchitecture>
     {
         protected override void Init()
         {

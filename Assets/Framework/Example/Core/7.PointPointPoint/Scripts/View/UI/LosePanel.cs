@@ -14,7 +14,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.UI
 
     public class LosePanel : AbstractView
     {
-        protected override IArchitecture _Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Architecture;
 
         private Button _btnBack;
 

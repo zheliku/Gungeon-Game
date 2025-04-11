@@ -13,7 +13,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View.Object
 
     public class ErrorArea : AbstractView
     {
-        protected override IArchitecture _Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Architecture;
 
         private void OnMouseDown()
         {

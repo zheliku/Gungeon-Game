@@ -13,7 +13,7 @@ namespace Framework.Core.Example._7.PointPointPoint.Scripts.View
 
     public class Game : AbstractView
     {
-        protected override IArchitecture _Architecture => PointGame.Interface;
+        protected override IArchitecture _Architecture => PointGame.Architecture;
 
         private Transform _enemies;
 

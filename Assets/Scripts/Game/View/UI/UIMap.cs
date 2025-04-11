@@ -54,6 +54,6 @@ namespace Game
             Time.timeScale = 1;
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

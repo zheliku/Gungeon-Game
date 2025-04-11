@@ -10,7 +10,7 @@ namespace Framework.Core.Example._1.QueryExample.Scripts
 {
     using Model;
 
-    public class QueryExampleApp : Architecture<QueryExampleApp>
+    public class QueryExampleApp : AbstractArchitecture<QueryExampleApp>
     {
         protected override void Init()
         {

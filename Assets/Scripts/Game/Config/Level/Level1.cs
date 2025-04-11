@@ -13,7 +13,7 @@ namespace Game
 
     public class Level1
     {
-        public static readonly LevelConfig CONFIG = new LevelConfig()
+        public static readonly LevelData DATA = new LevelData()
            .Self(self =>
             {
                 self.Pacing = new List<int>() { 2, 1, 3, 3, 2, 1, 2, 3, 3, 2, 3, 1, 3 };

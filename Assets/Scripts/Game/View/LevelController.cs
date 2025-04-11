@@ -76,16 +76,16 @@ namespace Game
 
         private void Start()
         {
-            GenerateRoomMap(Level1.CONFIG.RoomTree);
+            GenerateRoomMap(this.GetModel<LevelModel>().CurrentLevel);
         }
 
-        private RoomNode GenerateRoomMap(Tree<RoomType> tree)
+        private RoomNode GenerateRoomMap(LevelData level)
         {
-            var roomNode = new RoomNode(tree.Root.Data);
+            var roomNode = new RoomNode(level.RoomTree.Root.Data);
 
             // 基于权重生成网格
             var predictWeight = 0;
-            while (!GenerateRoomMapBFS(tree.Root, roomNode, predictWeight))
+            while (!GenerateRoomMapBFS(level.RoomTree, roomNode, predictWeight))
             {
                 predictWeight++;
                 roomNode.ClearConnect(); // 每次重新生成需要清除上次的结果
@@ -117,13 +117,13 @@ namespace Game
             return roomNode;
         }
 
-        private bool GenerateRoomMapBFS(TreeNode<RoomType> treeRoot, RoomNode roomRoot, int predictWeight = 0)
+        private bool GenerateRoomMapBFS(Tree<RoomType> tree, RoomNode roomRoot, int predictWeight = 0)
         {
             var roomQueue  = new Queue<RoomNode>();
             var treeQueue  = new Queue<TreeNode<RoomType>>();
             var existIndex = new HashSet<Vector2Int>(); // 记录已生成的房间位置
             roomQueue.Enqueue(roomRoot);
-            treeQueue.Enqueue(treeRoot);
+            treeQueue.Enqueue(tree.Root);
             existIndex.Add(Vector2Int.zero);
 
             while (treeQueue.Count > 0)
@@ -334,6 +334,6 @@ namespace Game
             return room;
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

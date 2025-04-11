@@ -108,6 +108,6 @@ namespace Game
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

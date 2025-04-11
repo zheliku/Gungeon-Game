@@ -26,6 +26,6 @@ namespace Game
 
         public abstract void Hurt(float damage, HitInfo info);
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

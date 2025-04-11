@@ -28,6 +28,6 @@ namespace Game
             Rigidbody = GetComponent<Rigidbody2D>();
         }
         
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

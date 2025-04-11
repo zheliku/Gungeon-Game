@@ -17,7 +17,7 @@ namespace Framework.Core.Example._0.CounterApp.Scripts.View
 
     public class CounterAppView : AbstractView
     {
-        protected override IArchitecture _Architecture => CounterApp.Interface;
+        protected override IArchitecture _Architecture => CounterApp.Architecture;
 
         private Button _btnAdd;
         private Button _btnSub;

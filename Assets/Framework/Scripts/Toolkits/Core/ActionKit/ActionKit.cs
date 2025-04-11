@@ -12,7 +12,7 @@ namespace Framework.Toolkits.ActionKit
     using System.Collections;
     using Framework.Core;
 
-    public partial class ActionKit : Architecture<ActionKit>
+    public partial class ActionKit : AbstractArchitecture<ActionKit>
     {
         public static ulong IDGenerator = 0;
 

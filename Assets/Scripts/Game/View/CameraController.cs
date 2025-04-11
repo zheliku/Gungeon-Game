@@ -20,6 +20,7 @@ namespace Game
 
         public float ShakeA;
         public int   ShakeFrames;
+        
         public bool  Shaking;
 
         private void Awake()
@@ -64,6 +65,6 @@ namespace Game
             base.Update();
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

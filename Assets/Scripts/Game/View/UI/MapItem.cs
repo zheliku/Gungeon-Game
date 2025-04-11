@@ -103,8 +103,8 @@ namespace Game
                     break;
                 case RoomType.Chest:
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                case RoomType.Shop:
+                    break;
             }
 
             foreach (var powerUp in Room.PowerUps)
@@ -127,6 +127,6 @@ namespace Game
             return this;
         }
 
-        protected override IArchitecture _Architecture { get => Game.Interface; }
+        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

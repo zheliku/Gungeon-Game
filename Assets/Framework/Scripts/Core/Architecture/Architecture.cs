@@ -15,7 +15,7 @@ namespace Framework.Core
     using Sirenix.OdinInspector;
 
     [HideReferenceObjectPicker]
-    public abstract class Architecture<TArchitecture> : IArchitecture where TArchitecture : Architecture<TArchitecture>, new()
+    public abstract class AbstractArchitecture<TArchitecture> : IArchitecture where TArchitecture : AbstractArchitecture<TArchitecture>, new()
     {
     #region 常量
 
@@ -57,7 +57,7 @@ namespace Framework.Core
             }
         }
 
-        public static IArchitecture Interface
+        public static IArchitecture Architecture
         {
             get
             {

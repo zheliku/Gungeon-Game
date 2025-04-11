@@ -12,6 +12,7 @@ namespace Game
     using Framework.Core;
     using Framework.Core.Model;
     using Framework.Toolkits.GridKit;
+    using Framework.Toolkits.TreeKit;
 
     public class LevelModel : AbstractModel
     {
@@ -19,13 +20,17 @@ namespace Game
 
         public Room CurrentRoom { get; private set; }
 
+        public LevelData CurrentLevel;
+
+        public Queue<int> PacingQueue = new Queue<int>();
+
         protected override void OnInit()
         {
             TypeEventSystem.GLOBAL.Register<EnterRoomEvent>(e =>
             {
                 CurrentRoom = e.Room;
             });
-            
+
             TypeEventSystem.GLOBAL.Register<ExitRoomEvent>(e =>
             {
                 if (CurrentRoom == e.Room)
@@ -33,6 +38,30 @@ namespace Game
                     CurrentRoom = null;
                 }
             });
+            
+            Reset();
+        }
+
+        public void Reset()
+        {
+            CurrentLevel = Level1.DATA;
+            PacingQueue  = new Queue<int>(CurrentLevel.Pacing);
+        }
+
+        /// <summary>
+        /// 下一关
+        /// </summary>
+        /// <returns>是否还有下一关</returns>
+        public bool NextLevel()
+        {
+            var levelIndex = LevelConfig.LEVELS.FindIndex(level => level == CurrentLevel);
+            levelIndex++;
+            if (levelIndex >= LevelConfig.LEVELS.Count)
+            {
+                return false; // 游戏通关
+            }
+            CurrentLevel = LevelConfig.LEVELS[levelIndex];
+            return true;
         }
     }
 }
