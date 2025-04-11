@@ -58,6 +58,7 @@ namespace Game
 
         public HashSet<IPowerUp> PowerUps { get; private set; } = new HashSet<IPowerUp>();
 
+        [ShowInInspector]
         public List<IEnemy> EnemiesInRoom
         {
             get => _enemiesInRoom;
@@ -74,7 +75,9 @@ namespace Game
                 {
                     if (_enemyWaves.Count > 0) // 还有下一波敌人
                     {
-                        GenerateEnemies();
+                        _currentWave = _enemyWaves[0];
+                        GenerateEnemies(_currentWave);
+                        _enemyWaves.RemoveAt(0);
                     }
                     else // 没有下一波敌人
                     {
@@ -99,7 +102,7 @@ namespace Game
                 {
                     return;
                 }
-                
+
                 foreach (var powerUp in PowerUps)
                 {
                     var cachedPowerUp = powerUp;
@@ -122,14 +125,15 @@ namespace Game
                     door.State.ChangeState(DoorState.Open);
                 }
             }
-            else if (RoomType == RoomType.Normal)
-            {
-                var randomCount = (1, 3 + 1).RandomSelect(); // 随机生成 1 到 3 波敌人
-                for (int i = 0; i < randomCount; i++)
-                {
-                    _enemyWaves.Add(new EnemyWaveConfig());
-                }
-            }
+
+            // else if (RoomType == RoomType.Normal)
+            // {
+            //     var randomCount = (1, 3 + 1).RandomSelect(); // 随机生成 1 到 3 波敌人
+            //     for (int i = 0; i < randomCount; i++)
+            //     {
+            //         _enemyWaves.Add(new EnemyWaveConfig());
+            //     }
+            // }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -144,7 +148,39 @@ namespace Game
                     {
                         State = RoomState.PlayerIn;
 
-                        GenerateEnemies();
+                        // 填充敌人
+                        var difficultyLevel = LevelConfig.PacingQueue.Dequeue();
+                        var difficultyScore = 10 + difficultyLevel * 3;
+                        var waveCount       = 0;
+                        if (difficultyLevel <= 3)
+                        {
+                            waveCount = (1, difficultyLevel + 1).RandomSelect();
+                        }
+                        else
+                        {
+                            waveCount = (difficultyLevel / 3, difficultyLevel / 2).RandomSelect();
+                        }
+
+                        for (int i = 0; i < waveCount; i++)
+                        {
+                            var targetScore = difficultyScore / waveCount +
+                                              (-difficultyScore / 10 * 2 + 1, difficultyScore / 20 + 1 + 1).RandomSelect();
+                            var waveConfig = new EnemyWaveConfig();
+
+                            while (targetScore > 0 && waveConfig.EnemyNames.Count < _enemyGeneratePoses.Count)
+                            {
+                                var enemyScore = (2, 10 + 1).RandomSelect();
+                                targetScore -= enemyScore;
+                                waveConfig.EnemyNames.Add(EnemyFactory.GetEnemyByScore(enemyScore));
+                            }
+                            
+                            _enemyWaves.Add(waveConfig);
+                        }
+
+
+                        _currentWave = _enemyWaves[0];
+                        GenerateEnemies(_currentWave);
+                        _enemyWaves.RemoveAt(0);
 
                         foreach (var door in _doors)
                         {
@@ -172,25 +208,21 @@ namespace Game
             _enemyGeneratePoses.Add(generatePos);
         }
 
-        public void GenerateEnemies()
+        public void GenerateEnemies(EnemyWaveConfig waveConfig)
         {
-            _enemyWaves.RemoveAt(0);
-
-            var enemyCount = (3, 5 + 1).RandomSelect();
-
             var posGen = _enemyGeneratePoses
                .OrderByDescending(p => Player.Instance.Distance(p))
-               .Take(enemyCount)
                .ToList();
 
-            for (int i = 0; i < posGen.Count; i++)
+            foreach (var enemyName in waveConfig.EnemyNames)
             {
-                var enemy = LevelController.Instance.Enemy.GameObject.Instantiate(keepName: true)
+                var enemy = EnemyFactory.GetEnemyByName(enemyName).GameObject
+                   .Instantiate(keepName: true)
+                   .SetPosition(posGen.RandomTakeOneAndRemove())
                    .Enable()
-                   .SetPosition(posGen[i])
                    .GetComponent<IEnemy>();
 
-                _enemiesInRoom.Add(enemy);
+                enemy.Room = this;
             }
         }
 

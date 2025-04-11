@@ -76,7 +76,7 @@ namespace Game
 
         private void Start()
         {
-            GenerateRoomMap(Level1.Config.RoomTree);
+            GenerateRoomMap(Level1.CONFIG.RoomTree);
         }
 
         private RoomNode GenerateRoomMap(Tree<RoomType> tree)
@@ -253,7 +253,7 @@ namespace Game
                            .EnableGameObject()
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
 
-                        room.PowerUps.Add(chest);
+                        chest.Room = room;
                     }
                     else if (code == 's')
                     {

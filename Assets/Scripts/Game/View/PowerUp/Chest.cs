@@ -19,13 +19,13 @@ namespace Game
         {
             if (other.CompareTag("Player"))
             {
-                this.GetModel<LevelModel>().CurrentRoom.PowerUps.Remove(this); // 从房间中移除
+                Room.PowerUps.Remove(this); // 从房间中移除
 
                 var hp1 = PowerUpFactory.Instance.SingleGunFullBullet
                    .Instantiate(this.GetPosition())
                    .EnableGameObject();
 
-                this.GetModel<LevelModel>().CurrentRoom.PowerUps.Add(hp1);
+                hp1.Room = this.GetModel<LevelModel>().CurrentRoom;
 
                 AudioKit.PlaySound(AssetConfig.Sound.CHEST, 0.6f);
                 this.DestroyGameObject();

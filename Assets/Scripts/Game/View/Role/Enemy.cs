@@ -10,7 +10,6 @@ namespace Game
 {
     using System.Collections.Generic;
     using Framework.Core;
-    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Sirenix.OdinInspector;
@@ -33,6 +32,19 @@ namespace Game
         public GameObject GameObject { get => gameObject; }
 
         public Transform Transform { get => transform; }
+        
+        private Room _room;
+
+        [ShowInInspector]
+        public Room Room
+        {
+            get => _room;
+            set
+            {
+                _room = value;
+                _room.EnemiesInRoom.Add(this);
+            }
+        }
 
         protected override void Awake()
         {
@@ -49,7 +61,7 @@ namespace Game
                     var coin = PowerUpFactory.Instance.Coin.Instantiate(this.GetPosition()) // 生成金币
                        .EnableGameObject();
 
-                    this.GetModel<LevelModel>().CurrentRoom.PowerUps.Add(coin);
+                    coin.Room = this.GetModel<LevelModel>().CurrentRoom;
                     
                     this.DestroyGameObject();
                 }
@@ -64,7 +76,7 @@ namespace Game
             // 死亡时发送死亡事件
             TypeEventSystem.GLOBAL.Send(new EnemyDieEvent(this));
         }
-
+        
         public override void Hurt(float damage, HitInfo info)
         {
             _property.Hp.Value -= damage;

@@ -19,7 +19,7 @@ namespace Game
         {
             if (other.CompareTag("Player"))
             {
-                this.GetModel<LevelModel>().CurrentRoom.PowerUps.Remove(this); // 从房间中移除
+                Room.PowerUps.Remove(this); // 从房间中移除
                 
                 AudioKit.PlaySound(AssetConfig.Sound.ARMOR1);
                 this.GetModel<PlayerModel>().Property.Armor.Value += 1;

@@ -8023,10 +8023,7 @@ GameObject:
   m_Component:
   - component: {fileID: 638592639}
   - component: {fileID: 638592644}
-  - component: {fileID: 638592643}
   - component: {fileID: 638592642}
-  - component: {fileID: 638592641}
-  - component: {fileID: 638592640}
   - component: {fileID: 638592645}
   m_Layer: 0
   m_Name: SingleGunFullBullet
@@ -8050,30 +8047,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 998210457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &638592640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638592638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 607330ac2a2d16646b39de60bff641bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &638592641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638592638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f21c1fc5ebdc1f4baf6e0bb67070f2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &638592642
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8110,18 +8083,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &638592643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638592638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a133e3e48db32fd4892348b8e6c3ce32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &638592644
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11608,9 +11569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1397017895}
   - component: {fileID: 1397017899}
-  - component: {fileID: 1397017898}
   - component: {fileID: 1397017897}
-  - component: {fileID: 1397017896}
   - component: {fileID: 1397017900}
   m_Layer: 0
   m_Name: AllGunHalfBullet
@@ -11634,18 +11593,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 998210457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1397017896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397017894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f21c1fc5ebdc1f4baf6e0bb67070f2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &1397017897
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -11682,18 +11629,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &1397017898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397017894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a133e3e48db32fd4892348b8e6c3ce32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &1397017899
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12013,7 +11948,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1425259887}
   - component: {fileID: 1425259891}
-  - component: {fileID: 1425259890}
   - component: {fileID: 1425259889}
   - component: {fileID: 1425259888}
   m_Layer: 0
@@ -12086,18 +12020,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &1425259890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1425259886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a133e3e48db32fd4892348b8e6c3ce32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &1425259891
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12676,8 +12598,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1500943692}
+  - component: {fileID: 1500943693}
   m_Layer: 0
-  m_Name: EnemyDB
+  m_Name: EnemyFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12710,6 +12633,18 @@ Transform:
   - {fileID: 860570081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1500943693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500943691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e8a8815f46f3448a5f2dfdb84974ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1508151762
 GameObject:
   m_ObjectHideFlags: 0

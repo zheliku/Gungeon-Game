@@ -20,6 +20,8 @@ namespace Game
         {
             get => Transform.position;
         }
+
+        Room Room { get; set; }
         
         void Hurt(float damage, HitInfo hitInfo);
     }

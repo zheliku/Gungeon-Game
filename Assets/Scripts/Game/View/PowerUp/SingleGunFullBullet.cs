@@ -19,7 +19,7 @@ namespace Game
         {
             if (other.CompareTag("Player"))
             {
-                this.GetModel<LevelModel>().CurrentRoom.PowerUps.Remove(this); // 从房间中移除
+                Room.PowerUps.Remove(this); // 从房间中移除
 
                 var gun = Player.Instance.CurrentGun;
                 var bag = gun.Bag;

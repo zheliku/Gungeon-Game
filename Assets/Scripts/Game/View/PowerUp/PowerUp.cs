@@ -10,13 +10,25 @@ namespace Game
 {
     using System;
     using Framework.Core;
+    using Sirenix.OdinInspector;
     using UnityEngine;
 
     public abstract class PowerUp : AbstractView, IPowerUp
     {
         public SpriteRenderer SpriteRenderer { get => this.GetComponent<SpriteRenderer>(); }
 
-        public Room Room { get; set; }
+        private Room _room;
+
+        [ShowInInspector]
+        public Room Room
+        {
+            get => _room;
+            set
+            {
+                _room = value;
+                _room.PowerUps.Add(this);
+            }
+        }
 
         protected virtual void Awake()
         {

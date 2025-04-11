@@ -33,5 +33,22 @@ namespace Game
             public const string OPEN_MAP    = "OpenMap";
             public const string CHANGE_GUN  = "ChangeGun";
         }
+
+        public class EnemyName
+        {
+            public const string ENEMY_A = "EnemyA";
+            public const string ENEMY_B = "EnemyB";
+            public const string ENEMY_C = "EnemyC";
+            public const string ENEMY_D = "EnemyD";
+            public const string ENEMY_E = "EnemyE";
+            public const string ENEMY_F = "EnemyF";
+            public const string ENEMY_G = "EnemyG";
+            public const string ENEMY_H = "EnemyH";
+            
+            public const string ENEMY_A_BIG = "EnemyA_Big";
+            public const string ENEMY_B_BIG = "EnemyB_Big";
+            public const string ENEMY_C_BIG = "EnemyC_Big";
+            public const string ENEMY_D_BIG = "EnemyD_Big";
+        }
     }
 }

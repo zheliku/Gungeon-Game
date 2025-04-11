@@ -8,7 +8,9 @@
 
 namespace Game
 {
+    using System.Collections.Generic;
     using Framework.Core;
+    using UnityEngine;
 
     public class Game : Architecture<Game>
     {
@@ -17,6 +19,12 @@ namespace Game
             RegisterModel(new PlayerModel());
             RegisterModel(new EnemyModel());
             RegisterModel(new LevelModel());
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void AutoInit()
+        {
+            LevelConfig.PacingQueue = new Queue<int>(Level1.CONFIG.Pacing);
         }
     }
 }
