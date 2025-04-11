@@ -98,6 +98,11 @@ namespace Framework.Toolkits.FluentAPI
         
         public static bool IsGameObjectEnabled<T>(this T selfComponent) where T : Component
         {
+            return selfComponent.gameObject.activeInHierarchy;
+        }
+        
+        public static bool IsGameObjectEnabledSelf<T>(this T selfComponent) where T : Component
+        {
             return selfComponent.gameObject.activeSelf;
         }
 
@@ -137,6 +142,11 @@ namespace Framework.Toolkits.FluentAPI
         }
         
         public static bool IsGameObjectDisabled<T>(this T selfComponent) where T : Component
+        {
+            return !selfComponent.gameObject.activeInHierarchy;
+        }
+        
+        public static bool IsGameObjectDisabledSelf<T>(this T selfComponent) where T : Component
         {
             return !selfComponent.gameObject.activeSelf;
         }

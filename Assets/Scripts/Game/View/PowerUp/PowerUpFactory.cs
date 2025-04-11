@@ -11,6 +11,7 @@ namespace Game
     using System;
     using Framework.Core;
     using Framework.Toolkits.SingletonKit;
+    using UnityEngine.Serialization;
 
     public class PowerUpFactory : MonoSingleton<PowerUpFactory>
     {
@@ -20,8 +21,11 @@ namespace Game
         [HierarchyPath("Armor1")]
         public Armor1 Armor1;
         
-        [HierarchyPath("HalfBullet")]
-        public HalfBullet HalfBullet;
+        [HierarchyPath("AllGunHalfBullet")]
+        public AllGunHalfBullet AllGunHalfBullet;
+        
+        [HierarchyPath("SingleGunFullBullet")]
+        public SingleGunFullBullet SingleGunFullBullet;
 
         private void Awake()
         {

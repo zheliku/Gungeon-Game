@@ -23,5 +23,15 @@ namespace Game
             public const string USE_ARMOR            = "UseArmor";
             public const string POWER_UP_HALF_BULLET = "PowerUpHalfBullet";
         }
+
+        public class Action
+        {
+            public const string ATTACK      = "Attack";
+            public const string MOVE      = "Move";
+            public const string BUY         = "Buy";
+            public const string LOAD_BULLET = "LoadBullet";
+            public const string OPEN_MAP    = "OpenMap";
+            public const string CHANGE_GUN  = "ChangeGun";
+        }
     }
 }

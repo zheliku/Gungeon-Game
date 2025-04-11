@@ -1,8 +1,8 @@
 // ------------------------------------------------------------
-// @file       Chest.cs
+// @file       SingleGunFullBullet.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-02-23 21:02:17
+// @Modified   2025-04-11 12:31:39
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class Chest : AbstractView, IPowerUp
+    public class SingleGunFullBullet : AbstractView, IPowerUp
     {
         public SpriteRenderer SpriteRenderer { get => GetComponent<SpriteRenderer>(); }
 
@@ -23,13 +23,19 @@ namespace Game
             {
                 this.GetModel<LevelModel>().CurrentRoom.PowerUps.Remove(this); // 从房间中移除
 
-                var hp1 = PowerUpFactory.Instance.SingleGunFullBullet
-                   .Instantiate(this.GetPosition())
-                   .EnableGameObject();
+                var gun = Player.Instance.CurrentGun;
+                var bag = gun.Bag;
 
-                this.GetModel<LevelModel>().CurrentRoom.PowerUps.Add(hp1);
+                if (bag.IsFull)
+                {
+                    return;
+                }
 
-                AudioKit.PlaySound(Config.Sound.CHEST, 0.6f);
+                var bulletCountToAdd = bag.MaxBulletCount;
+                bag.AddBulletCount(bulletCountToAdd);
+
+                TypeEventSystem.GLOBAL.Send(new GunBulletChangeEvent(gun));
+                AudioKit.PlaySound(Config.Sound.POWER_UP_HALF_BULLET);
                 this.DestroyGameObject();
             }
         }

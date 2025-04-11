@@ -107,6 +107,11 @@ namespace Game
                 ConnectNodes.Remove(direction);
             }
         }
+
+        public void ClearConnect()
+        {
+            ConnectNodes.Clear();
+        }
     }
 
     public enum Direction

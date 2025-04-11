@@ -97,5 +97,25 @@ namespace Framework.Toolkits.InputKit
         {
             return InputManager.Instance.ActionMaps[actionMapName][actionName].ReadValue<TValue>();
         }
+
+        public static bool WasCompletedThisFrame(string actionName, string actionMapName = "Player")
+        {
+            return InputManager.Instance.ActionMaps[actionMapName][actionName].WasCompletedThisFrame();
+        }
+
+        public static bool WasPerformedThisFrame(string actionName, string actionMapName = "Player")
+        {
+            return InputManager.Instance.ActionMaps[actionMapName][actionName].WasPerformedThisFrame();
+        }
+        
+        public static bool WasPressedThisFrame(string actionName, string actionMapName = "Player")
+        {
+            return InputManager.Instance.ActionMaps[actionMapName][actionName].WasPressedThisFrame();
+        }
+        
+        public static bool WasReleasedThisFrame(string actionName, string actionMapName = "Player")
+        {
+            return InputManager.Instance.ActionMaps[actionMapName][actionName].WasReleasedThisFrame();
+        }
     }
 }

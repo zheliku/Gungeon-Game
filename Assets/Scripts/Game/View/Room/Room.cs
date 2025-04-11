@@ -22,6 +22,7 @@ namespace Game
         Init,
         Normal,
         Final,
+        Shop,
         Chest
     }
 

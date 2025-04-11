@@ -88,7 +88,7 @@ namespace Game
 
             _playerModel = this.GetModel<PlayerModel>();
 
-            _moveAction = InputKit.GetInputAction("Move");
+            _moveAction = InputKit.GetInputAction(Config.Action.MOVE);
 
             _Property.Hp.Register((oldValue, value) =>
             {
@@ -123,7 +123,7 @@ namespace Game
 
         private void OnEnable()
         {
-            InputKit.BindPerformed("ChangeGun", context =>
+            InputKit.BindPerformed(Config.Action.CHANGE_GUN, context =>
             {
                 var currentGun = Guns[CurrentGunIndex];
 

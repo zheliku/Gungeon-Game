@@ -54,6 +54,9 @@ namespace Game
         [HierarchyPath("Template/Chest")]
         public Chest ChestTemplate;
 
+        [HierarchyPath("Template/ShopItem")]
+        public ShopItem ShopItemTemplate;
+
         private LevelModel _levelModel;
 
         protected void Awake()
@@ -67,6 +70,7 @@ namespace Game
             DoorTemplate.DisableGameObject();
             Hp1Template.DisableGameObject();
             ChestTemplate.DisableGameObject();
+            ShopItemTemplate.DisableGameObject();
 
             // DontDestroyOnLoad(this); // 防止被销毁
         }
@@ -74,7 +78,7 @@ namespace Game
         private void Start()
         {
             var tree = new Tree<RoomType>(RoomType.Init);
-            tree.Root.AddChild(RoomType.Chest)
+            tree.Root.AddChild(RoomType.Shop)
                .AddChild(RoomType.Normal, child =>
                 {
                     child.AddChild(RoomType.Normal)
@@ -125,6 +129,7 @@ namespace Game
             while (!GenerateRoomMapBFS(tree, roomNode, predictWeight))
             {
                 predictWeight++;
+                roomNode.ClearConnect(); // 每次重新生成需要清除上次的结果
             }
 
             Debug.Log(predictWeight + " weight!");
@@ -223,6 +228,7 @@ namespace Game
                 RoomType.Normal => _levelModel.NormalRoom.RandomTakeOne(),
                 RoomType.Final  => _levelModel.FinalRoom,
                 RoomType.Chest  => _levelModel.ChestRoom,
+                RoomType.Shop   => _levelModel.ShopRoom,
                 _               => throw new ArgumentOutOfRangeException()
             };
 
@@ -289,6 +295,17 @@ namespace Game
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
 
                         room.PowerUps.Add(chest);
+                    }
+                    else if (code == 's')
+                    {
+                        var shopItem = ShopItemTemplate.Instantiate(parent: room)
+                           .EnableGameObject()
+                           .Self(self =>
+                            {
+                                self.PowerUp = Instance.Hp1Template;
+                                self.Price   = 1;
+                            })
+                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                     }
                 }
             }

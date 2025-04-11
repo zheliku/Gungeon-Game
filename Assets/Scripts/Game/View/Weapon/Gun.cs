@@ -123,7 +123,7 @@ namespace Game
 
         private void OnEnable()
         {
-            AttackAction = InputKit.BindPerformed("Attack", context =>
+            AttackAction = InputKit.BindPerformed(Config.Action.ATTACK, context =>
             {
                 if (!UIKit.IsPanelShown<UIMap>()) // 地图界面打开时，不允许射击
                 {
@@ -138,7 +138,7 @@ namespace Game
                 }
             }).UnBindAllWhenGameObjectDisabled(gameObject);
 
-            InputKit.BindPerformed("LoadBullet", context =>
+            InputKit.BindPerformed(Config.Action.LOAD_BULLET, context =>
             {
                 // 重装子弹
                 Reload();
