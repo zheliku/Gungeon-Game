@@ -30,7 +30,7 @@ namespace Game
                 }
 
                 var bulletCountToAdd = bag.MaxBulletCount;
-                bag.AddBullet(bulletCountToAdd);
+                gun.Data.AddBagBullet(bulletCountToAdd);
 
                 TypeEventSystem.GLOBAL.Send(new GunBulletChangeEvent(gun));
                 AudioKit.PlaySound(AssetConfig.Sound.POWER_UP_HALF_BULLET);

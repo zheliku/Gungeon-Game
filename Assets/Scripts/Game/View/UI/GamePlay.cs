@@ -81,7 +81,7 @@ namespace Game
 
         private void UpdateGunInfo(Gun gun)
         {
-            var clipInfo = $"{gun.Clip.CurrentBulletCount}/{gun.Clip.ClipBulletCount}";
+            var clipInfo = $"{gun.Clip.RemainBulletCount}/{gun.Clip.MaxBulletCount}";
             var bagInfo  = gun.Bag.MaxBulletCount < 0 ? "(\u221e)" : $"({gun.Bag.RemainBulletCount}/{gun.Bag.MaxBulletCount})";
             _txtGun.text = $"Bullet: {clipInfo} {bagInfo} R Reload!";
         }

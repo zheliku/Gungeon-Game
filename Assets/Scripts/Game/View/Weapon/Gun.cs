@@ -130,8 +130,8 @@ namespace Game
             AdditionalCameraSize = _bgGunConfig.AdditionalCameraSize;
 
             _ShootInterval = new GunShootInterval(_bgGunConfig.ShootInterval);
-            Clip           = new GunClip(this, _bgGunConfig.ClipBulletCount);
-            Bag            = new BulletBag(this, _bgGunConfig.BagBulletCount);
+            Clip           = new GunClip(this);
+            Bag            = new BulletBag(this);
             BackForce      = new ShootBackForce(GunSprite);
 
             GunShootLight.DisableGameObject();

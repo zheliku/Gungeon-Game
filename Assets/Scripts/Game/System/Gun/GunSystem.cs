@@ -18,21 +18,19 @@ namespace Game
         protected List<BG_GunConfig> _bgGunConfigs;
 
         [ShowInInspector]
-        public List<GunData> GunList = new List<GunData>()
-        {
-            GunConfig.Pistol.CreateData(),
-            GunConfig.MP5.CreateData(),
-            GunConfig.ShotGun.CreateData(),
-            GunConfig.AK.CreateData(),
-            GunConfig.AWP.CreateData(),
-            GunConfig.Bow.CreateData(),
-            GunConfig.LaserGun.CreateData(),
-            GunConfig.RocketGun.CreateData(),
-        };
+        public List<GunData> GunDataList = new List<GunData>();
 
         protected override void OnInit()
         {
             _bgGunConfigs = BG_GunConfig.FindEntities(config => true);
+            
+            Reset();
+        }
+
+        public void Reset()
+        {
+            GunDataList.Clear();
+            GunDataList.Add(GunConfig.Pistol.CreateData());
         }
     }
 }

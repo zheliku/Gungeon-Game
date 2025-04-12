@@ -20,6 +20,21 @@ namespace Game
             })
            .Self(self =>
             {
+                self.RoomTree.Root
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Chest);
+
+                return;
+                
                 var randomIndex = new[] { 0, 1, 2 }.RandomTakeOne();
 
                 switch (randomIndex)

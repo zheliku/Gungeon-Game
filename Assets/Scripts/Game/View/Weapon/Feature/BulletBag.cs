@@ -16,12 +16,14 @@ namespace Game
     {
         public Gun Gun { get; }
 
-        public int MaxBulletCount; // 最大子弹数量
+        public int MaxBulletCount
+        {
+            get => Gun.Data.Config.BagMaxBulletCount;
+        }
 
         public int RemainBulletCount // 剩余子弹数量
         {
-            get => Gun.Data.GunBagRemainBulletCount;
-            private set => Gun.Data.GunBagRemainBulletCount = value;
+            get => Gun.Data.BagRemainBulletCount;
         }
 
         public bool IsFull
@@ -34,10 +36,9 @@ namespace Game
             get => RemainBulletCount == 0;
         }
 
-        public BulletBag(Gun gun, int maxBulletCount)
+        public BulletBag(Gun gun)
         {
-            Gun            = gun;
-            MaxBulletCount = maxBulletCount;
+            Gun = gun;
         }
 
         public void Reload(GunClip clip, AudioClip reloadSound)
@@ -56,18 +57,6 @@ namespace Game
                 var reloadCount = RemainBulletCount.MinWith(clip.UsedBulletCount);
                 clip.Reload(reloadSound, reloadCount);
             }
-        }
-
-        public void AddBullet(int bulletCountToAdd)
-        {
-            RemainBulletCount += bulletCountToAdd;
-            RemainBulletCount =  RemainBulletCount.MinWith(MaxBulletCount);
-        }
-
-        public void UseBullet(int bulletCountToUse)
-        {
-            RemainBulletCount -= bulletCountToUse;
-            RemainBulletCount =  RemainBulletCount.MaxWith(0);
         }
     }
 }

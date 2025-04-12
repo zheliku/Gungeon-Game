@@ -21,35 +21,36 @@ namespace Game
     {
         public Gun Gun { get; } // 属于哪个枪
 
-        public int ClipBulletCount; // 弹夹容量
-
-        public int CurrentBulletCount // 当前子弹数量
+        public int RemainBulletCount // 当前子弹数量
         {
-            get => Gun.Data.CurrentBulletCount;
-            private set => Gun.Data.CurrentBulletCount = value;
+            get => Gun.Data.ClipRemainBulletCount;
+        }
+
+        public int MaxBulletCount
+        {
+            get => Gun.Data.Config.ClipMaxBulletCount;
         }
 
         public bool IsReloading { get; private set; }
 
         public int UsedBulletCount
         {
-            get => ClipBulletCount - CurrentBulletCount;
+            get => MaxBulletCount - RemainBulletCount;
         }
 
         public bool IsFull
         {
-            get => CurrentBulletCount == ClipBulletCount;
+            get => RemainBulletCount == MaxBulletCount;
         }
 
         public bool IsEmpty
         {
-            get => CurrentBulletCount == 0;
+            get => RemainBulletCount == 0;
         }
 
-        public GunClip(Gun gun, int clipBulletCount)
+        public GunClip(Gun gun)
         {
-            Gun             = gun;
-            ClipBulletCount = clipBulletCount;
+            Gun = gun;
         }
 
         /// <summary>
@@ -57,9 +58,9 @@ namespace Game
         /// </summary>
         public void Use()
         {
-            CurrentBulletCount--;
+            Gun.Data.UseClipBullet(1);
 
-            if (CurrentBulletCount == 0)
+            if (RemainBulletCount == 0)
             {
                 Player.DisplayText("子弹用完了", 2f);
 
@@ -84,14 +85,14 @@ namespace Game
 
             IsReloading = true;
 
-            var targetCount = CurrentBulletCount + reloadBulletCount;
+            var targetCount = RemainBulletCount + reloadBulletCount;
 
             // 子弹填充动画
-            ActionKit.Lerp(CurrentBulletCount, targetCount, reloadSound.length, f =>
+            ActionKit.Lerp(RemainBulletCount, targetCount, reloadSound.length, f =>
             {
-                var loadBulletCountThisFrame = (int) f - CurrentBulletCount;
-                CurrentBulletCount += loadBulletCountThisFrame;
-                Gun.Bag.UseBullet(loadBulletCountThisFrame);
+                var loadBulletCountThisFrame = (int) f - RemainBulletCount;
+                Gun.Data.AddClipBullet(loadBulletCountThisFrame);
+                Gun.Data.UseBagBullet(loadBulletCountThisFrame);
                 TypeEventSystem.GLOBAL.Send(new GunBulletLoadingEvent(Gun));
             }).StartCurrentScene();
 

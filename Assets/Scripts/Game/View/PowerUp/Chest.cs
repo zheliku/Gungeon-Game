@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
@@ -21,11 +22,25 @@ namespace Game
             {
                 Room.PowerUps.Remove(this); // 从房间中移除
 
-                var hp1 = PowerUpFactory.Instance.SingleGunFullBullet
-                   .Instantiate(this.GetPosition())
-                   .EnableGameObject();
+                var gunDataList = this.GetSystem<GunSystem>().GunDataList;
+                var gun = GunConfig.AllConfigs
+                   .Except(gunDataList.Select(gunData => gunData.Config))
+                   .ToList();
 
-                hp1.Room = this.GetModel<LevelModel>().CurrentRoom;
+                if (gun.Count > 0) // 随机获取一把枪
+                {
+                    var randomGun = gun.RandomTakeOne();
+                    gunDataList.Add(randomGun.CreateData());
+                    Player.Instance.UseGun(gunDataList.Count - 1);
+                }
+                else
+                {
+                    var hp1 = PowerUpFactory.Instance.SingleGunFullBullet
+                       .Instantiate(this.GetPosition())
+                       .EnableGameObject();
+
+                    hp1.Room = this.GetModel<LevelModel>().CurrentRoom;
+                }
 
                 AudioKit.PlaySound(AssetConfig.Sound.CHEST, 0.6f);
                 this.DestroyGameObject();

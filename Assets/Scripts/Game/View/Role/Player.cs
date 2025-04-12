@@ -111,7 +111,7 @@ namespace Game
 
         private void Start()
         {
-            var gunData = this.GetSystem<GunSystem>().GunList.First();
+            var gunData = this.GetSystem<GunSystem>().GunDataList.First();
             if (gunData.Key == GunConfig.Pistol.Key)
             {
                 UseGun(0);
@@ -128,7 +128,7 @@ namespace Game
                     return;
                 }
                 
-                var gunList = this.GetSystem<GunSystem>().GunList;
+                var gunList = this.GetSystem<GunSystem>().GunDataList;
                 var currentGunIndex = gunList.FindIndex(gun => gun == CurrentGun.Data);
                 
                 var newIndex = currentGunIndex + (int) context.ReadValue<float>();
@@ -226,7 +226,7 @@ namespace Game
             var oldGun = CurrentGun;
             CurrentGun?.DisableGameObject();
 
-            var newGunData = this.GetSystem<GunSystem>().GunList[gunIndex];
+            var newGunData = this.GetSystem<GunSystem>().GunDataList[gunIndex];
             CurrentGun = GetGun(newGunData.Key);
             CurrentGun.EnableGameObject();
             CurrentGun.SetData(newGunData);
