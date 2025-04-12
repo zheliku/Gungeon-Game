@@ -8,18 +8,18 @@ using BansheeGz.BGDatabase;
 
 #pragma warning disable 414
 
-public partial class BG_GunData : BGEntity
+public partial class BG_GunConfig : BGEntity
 {
 
 	public class Factory : BGEntity.EntityFactory
 	{
-		public BGEntity NewEntity(BGMetaEntity meta) => new BG_GunData(meta);
-		public BGEntity NewEntity(BGMetaEntity meta, BGId id) => new BG_GunData(meta, id);
+		public BGEntity NewEntity(BGMetaEntity meta) => new BG_GunConfig(meta);
+		public BGEntity NewEntity(BGMetaEntity meta, BGId id) => new BG_GunConfig(meta, id);
 	}
 
 	public static class __Names
 	{
-		public const string Meta = "GunData";
+		public const string Meta = "GunConfig";
 		public const string name = "name";
 		public const string ShootInterval = "ShootInterval";
 		public const string BulletSpeed = "BulletSpeed";
@@ -121,19 +121,19 @@ public partial class BG_GunData : BGEntity
 	public static BansheeGz.BGDatabase.BGFieldInt _BackForceFrames => _ufle12jhs77_BackForceFrames ?? (_ufle12jhs77_BackForceFrames = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(4898030777058054216UL, 16830760087672593792UL), () => _ufle12jhs77_BackForceFrames = null));
 	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_AdditionalCameraSize;
 	public static BansheeGz.BGDatabase.BGFieldFloat _AdditionalCameraSize => _ufle12jhs77_AdditionalCameraSize ?? (_ufle12jhs77_AdditionalCameraSize = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5509063125276119044UL, 4860089744922829221UL), () => _ufle12jhs77_AdditionalCameraSize = null));
-	private static readonly BG_GunData.Factory _factory0_PFS = new BG_GunData.Factory();
-	private BG_GunData() : base(MetaDefault) {}
-	private BG_GunData(BGId id) : base(MetaDefault, id) {}
-	private BG_GunData(BGMetaEntity meta) : base(meta) {}
-	private BG_GunData(BGMetaEntity meta, BGId id) : base(meta, id) {}
-	public static BG_GunData FindEntity(Predicate<BG_GunData> filter) => BGCodeGenUtils.FindEntity(MetaDefault, filter);
-	public static List<BG_GunData> FindEntities(Predicate<BG_GunData> filter, List<BG_GunData> result=null, Comparison<BG_GunData> sort=null) => BGCodeGenUtils.FindEntities(MetaDefault, filter, result, sort);
-	public static void ForEachEntity(Action<BG_GunData> action, Predicate<BG_GunData> filter=null, Comparison<BG_GunData> sort=null) => BGCodeGenUtils.ForEachEntity(MetaDefault, action, filter, sort);
-	public static BG_GunData GetEntity(BGId entityId) => (BG_GunData) MetaDefault.GetEntity(entityId);
-	public static BG_GunData GetEntity(int index) => (BG_GunData) MetaDefault[index];
-	public static BG_GunData GetEntity(string entityName) => (BG_GunData) MetaDefault.GetEntity(entityName);
-	public static BG_GunData NewEntity() => (BG_GunData) MetaDefault.NewEntity();
-	public static BG_GunData NewEntity(BGId entityId) => (BG_GunData) MetaDefault.NewEntity(entityId);
-	public static BG_GunData NewEntity(Action<BG_GunData> callback) => (BG_GunData) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_GunData)entity)));
+	private static readonly BG_GunConfig.Factory _factory0_PFS = new BG_GunConfig.Factory();
+	private BG_GunConfig() : base(MetaDefault) {}
+	private BG_GunConfig(BGId id) : base(MetaDefault, id) {}
+	private BG_GunConfig(BGMetaEntity meta) : base(meta) {}
+	private BG_GunConfig(BGMetaEntity meta, BGId id) : base(meta, id) {}
+	public static BG_GunConfig FindEntity(Predicate<BG_GunConfig> filter) => BGCodeGenUtils.FindEntity(MetaDefault, filter);
+	public static List<BG_GunConfig> FindEntities(Predicate<BG_GunConfig> filter, List<BG_GunConfig> result=null, Comparison<BG_GunConfig> sort=null) => BGCodeGenUtils.FindEntities(MetaDefault, filter, result, sort);
+	public static void ForEachEntity(Action<BG_GunConfig> action, Predicate<BG_GunConfig> filter=null, Comparison<BG_GunConfig> sort=null) => BGCodeGenUtils.ForEachEntity(MetaDefault, action, filter, sort);
+	public static BG_GunConfig GetEntity(BGId entityId) => (BG_GunConfig) MetaDefault.GetEntity(entityId);
+	public static BG_GunConfig GetEntity(int index) => (BG_GunConfig) MetaDefault[index];
+	public static BG_GunConfig GetEntity(string entityName) => (BG_GunConfig) MetaDefault.GetEntity(entityName);
+	public static BG_GunConfig NewEntity() => (BG_GunConfig) MetaDefault.NewEntity();
+	public static BG_GunConfig NewEntity(BGId entityId) => (BG_GunConfig) MetaDefault.NewEntity(entityId);
+	public static BG_GunConfig NewEntity(Action<BG_GunConfig> callback) => (BG_GunConfig) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_GunConfig)entity)));
 }
 #pragma warning restore 414

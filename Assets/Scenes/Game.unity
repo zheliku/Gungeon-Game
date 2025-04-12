@@ -302,7 +302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &46884316
 Transform:
   m_ObjectHideFlags: 0
@@ -10336,7 +10336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1109964979
 Transform:
   m_ObjectHideFlags: 0
@@ -10668,7 +10668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1171348673
 Transform:
   m_ObjectHideFlags: 0
@@ -12481,7 +12481,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1479595868
 Transform:
   m_ObjectHideFlags: 0
@@ -13010,7 +13010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1601129802
 Transform:
   m_ObjectHideFlags: 0
@@ -13372,7 +13372,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1725482104
 Transform:
   m_ObjectHideFlags: 0
@@ -14692,7 +14692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1975038560
 Transform:
   m_ObjectHideFlags: 0
@@ -14996,7 +14996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2015030332
 Transform:
   m_ObjectHideFlags: 0
@@ -15354,8 +15354,6 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   WeaponTransform: {fileID: 0}
   FloatingText: {fileID: 0}
-  CurrentGunIndex: 0
-  Guns: []
   GunTakeOutSounds:
   - {fileID: 8300000, guid: 954d1dc550fbd97458e5f59480c1b15d, type: 3}
   - {fileID: 8300000, guid: 91270be57d2456844977e668909ecc3d, type: 3}

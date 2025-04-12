@@ -57,11 +57,11 @@ namespace Game
                 speed: _BulletSpeed,
                 _UnstableAngle);
 
-            BackForce.Shoot(_gunData.BackForceA, _gunData.BackForceFrames);
+            BackForce.Shoot(_bgGunConfig.BackForceA, _bgGunConfig.BackForceFrames);
             
             ShowGunShootLight(direction);
 
-            CameraController.SHAKE.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
+            CameraController.SHAKE.Trigger(_bgGunConfig.ShootShakeA, _bgGunConfig.ShootShakeFrames);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
 

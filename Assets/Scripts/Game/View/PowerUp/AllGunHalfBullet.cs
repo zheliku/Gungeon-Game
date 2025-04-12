@@ -21,16 +21,16 @@ namespace Game
             {
                 Room.PowerUps.Remove(this); // 从房间中移除
 
-                foreach (var gun in Player.Instance.Guns)
-                {
-                    var bag              = gun.Bag;
-                    var bulletCountToAdd = bag.MaxBulletCount / 2;
-                    bag.AddBulletCount(bulletCountToAdd);
-                }
-                
-                TypeEventSystem.GLOBAL.Send(new GunBulletChangeEvent(Player.Instance.CurrentGun));
-                AudioKit.PlaySound(AssetConfig.Sound.POWER_UP_HALF_BULLET);
-                this.DestroyGameObject();
+                // foreach (var gun in Player.Instance.ALL_GUNS)
+                // {
+                //     var bag              = gun.Bag;
+                //     var bulletCountToAdd = bag.MaxBulletCount / 2;
+                //     bag.AddBulletCount(bulletCountToAdd);
+                // }
+                //
+                // TypeEventSystem.GLOBAL.Send(new GunBulletChangeEvent(Player.Instance.CurrentGun));
+                // AudioKit.PlaySound(AssetConfig.Sound.POWER_UP_HALF_BULLET);
+                // this.DestroyGameObject();
             }
         }
     }

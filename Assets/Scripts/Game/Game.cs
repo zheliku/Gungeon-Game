@@ -19,6 +19,8 @@ namespace Game
             RegisterModel(new PlayerModel());
             RegisterModel(new EnemyModel());
             RegisterModel(new LevelModel());
+            
+            RegisterSystem(new GunSystem());
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

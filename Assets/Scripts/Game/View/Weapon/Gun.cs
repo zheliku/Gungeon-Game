@@ -23,7 +23,7 @@ namespace Game
 
     public abstract class Gun : AbstractView
     {
-        protected BG_GunData _gunData;
+        protected BG_GunConfig _bgGunConfig;
 
         [HierarchyPath("Sprite")]
         public SpriteRenderer GunSprite;
@@ -42,6 +42,9 @@ namespace Game
         public Transform Aim;
 
         public InputAction AttackAction { get; private set; }
+        
+        [ShowInInspector]
+        protected IEnemy _TargetEnemy { get; set; }
 
         public bool IsShooting { get; protected set; }
 
@@ -53,8 +56,7 @@ namespace Game
 
         public float AdditionalCameraSize { get; set; }
 
-        [ShowInInspector]
-        protected IEnemy _TargetEnemy { get; set; }
+        public GunData Data { get; private set; }
 
         [ShowInInspector]
         protected GunShootInterval _ShootInterval { get; set; }
@@ -121,15 +123,15 @@ namespace Game
             this.BindHierarchyComponent();
 
             // 依据子类类名获取 BG 中的数据
-            _gunData = BG_GunData.GetEntity(GetType().Name);
+            _bgGunConfig = BG_GunConfig.GetEntity(GetType().Name);
 
-            _BulletSpeed          = _gunData.BulletSpeed;
-            _UnstableAngle        = _gunData.UnstableAngle;
-            AdditionalCameraSize = _gunData.AdditionalCameraSize;
+            _BulletSpeed          = _bgGunConfig.BulletSpeed;
+            _UnstableAngle        = _bgGunConfig.UnstableAngle;
+            AdditionalCameraSize = _bgGunConfig.AdditionalCameraSize;
 
-            _ShootInterval = new GunShootInterval(_gunData.ShootInterval);
-            Clip           = new GunClip(this, _gunData.ClipBulletCount);
-            Bag            = new BulletBag(this, _gunData.BagBulletCount);
+            _ShootInterval = new GunShootInterval(_bgGunConfig.ShootInterval);
+            Clip           = new GunClip(this, _bgGunConfig.ClipBulletCount);
+            Bag            = new BulletBag(this, _bgGunConfig.BagBulletCount);
             BackForce      = new ShootBackForce(GunSprite);
 
             GunShootLight.DisableGameObject();
@@ -193,15 +195,15 @@ namespace Game
                 ShootPos.position,
                 direction,
                 BulletFactory.Instance.GunBullet.gameObject,
-                _gunData.DamageRange.RandomSelect(),
+                _bgGunConfig.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
 
-            BackForce.Shoot(_gunData.BackForceA, _gunData.BackForceFrames);
+            BackForce.Shoot(_bgGunConfig.BackForceA, _bgGunConfig.BackForceFrames);
 
             ShowGunShootLight(direction);
 
-            CameraController.SHAKE.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
+            CameraController.SHAKE.Trigger(_bgGunConfig.ShootShakeA, _bgGunConfig.ShootShakeFrames);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
         }
@@ -216,6 +218,11 @@ namespace Game
             {
                 GunShootLight.DisableGameObject();
             }).StartCurrentScene();
+        }
+        
+        public void SetData(GunData gunData)
+        {
+            Data = gunData;
         }
 
         public void Reload()

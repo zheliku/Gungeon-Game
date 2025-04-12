@@ -70,7 +70,7 @@ namespace Game
                 ShootPos.position,
                 direction,
                 BulletFactory.Instance.BowArrow.gameObject,
-                _gunData.DamageRange.RandomSelect(),
+                _bgGunConfig.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
 

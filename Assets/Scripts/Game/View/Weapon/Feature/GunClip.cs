@@ -19,11 +19,15 @@ namespace Game
     /// </summary>
     public class GunClip
     {
+        public Gun Gun { get; } // 属于哪个枪
+
         public int ClipBulletCount; // 弹夹容量
 
-        public int CurrentBulletCount; // 当前子弹数量
-
-        public Gun Gun { get; } // 属于哪个枪
+        public int CurrentBulletCount // 当前子弹数量
+        {
+            get => Gun.Data.CurrentBulletCount;
+            private set => Gun.Data.CurrentBulletCount = value;
+        }
 
         public bool IsReloading { get; private set; }
 
@@ -44,9 +48,8 @@ namespace Game
 
         public GunClip(Gun gun, int clipBulletCount)
         {
-            Gun                = gun;
-            ClipBulletCount    = clipBulletCount;
-            CurrentBulletCount = clipBulletCount;
+            Gun             = gun;
+            ClipBulletCount = clipBulletCount;
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace Game
             {
                 return;
             }
-            
+
             // 重装子弹前首先抬枪
             Gun.ShootUp(Gun.ShootDirection);
 
@@ -87,8 +90,8 @@ namespace Game
             ActionKit.Lerp(CurrentBulletCount, targetCount, reloadSound.length, f =>
             {
                 var loadBulletCountThisFrame = (int) f - CurrentBulletCount;
-                CurrentBulletCount        += loadBulletCountThisFrame;
-                Gun.Bag.RemainBulletCount -= loadBulletCountThisFrame;
+                CurrentBulletCount += loadBulletCountThisFrame;
+                Gun.Bag.UseBullet(loadBulletCountThisFrame);
                 TypeEventSystem.GLOBAL.Send(new GunBulletLoadingEvent(Gun));
             }).StartCurrentScene();
 

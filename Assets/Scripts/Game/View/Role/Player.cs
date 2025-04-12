@@ -8,7 +8,9 @@
 
 namespace Game
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
@@ -66,21 +68,18 @@ namespace Game
         private float _playerSpriteOriginLocalPosY;
         private float _weaponTransformOriginLocalPosY;
 
-        public int CurrentGunIndex;
-
         private InputAction _moveAction;
 
         private PlayerModel _playerModel;
 
         private PlayerProperty _Property { get => _playerModel.Property; }
 
-        public List<Gun> Guns = new List<Gun>();
-
         public List<AudioClip> GunTakeOutSounds = new List<AudioClip>();
 
         public Gun CurrentGun
         {
-            get => Guns[CurrentGunIndex];
+            get;
+            private set;
         }
 
         protected override void Awake()
@@ -107,44 +106,37 @@ namespace Game
 
             UIKit.ShowPanelAsync<GamePlay>();
 
-            for (int i = 0; i < WeaponTransform.childCount; i++)
+            UseGun(0);
+        }
+
+        private void Start()
+        {
+            var gunData = this.GetSystem<GunSystem>().GunList.First();
+            if (gunData.Key == GunConfig.Pistol.Key)
             {
-                var gun = WeaponTransform.GetChild(i).GetComponent<Gun>();
-                if (!gun)
-                {
-                    continue;
-                }
-
-                Guns.Add(gun);
-
-                // 寻找激活的 Gun，设置为初始 Gun
-                if (gun.gameObject.IsEnabled())
-                {
-                    UseGun(i);
-                }
+                UseGun(0);
             }
-
-            UseGun(1);
         }
 
         private void OnEnable()
         {
             InputKit.BindPerformed(AssetConfig.Action.CHANGE_GUN, context =>
             {
-                var currentGun = Guns[CurrentGunIndex];
-
                 // 射击、切枪时不可切换 Gun
-                if (currentGun.IsShooting || currentGun.Clip.IsReloading)
+                if (CurrentGun.IsShooting || CurrentGun.Clip.IsReloading)
                 {
                     return;
                 }
-
-                var newIndex = CurrentGunIndex + (int) context.ReadValue<float>();
+                
+                var gunList = this.GetSystem<GunSystem>().GunList;
+                var currentGunIndex = gunList.FindIndex(gun => gun == CurrentGun.Data);
+                
+                var newIndex = currentGunIndex + (int) context.ReadValue<float>();
                 if (newIndex < 0)
                 {
-                    newIndex = Guns.Count - 1;
+                    newIndex = gunList.Count - 1;
                 }
-                else if (newIndex >= Guns.Count)
+                else if (newIndex >= gunList.Count)
                 {
                     newIndex = 0;
                 }
@@ -210,24 +202,44 @@ namespace Game
             AudioKit.PlaySound(AssetConfig.Sound.PLAYER_HURT);
         }
 
+        public Gun GetGun(string key)
+        {
+            for (int i = 0; i < WeaponTransform.childCount; i++)
+            {
+                var gun = WeaponTransform.GetChild(i).GetComponent<Gun>();
+                if (!gun)
+                {
+                    continue;
+                }
+
+                if (gun.name == key)
+                {
+                    return gun;
+                }
+            }
+
+            return null;
+        }
+
         public void UseGun(int gunIndex)
         {
-            var gunChange = CurrentGunIndex != gunIndex;
+            var oldGun = CurrentGun;
+            CurrentGun?.DisableGameObject();
 
-            var oldGun = Guns[CurrentGunIndex];
-            oldGun.DisableGameObject();
+            var newGunData = this.GetSystem<GunSystem>().GunList[gunIndex];
+            CurrentGun = GetGun(newGunData.Key);
+            CurrentGun.EnableGameObject();
+            CurrentGun.SetData(newGunData);
 
-            CurrentGunIndex = gunIndex;
-            var newGun = Guns[CurrentGunIndex];
-            newGun.EnableGameObject();
+            var gunChange = CurrentGun != oldGun;
 
             if (gunChange)
             {
                 AudioKit.PlaySound(GunTakeOutSounds.RandomTakeOne());
-                TypeEventSystem.GLOBAL.Send(new GunChangeEvent(oldGun, newGun));
+                TypeEventSystem.GLOBAL.Send(new GunChangeEvent(oldGun, CurrentGun));
             }
 
-            CameraController.AdditionalOrthographicSize = newGun.AdditionalCameraSize;
+            CameraController.AdditionalOrthographicSize = CurrentGun.AdditionalCameraSize;
         }
 
         protected override IArchitecture _Architecture { get => Game.Architecture; }

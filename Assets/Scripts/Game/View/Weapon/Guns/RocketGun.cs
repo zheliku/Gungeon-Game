@@ -45,13 +45,13 @@ namespace Game
                 ShootPos.position,
                 direction,
                 BulletFactory.Instance.RocketBullet.gameObject,
-                _gunData.DamageRange.RandomSelect(),
+                _bgGunConfig.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
             
-            BackForce.Shoot(_gunData.BackForceA, _gunData.BackForceFrames);
+            BackForce.Shoot(_bgGunConfig.BackForceA, _bgGunConfig.BackForceFrames);
 
-            CameraController.SHAKE.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
+            CameraController.SHAKE.Trigger(_bgGunConfig.ShootShakeA, _bgGunConfig.ShootShakeFrames);
 
             ShowGunShootLight(direction);
 
