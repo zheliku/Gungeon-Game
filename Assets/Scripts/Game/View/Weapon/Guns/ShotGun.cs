@@ -59,6 +59,8 @@ namespace Game
 
             BackForce.Shoot(_bgGunConfig.BackForceA, _bgGunConfig.BackForceFrames);
             
+            BulletFactory.GenBulletShell(direction, BulletFactory.Instance.ShotGunShell);
+            
             ShowGunShootLight(direction);
 
             CameraController.SHAKE.Trigger(_bgGunConfig.ShootShakeA, _bgGunConfig.ShootShakeFrames);

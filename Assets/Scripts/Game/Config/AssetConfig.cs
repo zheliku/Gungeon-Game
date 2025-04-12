@@ -8,6 +8,8 @@
 
 namespace Game
 {
+    using Framework.Toolkits.FluentAPI;
+
     public class AssetConfig
     {
         public class Sound
@@ -22,6 +24,11 @@ namespace Game
             public const string ARMOR1               = "Armor1";
             public const string USE_ARMOR            = "UseArmor";
             public const string POWER_UP_HALF_BULLET = "PowerUpHalfBullet";
+
+            public static string BulletSound
+            {
+                get => $"bullet_shell ({(1, 72 + 1).RandomSelect()})";
+            }
         }
 
         public class Action

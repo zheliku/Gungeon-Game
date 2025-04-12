@@ -23,7 +23,7 @@ namespace Game
                 self.RoomTree.Root
                    .AddChild(RoomType.Chest)
                    .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Final)
                    .AddChild(RoomType.Chest)
                    .AddChild(RoomType.Chest)
                    .AddChild(RoomType.Chest)

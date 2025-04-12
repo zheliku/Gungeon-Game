@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1e203767969c10e4d9ab8a034eed5ad0
+guid: b9f8182587c5d3542ada664fe6415ba5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6877439862287985073
-    second: 54.RocketShell_0
+      213: -3573433161914030659
+    second: 54.ShotGunShell_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 54.RocketShell_0
+      name: 54.ShotGunShell_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f46963c22ec6e80a0800000000000000
-      internalID: -6877439862287985073
+      spriteID: db5638bd87d986ec0800000000000000
+      internalID: -3573433161914030659
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      54.RocketShell_0: -6877439862287985073
+      54.ShotGunShell_0: -3573433161914030659
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

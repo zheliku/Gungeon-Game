@@ -32,7 +32,7 @@ namespace Game
             {
                 this.DisableGameObject();
                 var soundClip = BulletFactory.Instance.HitWallSounds.RandomTakeOne();
-                AudioKit.PlaySound(soundClip, 0.5f, onPlayFinish: _ =>
+                AudioKit.PlaySound(soundClip, 0.3f, onPlayFinish: _ =>
                 {
                     this.DestroyGameObjectGracefully(); // 可能重复删除
                 });

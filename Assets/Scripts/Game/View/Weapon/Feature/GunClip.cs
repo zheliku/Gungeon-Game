@@ -94,7 +94,7 @@ namespace Game
                 Gun.Data.AddClipBullet(loadBulletCountThisFrame);
                 Gun.Data.UseBagBullet(loadBulletCountThisFrame);
                 TypeEventSystem.GLOBAL.Send(new GunBulletLoadingEvent(Gun));
-            }).StartCurrentScene();
+            }).Start(Gun);
 
             AudioKit.PlaySound(reloadSound, onPlayFinish: (player) =>
             {

@@ -21,6 +21,8 @@ namespace Game
                 ShootOnce(direction);
                 AudioKit.PlaySound(ShootSounds[0], volume: 0.4f);
                 IsShooting   = true;
+                
+                BulletFactory.GenBulletShell(direction, BulletFactory.Instance.AWPShell);
             }
             else if (Clip.IsEmpty)
             {

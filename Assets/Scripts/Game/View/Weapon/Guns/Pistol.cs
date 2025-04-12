@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
@@ -21,6 +22,8 @@ namespace Game
                 ShootOnce(direction);
                 AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.3f);
                 IsShooting = true;
+                
+                BulletFactory.GenBulletShell(direction, BulletFactory.Instance.PistolShell);
             }
             else if (Clip.IsEmpty)
             {

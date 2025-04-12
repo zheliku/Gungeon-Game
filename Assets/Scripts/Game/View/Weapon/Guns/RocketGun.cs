@@ -50,6 +50,8 @@ namespace Game
                 _UnstableAngle);
             
             BackForce.Shoot(_bgGunConfig.BackForceA, _bgGunConfig.BackForceFrames);
+            
+            BulletFactory.GenBulletShell(direction, BulletFactory.Instance.RocketShell);
 
             CameraController.SHAKE.Trigger(_bgGunConfig.ShootShakeA, _bgGunConfig.ShootShakeFrames);
 

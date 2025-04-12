@@ -49,6 +49,8 @@ namespace Game
                 ShootOnce(direction);
                 _audioPlayer = AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.3f, loop: true);
                 IsShooting   = true;
+                
+                BulletFactory.GenBulletShell(direction, BulletFactory.Instance.PistolShell);
             }
             else if (Clip.IsEmpty)
             {
@@ -61,6 +63,8 @@ namespace Game
             if (_CanShoot)
             {
                 ShootOnce(direction);
+                
+                BulletFactory.GenBulletShell(direction, BulletFactory.Instance.PistolShell);
             }
             else if (Clip.IsEmpty) // 子弹空时，播放空夹音效
             {
