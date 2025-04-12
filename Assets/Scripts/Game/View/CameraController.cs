@@ -9,32 +9,65 @@
 namespace Game
 {
     using System;
+    using System.Collections.Generic;
     using Framework.Core;
+    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
     using UnityEngine;
 
     public class CameraController : MonoSingleton<CameraController>
     {
-        public EasyEvent<float, int> Shake = new EasyEvent<float, int>();
+        public static readonly EasyEvent<float, int> SHAKE = new EasyEvent<float, int>();
+
+        public static float AdditionalOrthographicSize { get; set; }
+
+        [HierarchyPath]
+        public Camera Camera;
+
+        private float _originOrthographicSize;
+
+        public  List<Color> BackgroundColors;
+        private Color       _targetBackgroundColor;
 
         public float ShakeA;
         public int   ShakeFrames;
-        
-        public bool  Shaking;
+
+        public bool Shaking;
 
         private void Awake()
         {
-            Shake.Register((A, frames) =>
+            this.BindHierarchyComponent();
+
+            SHAKE.Register((A, frames) =>
             {
                 ShakeA      = A;
                 ShakeFrames = frames;
                 Shaking     = true;
             }).UnRegisterWhenGameObjectDestroyed(this);
+
+            // 进入房间，随机更换背景颜色
+            TypeEventSystem.GLOBAL.Register<EnterRoomEvent>(e =>
+            {
+                var currentBackgroundColor = Camera.backgroundColor;
+                _targetBackgroundColor = BackgroundColors.RandomTakeOne();
+                ActionKit.Lerp(0, 1, 0.5f, f =>
+                {
+                    Camera.backgroundColor = Color.Lerp(currentBackgroundColor, _targetBackgroundColor, f);
+                }).Start(this);
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
+        }
+
+        private void Start()
+        {
+            _originOrthographicSize = Camera.orthographicSize;
         }
 
         protected override void Update()
         {
+            Camera.orthographicSize = (Camera.orthographicSize, _originOrthographicSize + AdditionalOrthographicSize)
+               .SmoothTransition(Time.deltaTime * 5);
+
             var player = Player.Instance;
 
             if (player)
@@ -45,7 +78,7 @@ namespace Game
                 if (Shaking)
                 {
                     ShakeFrames--;
-                    
+
                     if (ShakeFrames <= 0)
                     {
                         Shaking = false;
@@ -60,6 +93,20 @@ namespace Game
                 currentPos = currentPos.Set(z: -10);
 
                 transform.position = currentPos;
+            }
+
+            // 相机随角色所处位置倾斜
+            var currentRoom = this.GetModel<LevelModel>().CurrentRoom;
+            if (currentRoom)
+            {
+                var playerToRoomCenter = player.Direction2DFrom(currentRoom);
+
+                var width = currentRoom.Grid.Column;
+
+                var originAngleZ = this.GetLocalEulerAnglesZ();
+                var targetAngleZ = playerToRoomCenter.x * 10f / width;
+                var angleZ       = (originAngleZ, targetAngleZ).SmoothTransitionAngle(Time.deltaTime * 5);
+                this.SetLocalEulerAngles(z: angleZ);
             }
 
             base.Update();

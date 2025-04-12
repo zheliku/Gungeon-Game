@@ -31,6 +31,7 @@ public partial class BG_GunData : BGEntity
 		public const string UnstableAngle = "UnstableAngle";
 		public const string BackForceA = "BackForceA";
 		public const string BackForceFrames = "BackForceFrames";
+		public const string AdditionalCameraSize = "AdditionalCameraSize";
 	}
 	private static BansheeGz.BGDatabase.BGMetaRow _metaDefault;
 	public static BansheeGz.BGDatabase.BGMetaRow MetaDefault => _metaDefault ?? (_metaDefault = BGCodeGenUtils.GetMeta<BansheeGz.BGDatabase.BGMetaRow>(new BGId(5597011547648622931UL,113604648607007155UL), () => _metaDefault = null));
@@ -91,6 +92,11 @@ public partial class BG_GunData : BGEntity
 		get => _BackForceFrames[Index];
 		set => _BackForceFrames[Index] = value;
 	}
+	public System.Single AdditionalCameraSize
+	{
+		get => _AdditionalCameraSize[Index];
+		set => _AdditionalCameraSize[Index] = value;
+	}
 	private static BansheeGz.BGDatabase.BGFieldEntityName _ufle12jhs77_name;
 	public static BansheeGz.BGDatabase.BGFieldEntityName _name => _ufle12jhs77_name ?? (_ufle12jhs77_name = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldEntityName>(MetaDefault, new BGId(5503755016982348342UL, 8535430791740521915UL), () => _ufle12jhs77_name = null));
 	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_ShootInterval;
@@ -113,6 +119,8 @@ public partial class BG_GunData : BGEntity
 	public static BansheeGz.BGDatabase.BGFieldFloat _BackForceA => _ufle12jhs77_BackForceA ?? (_ufle12jhs77_BackForceA = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(4792772467025265715UL, 6186095982106983324UL), () => _ufle12jhs77_BackForceA = null));
 	private static BansheeGz.BGDatabase.BGFieldInt _ufle12jhs77_BackForceFrames;
 	public static BansheeGz.BGDatabase.BGFieldInt _BackForceFrames => _ufle12jhs77_BackForceFrames ?? (_ufle12jhs77_BackForceFrames = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(4898030777058054216UL, 16830760087672593792UL), () => _ufle12jhs77_BackForceFrames = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_AdditionalCameraSize;
+	public static BansheeGz.BGDatabase.BGFieldFloat _AdditionalCameraSize => _ufle12jhs77_AdditionalCameraSize ?? (_ufle12jhs77_AdditionalCameraSize = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5509063125276119044UL, 4860089744922829221UL), () => _ufle12jhs77_AdditionalCameraSize = null));
 	private static readonly BG_GunData.Factory _factory0_PFS = new BG_GunData.Factory();
 	private BG_GunData() : base(MetaDefault) {}
 	private BG_GunData(BGId id) : base(MetaDefault, id) {}

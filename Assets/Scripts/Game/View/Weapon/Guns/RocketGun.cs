@@ -51,7 +51,7 @@ namespace Game
             
             BackForce.Shoot(_gunData.BackForceA, _gunData.BackForceFrames);
 
-            CameraController.Instance.Shake.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
+            CameraController.SHAKE.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
 
             ShowGunShootLight(direction);
 

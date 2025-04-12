@@ -42,6 +42,11 @@ namespace Game
         [ShowInInspector]
         private RoomGrid _grid;
 
+        public RoomGrid Grid
+        {
+            get => _grid;
+        }
+
         private List<IEnemy> _enemiesInRoom = new List<IEnemy>();
 
         private List<EnemyWaveData> _enemyWaves = new List<EnemyWaveData>();

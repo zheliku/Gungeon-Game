@@ -24,7 +24,7 @@ namespace Game
     public abstract class Gun : AbstractView
     {
         protected BG_GunData _gunData;
-        
+
         [HierarchyPath("Sprite")]
         public SpriteRenderer GunSprite;
 
@@ -50,7 +50,9 @@ namespace Game
 
         [ShowInInspector]
         protected float _UnstableAngle { get; set; } // 弹道不稳定角度
-        
+
+        public float AdditionalCameraSize { get; set; }
+
         [ShowInInspector]
         protected IEnemy _TargetEnemy { get; set; }
 
@@ -61,7 +63,7 @@ namespace Game
         public GunClip Clip { get; set; }
 
         public BulletBag Bag { get; set; }
-        
+
         public ShootBackForce BackForce { get; set; }
 
         /// <summary>
@@ -121,8 +123,10 @@ namespace Game
             // 依据子类类名获取 BG 中的数据
             _gunData = BG_GunData.GetEntity(GetType().Name);
 
-            _BulletSpeed   = _gunData.BulletSpeed;
-            _UnstableAngle = _gunData.UnstableAngle;
+            _BulletSpeed          = _gunData.BulletSpeed;
+            _UnstableAngle        = _gunData.UnstableAngle;
+            AdditionalCameraSize = _gunData.AdditionalCameraSize;
+
             _ShootInterval = new GunShootInterval(_gunData.ShootInterval);
             Clip           = new GunClip(this, _gunData.ClipBulletCount);
             Bag            = new BulletBag(this, _gunData.BagBulletCount);
@@ -161,7 +165,7 @@ namespace Game
             {
                 Shooting(ShootDirection);
             }
-            
+
             BackForce.Update();
 
             var angle = Mathf.Atan2(ShootDirection.y, ShootDirection.x).Rad2Deg();
@@ -192,12 +196,12 @@ namespace Game
                 _gunData.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
-            
+
             BackForce.Shoot(_gunData.BackForceA, _gunData.BackForceFrames);
 
             ShowGunShootLight(direction);
 
-            CameraController.Instance.Shake.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
+            CameraController.SHAKE.Trigger(_gunData.ShootShakeA, _gunData.ShootShakeFrames);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
         }

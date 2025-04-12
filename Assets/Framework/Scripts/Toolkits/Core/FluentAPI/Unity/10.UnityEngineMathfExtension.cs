@@ -8,9 +8,7 @@
 
 namespace Framework.Toolkits.FluentAPI
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Core;
+    using ActionKit;
     using UnityEngine;
 
     public static class UnityEngineMathfExtension
@@ -18,6 +16,33 @@ namespace Framework.Toolkits.FluentAPI
         public static float Lerp(this float self, float a, float b)
         {
             return Mathf.Lerp(a, b, self);
+        }
+        
+        public static float LerpAngle(this float self, float angle1, float angle2)
+        {
+            return Mathf.LerpAngle(angle1, angle2, self);
+        }
+
+        /// <summary>
+        /// 平滑过渡
+        /// </summary>
+        /// <param name="self">起始与目标值</param>
+        /// <param name="t">过渡速度</param>
+        /// <returns></returns>
+        public static float SmoothTransition(this (float start, float target) angle, float t)
+        {
+            return Mathf.Lerp(angle.start, angle.target, 1f - Mathf.Exp(-t));
+        }
+        
+        /// <summary>
+        /// 平滑过渡（角度）
+        /// </summary>
+        /// <param name="self">起始与目标值</param>
+        /// <param name="t">过渡速度</param>
+        /// <returns></returns>
+        public static float SmoothTransitionAngle(this (float start, float target) self, float t)
+        {
+            return Mathf.LerpAngle(self.start, self.target, 1f - Mathf.Exp(-t));
         }
 
         public static float Abs(this float self)

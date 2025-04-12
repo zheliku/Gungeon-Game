@@ -226,6 +226,8 @@ namespace Game
                 AudioKit.PlaySound(GunTakeOutSounds.RandomTakeOne());
                 TypeEventSystem.GLOBAL.Send(new GunChangeEvent(oldGun, newGun));
             }
+
+            CameraController.AdditionalOrthographicSize = newGun.AdditionalCameraSize;
         }
 
         protected override IArchitecture _Architecture { get => Game.Architecture; }
