@@ -70,9 +70,7 @@ namespace Game
 
         private InputAction _moveAction;
 
-        private PlayerModel _playerModel;
-
-        private PlayerProperty _Property { get => _playerModel.Property; }
+        private PlayerProperty _Property { get => this.GetModel<PlayerModel>().Property; }
 
         public List<AudioClip> GunTakeOutSounds = new List<AudioClip>();
 
@@ -90,8 +88,6 @@ namespace Game
             _weaponTransformOriginLocalPosY = WeaponTransform.GetLocalPositionY();
 
             FloatingText.DisableGameObject();
-
-            _playerModel = this.GetModel<PlayerModel>();
 
             _moveAction = InputKit.GetInputAction(AssetConfig.Action.MOVE);
 

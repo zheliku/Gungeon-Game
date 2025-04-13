@@ -13,3 +13,5 @@ abcdefghijklmnopqrstuvwxyz
 宝箱
 我
 金币不足
+现在还不需要
+没有钥匙

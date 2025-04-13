@@ -20,10 +20,18 @@ namespace Game
             if (other.CompareTag("Player"))
             {
                 Room.PowerUps.Remove(this); // 从房间中移除
-                
-                this.GetModel<PlayerModel>().Property.Hp.Value++;
-                AudioKit.PlaySound(AssetConfig.Sound.HP1, 0.6f);
-                this.DestroyGameObject();
+
+                var playerProperty = this.GetModel<PlayerModel>().Property;
+                if (playerProperty.IsFullHp)
+                {
+                    this.GetModel<PlayerModel>().Property.Hp.Value++;
+                    AudioKit.PlaySound(AssetConfig.Sound.HP1, 0.6f);
+                    this.DestroyGameObject();
+                }
+                else
+                {
+                    Player.DisplayText("现在还不需要", 1);
+                }
             }
         }
     }

@@ -29,13 +29,15 @@ namespace Game
     public enum RoomState
     {
         Closed, // 初始状态为 Closed
-        PlayerIn,
+        PlayerIn, // 玩家正在 Fighting
         Unlocked
     }
 
     public class Room : AbstractView
     {
-        private List<Vector3> _enemyGeneratePoses = new List<Vector3>();
+        public List<Vector3> EnemyGeneratePoses { get; } = new List<Vector3>();
+
+        public List<Vector3> ShopGeneratePoses { get; } = new List<Vector3>();
 
         private List<Door> _doors = new List<Door>();
 
@@ -147,54 +149,21 @@ namespace Game
             {
                 TypeEventSystem.GLOBAL.Send(new EnterRoomEvent(this));
 
-                if (_grid.RoomType == RoomType.Normal)
+                if (State == RoomState.Closed) // 第一次进
                 {
-                    if (State == RoomState.Closed) // 第一次进，状态变为 PlayerIn
+                    if (_grid.RoomType == RoomType.Normal)
                     {
-                        State = RoomState.PlayerIn;
-
-                        // 填充敌人
-                        var difficultyLevel = this.GetModel<LevelModel>().PacingQueue.Dequeue();
-                        var difficultyScore = 10 + difficultyLevel * 3;
-                        var waveCount       = 0;
-                        if (difficultyLevel <= 3)
-                        {
-                            waveCount = (1, difficultyLevel + 1).RandomSelect();
-                        }
-                        else
-                        {
-                            waveCount = (difficultyLevel / 3, difficultyLevel / 2).RandomSelect();
-                        }
-
-                        for (int i = 0; i < waveCount; i++)
-                        {
-                            var targetScore = difficultyScore / waveCount +
-                                              (-difficultyScore / 10 * 2 + 1, difficultyScore / 20 + 1 + 1).RandomSelect();
-                            var waveConfig = new EnemyWaveData();
-
-                            while (targetScore > 0 && waveConfig.EnemyNames.Count < _enemyGeneratePoses.Count)
-                            {
-                                var enemyScore = EnemyFactory.GenTargetEnemyScore();
-                                targetScore -= enemyScore;
-                                waveConfig.EnemyNames.Add(EnemyFactory.GetEnemyByScore(enemyScore));
-                            }
-                            
-                            _enemyWaves.Add(waveConfig);
-                        }
-                        
-                        _currentWave = _enemyWaves[0];
-                        GenerateEnemies(_currentWave);
-                        _enemyWaves.RemoveAt(0);
-
-                        foreach (var door in _doors)
-                        {
-                            door.State.ChangeState(DoorState.BattleClose);
-                        }
+                        OnFirstEnterNormalRoom();
                     }
-                }
-                else
-                {
-                    State = RoomState.Unlocked; // 进入房间直接解锁
+                    else
+                    {
+                        if (_grid.RoomType == RoomType.Shop)
+                        {
+                            OnFirstEnterShopRoom();
+                        }
+
+                        State = RoomState.Unlocked; // 进入房间直接解锁
+                    }
                 }
             }
         }
@@ -207,14 +176,90 @@ namespace Game
             }
         }
 
-        public void AddEnemyGeneratePos(Vector3 generatePos)
+        private void OnFirstEnterNormalRoom()
         {
-            _enemyGeneratePoses.Add(generatePos);
+            State = RoomState.PlayerIn;
+
+            // 填充敌人
+            var difficultyLevel = this.GetModel<LevelModel>().PacingQueue.Dequeue();
+            var difficultyScore = 10 + difficultyLevel * 3;
+            var waveCount       = 0;
+            if (difficultyLevel <= 3)
+            {
+                waveCount = (1, difficultyLevel + 1).RandomSelect();
+            }
+            else
+            {
+                waveCount = (difficultyLevel / 3, difficultyLevel / 2).RandomSelect();
+            }
+
+            for (int i = 0; i < waveCount; i++)
+            {
+                var targetScore = difficultyScore / waveCount +
+                                  (-difficultyScore / 10 * 2 + 1, difficultyScore / 20 + 1 + 1).RandomSelect();
+                var waveConfig = new EnemyWaveData();
+
+                while (targetScore > 0 && waveConfig.EnemyNames.Count < EnemyGeneratePoses.Count)
+                {
+                    var enemyScore = EnemyFactory.GenTargetEnemyScore();
+                    targetScore -= enemyScore;
+                    waveConfig.EnemyNames.Add(EnemyFactory.GetEnemyByScore(enemyScore));
+                }
+
+                _enemyWaves.Add(waveConfig);
+            }
+
+            _currentWave = _enemyWaves[0];
+            GenerateEnemies(_currentWave);
+            _enemyWaves.RemoveAt(0);
+
+            foreach (var door in _doors)
+            {
+                door.State.ChangeState(DoorState.BattleClose);
+            }
+        }
+
+        private void OnFirstEnterShopRoom()
+        {
+            var normalShopItem = this.GetSystem<ShopSystem>().CalculateNormalShopItems();
+
+            // 必须生成一个钥匙
+            var keyItem     = normalShopItem.First(item => ReferenceEquals(item.Item1, PowerUpFactory.Instance.Key));
+            var generatePos = ShopGeneratePoses.RandomTakeOneAndRemove();
+            LevelController.Instance.ShopItemTemplate.Instantiate()
+               .EnableGameObject()
+               .Self(self =>
+                {
+                    self.PowerUp = keyItem.Item1;
+                    self.Price   = keyItem.Item2;
+                    self.UpdateView();
+                })
+               .SetPosition(generatePos);
+
+            var takeCount = (2, normalShopItem.Count + 1).RandomSelect();
+            takeCount = takeCount.MinWith(ShopGeneratePoses.Count); // 不能超过生成位置数量
+
+            // 随机生成其他
+            for (int i = 0; i < takeCount; i++)
+            {
+                var item = normalShopItem.RandomTakeOne();
+                generatePos = ShopGeneratePoses.RandomTakeOneAndRemove();
+
+                var shopItem = LevelController.Instance.ShopItemTemplate.Instantiate()
+                   .EnableGameObject()
+                   .Self(self =>
+                    {
+                        self.PowerUp = item.Item1;
+                        self.Price   = item.Item2;
+                        self.UpdateView();
+                    })
+                   .SetPosition(generatePos);
+            }
         }
 
         public void GenerateEnemies(EnemyWaveData waveData)
         {
-            var posGen = _enemyGeneratePoses
+            var posGen = EnemyGeneratePoses
                .OrderByDescending(p => Player.Instance.Distance(p))
                .ToList();
 
@@ -224,7 +269,7 @@ namespace Game
                 {
                     break;
                 }
-                
+
                 var enemy = EnemyFactory.GetEnemyByName(enemyName).GameObject
                    .Instantiate(keepName: true)
                    .SetPosition(posGen.RandomTakeOneAndRemove())

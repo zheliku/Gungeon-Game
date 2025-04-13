@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48838c03b2743c44ab7f3d39d557ed2c
+    m_Address: Key
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5789ad67d7c527d479182e46d3684e46
     m_Address: PowerUpHalfBullet
     m_ReadOnly: 0

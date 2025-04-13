@@ -22,7 +22,7 @@ namespace Game
             {
                 self.RoomTree.Root
                    .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
+                   .AddChild(RoomType.Shop)
                    .AddChild(RoomType.Final)
                    .AddChild(RoomType.Chest)
                    .AddChild(RoomType.Chest)
@@ -32,7 +32,7 @@ namespace Game
                    .AddChild(RoomType.Chest)
                    .AddChild(RoomType.Chest)
                    .AddChild(RoomType.Chest);
-
+                
                 return;
                 
                 var randomIndex = new[] { 0, 1, 2 }.RandomTakeOne();

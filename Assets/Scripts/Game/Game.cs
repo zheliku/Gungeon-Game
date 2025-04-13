@@ -21,6 +21,7 @@ namespace Game
             RegisterModel(new LevelModel());
             
             RegisterSystem(new GunSystem());
+            RegisterSystem(new ShopSystem());
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

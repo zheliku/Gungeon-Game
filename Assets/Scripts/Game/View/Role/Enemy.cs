@@ -62,10 +62,7 @@ namespace Game
                 {
                     AudioKit.PlaySound(AssetConfig.Sound.ENEMY_DIE);
 
-                    var coin = PowerUpFactory.Instance.Coin.Instantiate(this.GetPosition()) // 生成金币
-                       .EnableGameObject();
-
-                    coin.Room = this.GetModel<LevelModel>().CurrentRoom;
+                    PowerUpFactory.GenPowerUp(this);
                     
                     this.DestroyGameObject();
                 }

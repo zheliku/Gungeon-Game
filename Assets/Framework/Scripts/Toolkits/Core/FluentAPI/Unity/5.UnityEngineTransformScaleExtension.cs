@@ -249,7 +249,7 @@ namespace Framework.Toolkits.FluentAPI
         /// </summary>
         /// <example> <code>
         /// <![CDATA[
-        /// var scale = component.Scale();
+        /// var scale = component.GetScale();
         /// ]]>
         /// </code> </example>
         public static Vector3 GetScale<T>(this T selfComponent) where T : Component
@@ -264,12 +264,102 @@ namespace Framework.Toolkits.FluentAPI
         /// </summary>
         /// <example> <code>
         /// <![CDATA[
-        /// var scale = gameObject.Scale();
+        /// var scale = gameObject.GetScale();
         /// ]]>
         /// </code> </example>
         public static Vector3 GetScale(this GameObject selfComponent)
         {
             return selfComponent.transform.lossyScale;
+        }
+        
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return component.transform.lossyScale.x;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// var scaleX = component.GetScaleX();
+        /// ]]>
+        /// </code> </example>
+        public static float GetScaleX<T>(this T selfComponent) where T : Component
+        {
+            return selfComponent.transform.lossyScale.x;
+        }
+        
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return gameObject.transform.lossyScale.x;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// var scaleX = gameObject.GetScaleX();
+        /// ]]>
+        /// </code> </example>
+        public static float GetScaleX(this GameObject selfComponent)
+        {
+            return selfComponent.transform.lossyScale.x;
+        }
+        
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return component.transform.lossyScale.y;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// var scaleY = component.GetScaleY();
+        /// ]]>
+        /// </code> </example>
+        public static float GetScaleY<T>(this T selfComponent) where T : Component
+        {
+            return selfComponent.transform.lossyScale.y;
+        }
+        
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return gameObject.transform.lossyScale.y;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// var scaleY = gameObject.GetScaleY();
+        /// ]]>
+        /// </code> </example>
+        public static float GetScaleY(this GameObject selfComponent)
+        {
+            return selfComponent.transform.lossyScale.y;
+        }
+        
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return component.transform.lossyScale.z;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// var scaleZ = component.GetScaleZ();
+        /// ]]>
+        /// </code> </example>
+        public static float GetScaleZ<T>(this T selfComponent) where T : Component
+        {
+            return selfComponent.transform.lossyScale.z;
+        }
+        
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return gameObject.transform.lossyScale.z;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// var scaleZ = gameObject.GetScaleZ();
+        /// ]]>
+        /// </code> </example>
+        public static float GetScaleZ(this GameObject selfComponent)
+        {
+            return selfComponent.transform.lossyScale.z;
         }
     }
 }

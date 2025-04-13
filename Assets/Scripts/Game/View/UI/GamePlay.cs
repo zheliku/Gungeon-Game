@@ -28,12 +28,15 @@ namespace Game
 
         [HierarchyPath("Coin/txtCoin")]
         private TextMeshProUGUI _textCoin;
+        
+        [HierarchyPath("Key/txtKey")]
+        private TextMeshProUGUI _textKey;
 
         protected override void OnShow()
         {
             this.GetModel<PlayerModel>().Property.Hp.RegisterWithInitValue((oldValue, value) =>
             {
-                _txtHp.text = $"HP:{value}";
+                _txtHp.text = $"HP:{value} / {this.GetModel<PlayerModel>().Property.MaxHp.Value}";
             }).UnRegisterWhenGameObjectDisabled(gameObject);
             
             this.GetModel<PlayerModel>().Property.Armor.RegisterWithInitValue((oldValue, value) =>
@@ -44,6 +47,11 @@ namespace Game
             this.GetModel<PlayerModel>().Coin.RegisterWithInitValue((oldValue, value) =>
             {
                 _textCoin.text = $"{value}";
+            }).UnRegisterWhenGameObjectDisabled(gameObject);
+            
+            this.GetModel<PlayerModel>().Key.RegisterWithInitValue((oldValue, value) =>
+            {
+                _textKey.text = $"{value}";
             }).UnRegisterWhenGameObjectDisabled(gameObject);
 
             TypeEventSystem.GLOBAL.Register<GunShootEvent>(e =>

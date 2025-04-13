@@ -20,6 +20,16 @@ namespace Game
         {
             if (other.CompareTag("Player"))
             {
+                if (this.GetModel<PlayerModel>().Key.Value == 0)
+                {
+                    Player.DisplayText("没有钥匙", 1);
+                    return;
+                }
+                else
+                {
+                    this.GetModel<PlayerModel>().Key.Value--;
+                }
+                
                 Room.PowerUps.Remove(this); // 从房间中移除
 
                 var gunDataList = this.GetSystem<GunSystem>().GunDataList;

@@ -47,28 +47,16 @@ namespace Game
         [HierarchyPath("Template/Door")]
         public Door DoorTemplate;
 
-        [HierarchyPath("Template/Hp1")]
-        public Hp1 Hp1Template;
-
-        [HierarchyPath("Template/Chest")]
-        public Chest ChestTemplate;
-
         [HierarchyPath("Template/ShopItem")]
         public ShopItem ShopItemTemplate;
-
-        private LevelModel _levelModel;
 
         protected void Awake()
         {
             this.BindHierarchyComponent();
 
-            _levelModel = this.GetModel<LevelModel>();
-
             FinalTemplate.DisableGameObject();
             RoomTemplate.DisableGameObject();
             DoorTemplate.DisableGameObject();
-            Hp1Template.DisableGameObject();
-            ChestTemplate.DisableGameObject();
             ShopItemTemplate.DisableGameObject();
 
             // DontDestroyOnLoad(this); // 防止被销毁
@@ -213,7 +201,7 @@ namespace Game
             {
                 for (int j = -roomWidth / 2; j <= roomWidth / 2; j++)
                 {
-                    var code = roomGrid[i + roomHeight / 2, j + roomWidth / 2];
+                    var code = roomGrid[-i + roomHeight / 2, j + roomWidth / 2]; // 从左下角开始
 
                     var x = pos.x + j;
                     var y = pos.y + i;
@@ -230,8 +218,7 @@ namespace Game
                     }
                     else if (code == 'e')
                     {
-                        var generatePos = new Vector3(x + 0.5f, y + 0.5f, 0);
-                        room.AddEnemyGeneratePos(generatePos);
+                        room.EnemyGeneratePoses.Add(new Vector3(x + 0.5f, y + 0.5f, 0));
                     }
                     else if (code == '#')
                     {
@@ -249,7 +236,7 @@ namespace Game
                     }
                     else if (code == 'c')
                     {
-                        var chest = ChestTemplate.Instantiate(parent: room)
+                        var chest = PowerUpFactory.Instance.Chest.Instantiate(parent: room)
                            .EnableGameObject()
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
 
@@ -257,15 +244,7 @@ namespace Game
                     }
                     else if (code == 's')
                     {
-                        var shopItem = ShopItemTemplate.Instantiate(parent: room)
-                           .EnableGameObject()
-                           .Self(self =>
-                            {
-                                self.PowerUp = Instance.Hp1Template;
-                                self.Price   = 1;
-                            })
-                           .UpdateInfo()
-                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+                        room.ShopGeneratePoses.Add(new Vector3(x + 0.5f, y + 0.5f, 0));
                     }
                 }
             }

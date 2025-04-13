@@ -17,6 +17,7 @@ namespace Game
             public const string EMPTY_BULLET         = "EmptyBullet";
             public const string HP1                  = "Hp1";
             public const string CHEST                = "Chest";
+            public const string KEY                  = "Key";
             public const string DOOR_OPEN            = "DoorOpen";
             public const string PLAYER_HURT          = "PlayerHurt";
             public const string ENEMY_DIE            = "EnemyDie";
@@ -56,7 +57,7 @@ namespace Game
             public const string ENEMY_F = "EnemyF";
             public const string ENEMY_G = "EnemyG";
             public const string ENEMY_H = "EnemyH";
-            
+
             public const string ENEMY_A_BIG = "EnemyA_Big";
             public const string ENEMY_B_BIG = "EnemyB_Big";
             public const string ENEMY_C_BIG = "EnemyC_Big";

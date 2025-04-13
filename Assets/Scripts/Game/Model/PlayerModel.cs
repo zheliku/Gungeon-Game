@@ -17,6 +17,8 @@ namespace Game
 
         public BindableProperty<int> Coin = new BindableProperty<int>();
         
+        public BindableProperty<int> Key = new BindableProperty<int>();
+        
         protected override void OnInit()
         {
             Reset();
@@ -24,7 +26,10 @@ namespace Game
 
         public void Reset()
         {
-            Property.Hp.SetValueWithoutEvent(3);
+            Property.Hp.SetValueWithoutEvent(6);
+            Property.MaxHp.SetValueWithoutEvent(6);
+            Coin.SetValueWithoutEvent(100);
+            Key.SetValueWithoutEvent(0);
             Property.MoveSpeed = 5;
             Property.Armor.SetValueWithoutEvent(1);
         }

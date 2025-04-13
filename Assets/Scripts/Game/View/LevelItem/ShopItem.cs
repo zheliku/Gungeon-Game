@@ -17,6 +17,9 @@ namespace Game
 
     public class ShopItem : AbstractView
     {
+        [HierarchyPath("Icon")]
+        public SpriteRenderer Icon;
+        
         [HierarchyPath("Price")]
         public TextMeshPro TxtPrice;
 
@@ -74,9 +77,10 @@ namespace Game
             }
         }
 
-        public ShopItem UpdateInfo()
+        public ShopItem UpdateView()
         {
             TxtPrice.text = $"${Price}";
+            Icon.sprite = PowerUp.SpriteRenderer.sprite;
             return this;
         }
 
