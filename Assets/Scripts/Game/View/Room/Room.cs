@@ -14,6 +14,7 @@ namespace Game
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.FluentAPI;
+    using Framework.Toolkits.GridKit;
     using Sirenix.OdinInspector;
     using UnityEngine;
 
@@ -28,13 +29,18 @@ namespace Game
 
     public enum RoomState
     {
-        Closed, // 初始状态为 Closed
+        Closed,   // 初始状态为 Closed
         PlayerIn, // 玩家正在 Fighting
         Unlocked
     }
 
     public class Room : AbstractView
     {
+        public DynamicGrid<PathFindingHelper.TileNode> PathFindingGrid;
+
+        public Vector3Int LB;
+        public Vector3Int RT;
+
         public List<Vector3> EnemyGeneratePoses { get; } = new List<Vector3>();
 
         public List<Vector3> ShopGeneratePoses { get; } = new List<Vector3>();
@@ -277,6 +283,41 @@ namespace Game
                    .GetComponent<IEnemy>();
 
                 enemy.Room = this;
+            }
+        }
+        
+        // 准备A*节点
+        public void PrepareAStarNodes()
+        {
+            // 如果节点类型是最终房间或普通房间
+            if (Node.RoomType == RoomType.Final || Node.RoomType == RoomType.Normal)
+            {
+                // 创建动态网格
+                PathFindingGrid = new DynamicGrid<PathFindingHelper.TileNode>();
+
+                // 遍历网格中的每个节点
+                for (var i = LB.x; i <= RT.x; i++)
+                {
+                    for (var j = LB.y; j <= RT.y; j++)
+                    {
+                        // 判断节点是否可通行
+                        var walkable = 
+                            LevelController.Instance.WallTilemap.GetTile(new Vector3Int(i, j, 0)) == null;
+                        
+                        // 初始化节点
+                        PathFindingGrid[i, j] = new PathFindingHelper.TileNode(PathFindingGrid);
+                        PathFindingGrid[i, j].Init(walkable, new PathFindingHelper.TileCoords()
+                        {
+                            Pos = new Vector3Int(i, j, 0)
+                        });
+                    }
+                }
+
+                // 缓存每个节点的邻居节点
+                foreach (var pair in PathFindingGrid)
+                {
+                    pair.Value.CacheNeighbors();
+                }
             }
         }
 

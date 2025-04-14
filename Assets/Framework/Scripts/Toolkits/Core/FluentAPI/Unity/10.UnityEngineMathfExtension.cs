@@ -50,7 +50,7 @@ namespace Framework.Toolkits.FluentAPI
             return Mathf.Abs(self);
         }
 
-        public static float Abs(this int self)
+        public static int Abs(this int self)
         {
             return Mathf.Abs(self);
         }

@@ -33,6 +33,8 @@ namespace Game
 
         public static IEnemy GetEnemyByName(string name)
         {
+            return Instance.Enemies.FirstOrDefault(e => e.GameObject.name == "EnemyA");
+                
             return Instance.Enemies.FirstOrDefault(e => e.GameObject.name == name);
         }
 

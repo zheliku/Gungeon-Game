@@ -134,6 +134,23 @@ namespace Game
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
         }
+        
+        public static Vector3Int ToVector3Int(this Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return new Vector3Int(0, 1, 0);
+                case Direction.Down:
+                    return new Vector3Int(0, -1, 0);
+                case Direction.Left:
+                    return new Vector3Int(-1, 0, 0);
+                case Direction.Right:
+                    return new Vector3Int(1, 0, 0);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+        }
 
         /// <summary>
         /// 相反朝向

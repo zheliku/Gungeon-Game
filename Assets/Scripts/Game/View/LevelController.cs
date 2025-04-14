@@ -326,6 +326,11 @@ namespace Game
                 WallTilemap.SetTile(new Vector3Int(doorPosX, doorPosY, 0), WallTile);
             }
 
+            room.LB = new Vector3Int(pos.x - roomWidth / 2, pos.y - roomHeight / 2, 0);
+            room.RT = new Vector3Int(pos.x + roomWidth / 2, pos.y + roomHeight / 2, 0);
+            
+            room.PrepareAStarNodes();
+            
             return room;
         }
 
