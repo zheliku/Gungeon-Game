@@ -13,6 +13,8 @@ namespace Game
 
     public class LevelData
     {
+        public int LevelId;
+        
         public Tree<RoomType> RoomTree = new Tree<RoomType>(RoomType.Init);
         
         // 轻松、中等、稍难

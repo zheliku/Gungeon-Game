@@ -15,6 +15,7 @@ namespace Game
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
+    using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.InputKit;
     using Framework.Toolkits.SingletonKit;
     using Framework.Toolkits.UIKit;
@@ -24,6 +25,12 @@ namespace Game
 
     public class Player : AbstractRole, ISingleton
     {
+        public enum State
+        {
+            Idle,
+            Rolling,
+        }
+
         public static Player Instance { get => MonoSingletonProperty<Player>.Instance; }
 
         public static void DisplayText(string text, float duration)
@@ -70,6 +77,10 @@ namespace Game
 
         private InputAction _moveAction;
 
+        private Vector2 _rollDirection;
+
+        public FSM<State> Fsm { get; } = new FSM<State>();
+
         private PlayerProperty _Property { get => this.GetModel<PlayerModel>().Property; }
 
         public List<AudioClip> GunTakeOutSounds = new List<AudioClip>();
@@ -112,6 +123,49 @@ namespace Game
             {
                 UseGun(0);
             }
+
+            Fsm.State(State.Idle)
+               .OnUpdate(IdleUpdate);
+            Fsm.State(State.Rolling)
+               .OnEnter(() =>
+                {
+                    GetComponent<Collider2D>().excludeLayers = ~LayerMask.GetMask("Wall"); // 只和 Wall 层碰撞
+
+                    _rollDirection = _moveAction.ReadValue<Vector2>();
+                    if (_rollDirection == Vector2.zero)
+                    {
+                        _rollDirection = this.Direction2DTo(CurrentGun.MousePosition);
+                    }
+                    
+                    var facing = _rollDirection.x.Sign();
+                    if (facing == 0)
+                    {
+                        facing = SpriteRenderer.flipX ? -1 : 1;
+                    }
+                    ActionKit.Lerp01(0.4f, f =>
+                        {
+                            f = EasyTween.InSine(0, 1, f);
+
+                            this.SetLocalEulerAngles(z: -f * 360 * facing);
+                        }, () =>
+                        {
+                            this.SetLocalEulerAngles(z: 0);
+                            Fsm.ChangeState(State.Idle);
+                        })
+                       .Start(this);
+                })
+               .OnUpdate(() =>
+                         { })
+               .OnFixedUpdate(() =>
+                {
+                    Rigidbody2D.linearVelocity = _rollDirection * (_Property.MoveSpeed * 1.5f);
+                })
+               .OnExit(() =>
+                {
+                    GetComponent<Collider2D>().excludeLayers = 0; // 取消限制
+                });
+
+            Fsm.StartState(State.Idle);
         }
 
         private void OnEnable()
@@ -123,10 +177,10 @@ namespace Game
                 {
                     return;
                 }
-                
-                var gunList = this.GetSystem<GunSystem>().GunDataList;
+
+                var gunList         = this.GetSystem<GunSystem>().GunDataList;
                 var currentGunIndex = gunList.FindIndex(gun => gun == CurrentGun.Data);
-                
+
                 var newIndex = currentGunIndex + (int) context.ReadValue<float>();
                 if (newIndex < 0)
                 {
@@ -137,34 +191,23 @@ namespace Game
                     newIndex = 0;
                 }
                 UseGun(newIndex);
-            }).UnBindAllWhenGameObjectDisabled(gameObject);
+            }).UnBindAllWhenGameObjectDisabled(this);
+
+            InputKit.BindPerformed(AssetConfig.Action.ROLL, context =>
+            {
+                Fsm.StartState(State.Rolling);
+            }).UnBindAllPerformedWhenGameObjectDisabled(this);
         }
 
         // Update is called once per frame
         void Update()
         {
-            var moveDirection = _moveAction.ReadValue<Vector2>();
-            Rigidbody2D.linearVelocity = moveDirection * _Property.MoveSpeed;
+            Fsm.Update();
+        }
 
-            if (moveDirection != Vector2.zero)
-            {
-                AnimationHelper.UpDownAnimation(SpriteRenderer, Time.time, 0.2f, _playerSpriteOriginLocalPosY, 0.05f);
-                AnimationHelper.UpDownAnimation(WeaponTransform, Time.time, 0.2f, _weaponTransformOriginLocalPosY, 0.05f);
-
-                AnimationHelper.RotateAnimation(SpriteRenderer, Time.time, 0.4f, 3);
-            }
-
-            if (CurrentGun)
-            {
-                if (CurrentGun.ShootDirection.x > 0)
-                {
-                    SpriteRenderer.flipX = false;
-                }
-                else if (CurrentGun.ShootDirection.x < 0)
-                {
-                    SpriteRenderer.flipX = true;
-                }
-            }
+        private void FixedUpdate()
+        {
+            Fsm.FixedUpdate();
         }
 
         public override void Hurt(float damage, HitInfo info)
@@ -196,6 +239,32 @@ namespace Game
             FxFactory.PlayPlayerBlood(this.GetPosition());
 
             AudioKit.PlaySound(AssetConfig.Sound.PLAYER_HURT);
+        }
+
+        private void IdleUpdate()
+        {
+            var moveDirection = _moveAction.ReadValue<Vector2>();
+            Rigidbody2D.linearVelocity = moveDirection * _Property.MoveSpeed;
+
+            if (moveDirection != Vector2.zero)
+            {
+                AnimationHelper.UpDownAnimation(SpriteRenderer, Time.time, 0.2f, _playerSpriteOriginLocalPosY, 0.05f);
+                AnimationHelper.UpDownAnimation(WeaponTransform, Time.time, 0.2f, _weaponTransformOriginLocalPosY, 0.05f);
+
+                AnimationHelper.RotateAnimation(SpriteRenderer, Time.time, 0.4f, 3);
+            }
+
+            if (CurrentGun)
+            {
+                if (CurrentGun.ShootDirection.x > 0)
+                {
+                    SpriteRenderer.flipX = false;
+                }
+                else if (CurrentGun.ShootDirection.x < 0)
+                {
+                    SpriteRenderer.flipX = true;
+                }
+            }
         }
 
         public Gun GetGun(string key)

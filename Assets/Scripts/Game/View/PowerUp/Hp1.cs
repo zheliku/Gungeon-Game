@@ -24,13 +24,13 @@ namespace Game
                 var playerProperty = this.GetModel<PlayerModel>().Property;
                 if (playerProperty.IsFullHp)
                 {
-                    this.GetModel<PlayerModel>().Property.Hp.Value++;
-                    AudioKit.PlaySound(AssetConfig.Sound.HP1, 0.6f);
-                    this.DestroyGameObject();
+                    Player.DisplayText("现在还不需要", 1);
                 }
                 else
                 {
-                    Player.DisplayText("现在还不需要", 1);
+                    this.GetModel<PlayerModel>().Property.Hp.Value++;
+                    AudioKit.PlaySound(AssetConfig.Sound.HP1, 0.6f);
+                    this.DestroyGameObject();
                 }
             }
         }

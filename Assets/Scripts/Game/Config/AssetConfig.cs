@@ -35,6 +35,7 @@ namespace Game
         public class Action
         {
             public const string ATTACK      = "Attack";
+            public const string ROLL        = "Roll";
             public const string MOVE        = "Move";
             public const string BUY         = "Buy";
             public const string LOAD_BULLET = "LoadBullet";

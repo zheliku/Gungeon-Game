@@ -1551,7 +1551,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WallTile: {fileID: 11400000, guid: 4316e9f77bc78b24dbf76024bcb3de75, type: 2}
-  FloorTile: {fileID: 11400000, guid: 69cdce3e52847d141965f907fb69169c, type: 2}
+  _floorTiles:
+  - {fileID: 11400000, guid: 69cdce3e52847d141965f907fb69169c, type: 2}
+  - {fileID: 11400000, guid: 00e358cb5f9d1c74b8b4b5462c0bb979, type: 2}
+  - {fileID: 11400000, guid: 4097f4141d567b3448f33778f059f653, type: 2}
+  - {fileID: 11400000, guid: 2e62ca1b8ee014343b381960d2e687ce, type: 2}
   WallTilemap: {fileID: 0}
   FloorTilemap: {fileID: 0}
   TemplateEnemies:
@@ -7989,6 +7993,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &591743208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 591743209}
+  m_Layer: 3
+  m_Name: WallCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &591743209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591743208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2087522719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -16336,6 +16371,7 @@ Transform:
   - {fileID: 1194887376}
   - {fileID: 488817833}
   - {fileID: 1858445365}
+  - {fileID: 591743209}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &2087522720

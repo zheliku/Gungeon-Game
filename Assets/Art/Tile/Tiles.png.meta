@@ -170,7 +170,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Floor 0
+      name: Floor 10
       rect:
         serializedVersion: 2
         x: 32
@@ -192,7 +192,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Floor 1
+      name: Floor 11
       rect:
         serializedVersion: 2
         x: 48
@@ -258,7 +258,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Floor 2
+      name: Floor 12
       rect:
         serializedVersion: 2
         x: 32
@@ -280,7 +280,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Floor 3
+      name: Floor 13
       rect:
         serializedVersion: 2
         x: 48
@@ -302,7 +302,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_8
+      name: Floor 20
       rect:
         serializedVersion: 2
         x: 0
@@ -324,7 +324,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_9
+      name: Floor 21
       rect:
         serializedVersion: 2
         x: 16
@@ -346,7 +346,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_10
+      name: Floor 30
       rect:
         serializedVersion: 2
         x: 32
@@ -368,7 +368,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_11
+      name: Floor 31
       rect:
         serializedVersion: 2
         x: 48
@@ -390,7 +390,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_12
+      name: Floor 40
       rect:
         serializedVersion: 2
         x: 64
@@ -412,7 +412,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_13
+      name: Floor 41
       rect:
         serializedVersion: 2
         x: 80
@@ -434,7 +434,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_14
+      name: Floor 22
       rect:
         serializedVersion: 2
         x: 0
@@ -456,7 +456,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_15
+      name: Floor 23
       rect:
         serializedVersion: 2
         x: 16
@@ -478,7 +478,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_16
+      name: Floor 32
       rect:
         serializedVersion: 2
         x: 32
@@ -500,7 +500,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_17
+      name: Floor 33
       rect:
         serializedVersion: 2
         x: 48
@@ -522,7 +522,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_18
+      name: Floor 42
       rect:
         serializedVersion: 2
         x: 64
@@ -544,7 +544,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles_19
+      name: Floor 43
       rect:
         serializedVersion: 2
         x: 80
@@ -579,22 +579,22 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Floor 0: 1475039194
-      Floor 1: -1518580561
-      Floor 2: 633670354
-      Floor 3: 49071471
-      Tiles_10: 1957922849
-      Tiles_11: 1795580008
-      Tiles_12: 145285177
-      Tiles_13: -2084679850
-      Tiles_14: -1445982649
-      Tiles_15: -1642164781
-      Tiles_16: 1461837378
-      Tiles_17: -773408641
-      Tiles_18: 1733176303
-      Tiles_19: -1147477989
-      Tiles_8: -1583705769
-      Tiles_9: 386033297
+      Floor 10: 1475039194
+      Floor 11: -1518580561
+      Floor 12: 633670354
+      Floor 13: 49071471
+      Floor 20: -1583705769
+      Floor 21: 386033297
+      Floor 22: -1445982649
+      Floor 23: -1642164781
+      Floor 30: 1957922849
+      Floor 31: 1795580008
+      Floor 32: 1461837378
+      Floor 33: -773408641
+      Floor 40: 145285177
+      Floor 41: -2084679850
+      Floor 42: 1733176303
+      Floor 43: -1147477989
       Wall 0: 1360579662
       Wall 1: -1540146651
       Wall 2: 1255041923

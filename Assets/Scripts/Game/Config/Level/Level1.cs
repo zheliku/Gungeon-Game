@@ -16,24 +16,25 @@ namespace Game
         public static readonly LevelData DATA = new LevelData()
            .Self(self =>
             {
-                self.Pacing = new List<int>() { 2, 1, 3, 3, 2, 1, 2, 3, 3, 2, 3, 1, 3 };
+                self.LevelId = 1;
+                self.Pacing  = new List<int>() { 2, 1, 3, 3, 2, 1, 2, 3, 3, 2, 3, 1, 3 };
             })
            .Self(self =>
             {
-                self.RoomTree.Root
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Shop)
-                   .AddChild(RoomType.Final)
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest)
-                   .AddChild(RoomType.Chest);
-                
-                return;
+                // self.RoomTree.Root
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Shop)
+                //    .AddChild(RoomType.Final)
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Chest)
+                //    .AddChild(RoomType.Chest);
+                //
+                // return;
                 
                 var randomIndex = new[] { 0, 1, 2 }.RandomTakeOne();
 

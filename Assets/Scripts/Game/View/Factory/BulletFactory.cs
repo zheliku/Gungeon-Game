@@ -63,6 +63,9 @@ namespace Game
                     self.angularVelocity = (-720f, 720f).RandomSelect();
                     self.gravityScale    = 1f;
 
+                    var spriteRenderer = self.GetComponent<SpriteRenderer>();
+                    spriteRenderer.sortingLayerName = "Instances";
+
                     ActionKit.Sequence()
                        .Delay((0.5f, 1f).RandomSelect(), () =>
                         {
@@ -70,6 +73,8 @@ namespace Game
                                                 + Vector2.up * (0.5f, 1f).RandomSelect();
                             self.angularVelocity = RandomUtility.Range((-720, -180), (180, 720));
                             self.gravityScale    = 0.1f;
+
+                            spriteRenderer.sortingLayerName = "OnGround";
                         })
                        .Callback(() =>
                         {

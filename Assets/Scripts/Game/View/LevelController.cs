@@ -16,13 +16,25 @@ namespace Game
     using Framework.Toolkits.SingletonKit;
     using Framework.Toolkits.TreeKit;
     using Sirenix.OdinInspector;
+    using Unity.VisualScripting;
     using UnityEngine;
     using UnityEngine.Tilemaps;
 
     public class LevelController : MonoSingleton<LevelController>
     {
         public TileBase WallTile;
-        public TileBase FloorTile;
+        
+        [SerializeField]
+        private List<TileBase> _floorTiles = new List<TileBase>();
+
+        public TileBase FloorTile
+        {
+            get
+            {
+                var levelId = this.GetModel<LevelModel>().CurrentLevel.LevelId;
+                return _floorTiles[levelId - 1];
+            }
+        }
 
         [HierarchyPath("Grid/Wall")]
         public Tilemap WallTilemap;
