@@ -58,7 +58,7 @@ namespace Game
         [ShowInInspector]
         public RoomNode Node { get; set; }
 
-        public RoomType RoomType { get => _grid.RoomType; }
+        public RoomType RoomType { get => Node.RoomType; }
 
         [ShowInInspector]
         public RoomState State { get; private set; } = RoomState.Closed;
@@ -151,13 +151,13 @@ namespace Game
 
                 if (State == RoomState.Closed) // 第一次进
                 {
-                    if (_grid.RoomType == RoomType.Normal)
+                    if (Node.RoomType == RoomType.Normal)
                     {
                         OnFirstEnterNormalRoom();
                     }
                     else
                     {
-                        if (_grid.RoomType == RoomType.Shop)
+                        if (Node.RoomType == RoomType.Shop)
                         {
                             OnFirstEnterShopRoom();
                         }

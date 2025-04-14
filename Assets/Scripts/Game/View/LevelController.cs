@@ -23,7 +23,7 @@ namespace Game
     public class LevelController : MonoSingleton<LevelController>
     {
         public TileBase WallTile;
-        
+
         [SerializeField]
         private List<TileBase> _floorTiles = new List<TileBase>();
 
@@ -81,7 +81,9 @@ namespace Game
 
         private RoomNode GenerateRoomMap(LevelData level)
         {
-            var roomNode = new RoomNode(level.RoomTree.Root.Data);
+            var roomNode = new RoomNode(level.RoomTree.Root.Data, GetRoomGridByType(RoomType.Init));
+
+            var levelModel = this.GetModel<LevelModel>();
 
             // 基于权重生成网格
             var predictWeight = 0;
@@ -93,16 +95,24 @@ namespace Game
 
             Debug.Log(predictWeight + " weight!");
 
+            var maxRoomWidth  = 0;
+            var maxRoomHeight = 0;
+            level.RoomTree.Traverse(type =>
+            {
+                maxRoomWidth = maxRoomWidth.MaxWith(GetRoomGridByType(type).Column);
+                maxRoomHeight = maxRoomHeight.MaxWith(GetRoomGridByType(type).Row);
+            });
+
             var queue          = new Queue<RoomNode>();
             var visitedRoom    = new HashSet<RoomNode>(); // 记录已生成的房间
-            var generatedRooms = this.GetModel<LevelModel>().GeneratedRooms;
+            var generatedRooms = levelModel.GeneratedRooms;
             queue.Enqueue(roomNode);
 
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
                 visitedRoom.Add(node);
-                var room = GenerateRoomByNode(node);
+                var room = GenerateRoomByNode(node, maxRoomWidth, maxRoomHeight);
                 generatedRooms[node.Index] = room;
 
                 foreach (var pair in node.ConnectNodes)
@@ -158,7 +168,7 @@ namespace Game
                         nextRoomDirection = availableDirections.RandomTakeOneAndRemove();
                     }
 
-                    var connectNode = new RoomNode(child.Data)
+                    var connectNode = new RoomNode(child.Data, GetRoomGridByType(child.Data))
                     {
                         Index = roomNode.Index + nextRoomDirection.ToVector2Int()
                     };
@@ -179,24 +189,16 @@ namespace Game
             return true;
         }
 
-        private Room GenerateRoomByNode(RoomNode node)
+        private Room GenerateRoomByNode(RoomNode node, int maxRoomWidth, int maxRoomHeight)
         {
-            var roomGrid = node.RoomType switch
-            {
-                RoomType.Init   => LevelConfig.INIT_ROOM,
-                RoomType.Normal => LevelConfig.NORMAL_ROOM.RandomTakeOne(),
-                RoomType.Final  => LevelConfig.FINAL_ROOM,
-                RoomType.Chest  => LevelConfig.CHEST_ROOM,
-                RoomType.Shop   => LevelConfig.SHOP_ROOM,
-                _               => throw new ArgumentOutOfRangeException()
-            };
+            var roomGrid = node.RoomGrid;
 
             var roomWidth  = roomGrid.Column;
             var roomHeight = roomGrid.Row;
 
             var pos = new Vector2Int(
-                node.Index.x * (roomWidth + LevelConfig.ROOM_INTERVAL.x),
-                node.Index.y * (roomHeight + LevelConfig.ROOM_INTERVAL.y)
+                node.Index.x * (maxRoomWidth + LevelConfig.ROOM_INTERVAL.x),
+                node.Index.y * (maxRoomHeight + LevelConfig.ROOM_INTERVAL.y)
             );
 
             var room = RoomTemplate.Instantiate(this)
@@ -260,7 +262,9 @@ namespace Game
                     }
                 }
             }
-
+            
+            // return room;
+            
             var openDirections  = node.ConnectNodes.Keys.ToList();
             var closeDirections = Enum.GetValues(typeof(Direction)).Cast<Direction>().Except(openDirections).ToList();
 
@@ -269,8 +273,8 @@ namespace Game
             {
                 var connectNode = node.ConnectNodes[direction]; // 连接的节点
                 var connectNodePos = new Vector2Int(
-                    connectNode.Index.x * (roomWidth + 2),
-                    connectNode.Index.y * (roomHeight + 2) // 每个房间目前间距为 2
+                    connectNode.Index.x * (maxRoomWidth + LevelConfig.ROOM_INTERVAL.x),
+                    connectNode.Index.y * (maxRoomHeight + LevelConfig.ROOM_INTERVAL.y) // 每个房间目前间距为 2
                 );
                 var dirVector    = direction.ToVector2Int();                  // 门朝向的向量
                 var normalVector = new Vector2Int(dirVector.y, -dirVector.x); // 门朝向的垂直向量
@@ -281,8 +285,8 @@ namespace Game
                     direction.ToVector2Int().y * roomHeight / 2 + pos.y
                 );
                 var endPos = new Vector2Int(
-                    direction.Opposite().ToVector2Int().x * roomWidth / 2 + connectNodePos.x,
-                    direction.Opposite().ToVector2Int().y * roomHeight / 2 + connectNodePos.y
+                    direction.Opposite().ToVector2Int().x * connectNode.RoomGrid.Column / 2 + connectNodePos.x,
+                    direction.Opposite().ToVector2Int().y * connectNode.RoomGrid.Row / 2 + connectNodePos.y
                 );
 
                 // 绘制门
@@ -323,6 +327,19 @@ namespace Game
             }
 
             return room;
+        }
+
+        private RoomGrid GetRoomGridByType(RoomType type)
+        {
+            return type switch
+            {
+                RoomType.Init   => RoomConfig.INIT_ROOM,
+                RoomType.Normal => this.GetModel<LevelModel>().CurrentLevel.NormalRoomTemplates.RandomTakeOne(),
+                RoomType.Final  => RoomConfig.FINAL_ROOM,
+                RoomType.Chest  => RoomConfig.CHEST_ROOM,
+                RoomType.Shop   => RoomConfig.SHOP_ROOM,
+                _               => throw new ArgumentOutOfRangeException()
+            };
         }
 
         protected override IArchitecture _Architecture { get => Game.Architecture; }

@@ -21,6 +21,8 @@ namespace Game
         public static readonly EasyEvent<float, int> SHAKE = new EasyEvent<float, int>();
 
         public static float AdditionalOrthographicSize { get; set; }
+        
+        public static Vector3 CameraPosOffset { get; set; } // 相机偏移值
 
         [HierarchyPath]
         public Camera Camera;
@@ -65,15 +67,16 @@ namespace Game
 
         protected override void Update()
         {
+            // 相机视野变化
             Camera.orthographicSize = (Camera.orthographicSize, _originOrthographicSize + AdditionalOrthographicSize)
-               .SmoothTransition(Time.deltaTime * 5);
+               .LerpWithSpeed(Time.deltaTime * 5);
 
             var player = Player.Instance;
 
             if (player)
             {
-                var targetPos  = player.GetPosition();
-                var currentPos = transform.position.LerpWithSpeed(targetPos, 5);
+                var targetPos  = player.GetPosition() + CameraPosOffset;
+                var currentPos = transform.position.LerpWithSpeed(targetPos, Time.deltaTime * 2.5f);
 
                 if (Shaking)
                 {
@@ -105,7 +108,7 @@ namespace Game
 
                 var originAngleZ = this.GetLocalEulerAnglesZ();
                 var targetAngleZ = playerToRoomCenter.x * 10f / width;
-                var angleZ       = (originAngleZ, targetAngleZ).SmoothTransitionAngle(Time.deltaTime * 5);
+                var angleZ       = (originAngleZ, targetAngleZ).LerpAngleWithSpeed(Time.deltaTime);
                 this.SetLocalEulerAngles(z: angleZ);
             }
 

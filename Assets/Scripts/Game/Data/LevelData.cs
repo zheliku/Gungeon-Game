@@ -19,5 +19,7 @@ namespace Game
         
         // 轻松、中等、稍难
         public List<int> Pacing = new List<int>(); // 每关的节奏进度
+        
+        public List<RoomGrid> NormalRoomTemplates = new List<RoomGrid>();
     }
 }

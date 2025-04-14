@@ -442,7 +442,7 @@ namespace Framework.Toolkits.FluentAPI
         
         public static Vector2 LerpWithSpeed(this Vector2 self, Vector2 target, float speed)
         {
-            return Vector2.Lerp(self, target, 1 - Mathf.Exp(-speed * Time.deltaTime));
+            return Vector2.Lerp(self, target, 1 - Mathf.Exp(-speed));
         }
         
         public static Vector3 Lerp(this Vector3 self, Vector3 target, float t)
@@ -452,7 +452,7 @@ namespace Framework.Toolkits.FluentAPI
         
         public static Vector3 LerpWithSpeed(this Vector3 self, Vector3 target, float speed)
         {
-            return Vector3.Lerp(self, target, 1 - Mathf.Exp(-speed * Time.deltaTime));
+            return Vector3.Lerp(self, target, 1 - Mathf.Exp(-speed));
         }
 
         public static Vector2 Rotate(this Vector2 self, float angle)

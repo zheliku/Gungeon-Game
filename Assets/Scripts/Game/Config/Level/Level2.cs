@@ -16,8 +16,9 @@ namespace Game
         public static readonly LevelData DATA = new LevelData()
            .Self(self =>
             {
-                self.LevelId = 2;
-                self.Pacing  = new List<int>() { 3, 1, 3, 5, 4, 2, 1, 3, 4, 5, 3, 1, 3, 5, 4, 2, 1, 3, 4, 5 };
+                self.LevelId             = 2;
+                self.Pacing              = new List<int>() { 3, 1, 3, 5, 4, 2, 1, 3, 4, 5, 3, 1, 3, 5, 4, 2, 1, 3, 4, 5 };
+                self.NormalRoomTemplates = Lv2RoomConfig.NORMAL_ROOMS;
             })
            .Self(self =>
             {

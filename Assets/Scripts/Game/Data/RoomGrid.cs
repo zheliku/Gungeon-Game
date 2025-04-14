@@ -17,8 +17,6 @@ namespace Game
 
     public class RoomGrid
     {
-        public RoomType RoomType { get; }
-
         [ShowInInspector]
         public EasyGrid<char> Grid;
 
@@ -29,11 +27,6 @@ namespace Game
         public char this[int row, int column]
         {
             get => Grid[row, column];
-        }
-
-        public RoomGrid(RoomType roomType)
-        {
-            RoomType = roomType;
         }
 
         public RoomGrid Set(List<string> code)
@@ -65,6 +58,8 @@ namespace Game
 
         [ShowInInspector]
         public Vector2Int Index = Vector2Int.zero;
+        
+        public RoomGrid RoomGrid { get; }
 
         public bool FullConnect
         {
@@ -81,9 +76,10 @@ namespace Game
             get => Enum.GetValues(typeof(Direction)).Cast<Direction>().Except(ConnectedDirections).ToList();
         }
 
-        public RoomNode(RoomType type)
+        public RoomNode(RoomType type, RoomGrid roomGrid)
         {
             RoomType = type;
+            RoomGrid = roomGrid;
         }
 
         public bool Connect(Direction direction, RoomNode node)

@@ -14,62 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
   m_GUID: 1d4def63d52d998499f2568f0d406270
-  m_SerializeEntries:
-  - m_GUID: 040ef644131a6e44f87084c8eea8c7f0
-    m_Address: Assets/Art/Audio/Music/Night Life.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 10e23a47598a6834c9cefc3115e5aef4
-    m_Address: Assets/Art/Audio/Music/Checking Instruments.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4fa1f21cc08add44aa79a27388b77011
-    m_Address: Assets/Art/Audio/Music/darkascent.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 65ec3d54761f5284d9545fc233ae461a
-    m_Address: Assets/Art/Audio/Music/D0S-88 - Marathon Man.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6debfc236b5661448923b7da9de9fe1f
-    m_Address: Assets/Art/Audio/Music/DOS-88 - Press Start.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 72fa6e3e67000a344b670f86d1e4d336
-    m_Address: Assets/Art/Audio/Music/Rest Easy.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7af57babeee23f041bbb65d8add6f40f
-    m_Address: Assets/Art/Audio/Music/DOS-88 - Automatav2.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 85d5351b61d14c34296fe36d06058312
-    m_Address: Assets/Art/Audio/Music/UndergroundConcourse.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a5a80f25eec46ba4aaf03e7e334f63c8
-    m_Address: Assets/Art/Audio/Music/Smooth Sailing.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d1bb339b3fef651459b4d97403b98b86
-    m_Address: Assets/Art/Audio/Music/FlowState.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fd13e9d8db1600d4689d983ef45bd8c8
-    m_Address: Assets/Art/Audio/Music/OnlyInDreams.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 371a3e3f2b55c8e44b1b84bc9849f268, type: 2}
   m_SchemaSet:

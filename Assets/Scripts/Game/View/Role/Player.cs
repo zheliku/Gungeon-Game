@@ -128,37 +128,9 @@ namespace Game
             }
 
             Fsm.State(State.Idle)
-               .OnUpdate(IdleUpdate);
+               .OnUpdate(OnIdleUpdate);
             Fsm.State(State.Rolling)
-               .OnEnter(() =>
-                {
-                    GetComponent<Collider2D>().excludeLayers = ~LayerMask.GetMask("Wall"); // 只和 Wall 层碰撞
-
-                    _rollDirection = _moveAction.ReadValue<Vector2>();
-                    if (_rollDirection == Vector2.zero)
-                    {
-                        _rollDirection = this.Direction2DTo(CurrentGun.MousePosition);
-                    }
-                    
-                    var facing = _rollDirection.x.Sign();
-                    if (facing == 0)
-                    {
-                        facing = SpriteRenderer.flipX ? -1 : 1;
-                    }
-                    ActionKit.Lerp01(0.4f, f =>
-                        {
-                            f = EasyTween.InSine(0, 1, f);
-
-                            this.SetLocalEulerAngles(z: -f * 360 * facing);
-                        }, () =>
-                        {
-                            this.SetLocalEulerAngles(z: 0);
-                            Fsm.ChangeState(State.Idle);
-                        })
-                       .Start(this);
-                })
-               .OnUpdate(() =>
-                         { })
+               .OnEnter(OnRollEnter)
                .OnFixedUpdate(() =>
                 {
                     Rigidbody2D.linearVelocity = _rollDirection * (_Property.MoveSpeed * 1.5f);
@@ -246,7 +218,7 @@ namespace Game
             GamePlay.PlayHurtFlashScreen();
         }
 
-        private void IdleUpdate()
+        private void OnIdleUpdate()
         {
             var moveDirection = _moveAction.ReadValue<Vector2>();
             Rigidbody2D.linearVelocity = moveDirection * _Property.MoveSpeed;
@@ -259,6 +231,10 @@ namespace Game
                 AnimationHelper.RotateAnimation(SpriteRenderer, Time.time, 0.4f, 3);
             }
 
+            // 相机位置随鼠标的指向偏移
+            var cameraOffSetLength = this.Distance2D(CurrentGun.MousePosition);
+            CameraController.CameraPosOffset = CurrentGun.ShootDirection * (cameraOffSetLength * 0.25f).Clamp(0, 3);
+
             if (CurrentGun)
             {
                 if (CurrentGun.ShootDirection.x > 0)
@@ -270,6 +246,36 @@ namespace Game
                     SpriteRenderer.flipX = true;
                 }
             }
+        }
+
+        private void OnRollEnter()
+        {
+            GetComponent<Collider2D>().excludeLayers = ~LayerMask.GetMask("Wall"); // 只和 Wall 层碰撞
+
+            _rollDirection = _moveAction.ReadValue<Vector2>();
+            if (_rollDirection == Vector2.zero)
+            {
+                _rollDirection = this.Direction2DTo(CurrentGun.MousePosition);
+            }
+                    
+            var facing = _rollDirection.x.Sign();
+            if (facing == 0)
+            {
+                facing = SpriteRenderer.flipX ? -1 : 1;
+            }
+                    
+            // 播放动画
+            ActionKit.Lerp01(0.4f, f =>
+                {
+                    f = EasyTween.InSine(0, 1, f);
+
+                    this.SetLocalEulerAngles(z: -f * 360 * facing);
+                }, () =>
+                {
+                    this.SetLocalEulerAngles(z: 0);
+                    Fsm.ChangeState(State.Idle);
+                })
+               .Start(this);
         }
 
         public Gun GetGun(string key)

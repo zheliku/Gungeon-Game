@@ -27,22 +27,22 @@ namespace Framework.Toolkits.FluentAPI
         /// 平滑过渡
         /// </summary>
         /// <param name="self">起始与目标值</param>
-        /// <param name="t">过渡速度</param>
+        /// <param name="speed">过渡速度</param>
         /// <returns></returns>
-        public static float SmoothTransition(this (float start, float target) angle, float t)
+        public static float LerpWithSpeed(this (float start, float target) self, float speed)
         {
-            return Mathf.Lerp(angle.start, angle.target, 1f - Mathf.Exp(-t));
+            return Mathf.Lerp(self.start, self.target, 1f - Mathf.Exp(-speed));
         }
         
         /// <summary>
         /// 平滑过渡（角度）
         /// </summary>
         /// <param name="self">起始与目标值</param>
-        /// <param name="t">过渡速度</param>
+        /// <param name="speed">过渡速度</param>
         /// <returns></returns>
-        public static float SmoothTransitionAngle(this (float start, float target) self, float t)
+        public static float LerpAngleWithSpeed(this (float start, float target) self, float speed)
         {
-            return Mathf.LerpAngle(self.start, self.target, 1f - Mathf.Exp(-t));
+            return Mathf.LerpAngle(self.start, self.target, 1f - Mathf.Exp(-speed));
         }
 
         public static float Abs(this float self)
