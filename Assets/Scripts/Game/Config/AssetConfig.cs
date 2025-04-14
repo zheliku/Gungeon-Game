@@ -8,6 +8,7 @@
 
 namespace Game
 {
+    using System.Collections.Generic;
     using Framework.Toolkits.FluentAPI;
 
     public class AssetConfig
@@ -30,6 +31,36 @@ namespace Game
             {
                 get => $"bullet_shell ({(1, 72 + 1).RandomSelect()})";
             }
+        }
+
+        public class Music
+        {
+            public const string SMOOTH_SAILING        = "Smooth Sailing";
+            public const string UNDERGROUND_CONCOURSE = "UndergroundConcourse";
+            public const string CHECKING_INSTRUMENTS  = "Checking Instruments";
+            public const string D0_S_88_MARATHON_MAN  = "D0S-88 - Marathon Man";
+            public const string DARKASCENT            = "darkascent";
+            public const string DOS_88_AUTOMATAV2     = "DOS-88 - Automatav2";
+            public const string DOS_88_PRESS_START    = "DOS-88 - Press Start";
+            public const string FLOW_STATE            = "FlowState";
+            public const string NIGHT_LIFE            = "Night Life";
+            public const string ONLY_IN_DREAM         = "OnlyInDreams";
+            public const string REST_EASY             = "Rest Easy";
+
+            public static readonly List<string> ALL = new List<string>()
+            {
+                SMOOTH_SAILING,
+                UNDERGROUND_CONCOURSE,
+                CHECKING_INSTRUMENTS,
+                D0_S_88_MARATHON_MAN,
+                DARKASCENT,
+                DOS_88_AUTOMATAV2,
+                DOS_88_PRESS_START,
+                FLOW_STATE,
+                NIGHT_LIFE,
+                ONLY_IN_DREAM,
+                REST_EASY,
+            };
         }
 
         public class Action

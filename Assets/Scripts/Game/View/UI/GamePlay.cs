@@ -10,6 +10,7 @@ namespace Game
 {
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
+    using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.InputKit;
     using Framework.Toolkits.UIKit;
@@ -36,8 +37,11 @@ namespace Game
         [HierarchyPath("HPAndArmors/Template/Armor")]
         private Image _imgArmor;
 
-        [HierarchyPath("txtGun")]
-        private TextMeshProUGUI _txtGun;
+        [HierarchyPath("Gun/Panel/imgIcon")]
+        private Image _imgIcon;
+        
+        [HierarchyPath("Gun/Panel/txtBullet")]
+        private TextMeshProUGUI _txtBullet;
 
         [HierarchyPath("Coin/txtCoin")]
         private TextMeshProUGUI _textCoin;
@@ -49,6 +53,10 @@ namespace Game
         {
             _imgHp.DisableGameObject();
             _imgArmor.DisableGameObject();
+            
+            AudioKit.PlayMusic(AssetConfig.Music.ALL.RandomTakeOne(), 0.4f);
+            
+            // UpdateGunView(Player.Instance.CurrentGun);
         }
 
         protected override void OnShow()
@@ -137,11 +145,13 @@ namespace Game
             }
         }
 
-        private void UpdateGunView(Gun gun)
+        public void UpdateGunView(Gun gun)
         {
             var clipInfo = $"{gun.Clip.RemainBulletCount}/{gun.Clip.MaxBulletCount}";
-            var bagInfo  = gun.Bag.MaxBulletCount < 0 ? "(\u221e)" : $"({gun.Bag.RemainBulletCount}/{gun.Bag.MaxBulletCount})";
-            _txtGun.text = $"Bullet: {clipInfo} {bagInfo} R Reload!";
+            _imgIcon.sprite = gun.GunSprite.sprite;
+            _imgIcon.SetNativeSize();
+            var bagInfo  = gun.Bag.MaxBulletCount < 0 ? "(\u221e)" : $"{gun.Bag.RemainBulletCount}";
+            _txtBullet.text = $"({clipInfo}) {bagInfo}";
         }
 
         protected override IArchitecture _Architecture { get => Game.Architecture; }

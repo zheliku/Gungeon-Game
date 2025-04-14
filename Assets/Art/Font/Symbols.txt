@@ -17,3 +17,6 @@ abcdefghijklmnopqrstuvwxyz
 没有钥匙
 翻滚
 地图
+射击
+装载
+切枪

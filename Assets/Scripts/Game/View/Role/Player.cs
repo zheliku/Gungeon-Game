@@ -111,7 +111,10 @@ namespace Game
                 }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
-            UIKit.ShowPanelAsync<GamePlay>();
+            UIKit.ShowPanelAsync<GamePlay>(play =>
+            {
+                play.UpdateGunView(CurrentGun);
+            });
 
             UseGun(0);
         }
