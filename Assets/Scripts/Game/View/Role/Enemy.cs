@@ -34,7 +34,7 @@ namespace Game
         public GameObject GameObject { get => gameObject; }
 
         public Transform Transform { get => transform; }
-        
+
         private Room _room;
 
         [ShowInInspector]
@@ -51,7 +51,7 @@ namespace Game
         protected override void Awake()
         {
             base.Awake();
-            
+
             _playerSpriteOriginLocalPos = SpriteRenderer.GetLocalPosition();
 
             Bullet.Disable();
@@ -63,7 +63,7 @@ namespace Game
                     AudioKit.PlaySound(AssetConfig.Sound.ENEMY_DIE);
 
                     PowerUpFactory.GenPowerUp(this);
-                    
+
                     this.DestroyGameObject();
                 }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
@@ -77,10 +77,10 @@ namespace Game
             // 死亡时发送死亡事件
             TypeEventSystem.GLOBAL.Send(new EnemyDieEvent(this));
         }
-        
+
         public override void Hurt(float damage, HitInfo info)
         {
-            _property.Hp.Value -= damage;
+            _property.Hp.Value -= (int) damage;
 
             FxFactory.PlayHurtFx(this.GetPosition(), Color.red);
 

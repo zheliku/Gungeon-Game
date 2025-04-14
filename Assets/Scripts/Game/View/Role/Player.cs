@@ -233,12 +233,14 @@ namespace Game
                 return;
             }
 
-            _Property.Hp.Value -= damage;
+            _Property.Hp.Value -= (int) damage;
 
             FxFactory.PlayHurtFx(this.GetPosition(), Color.green);
             FxFactory.PlayPlayerBlood(this.GetPosition());
 
             AudioKit.PlaySound(AssetConfig.Sound.PLAYER_HURT);
+            
+            GamePlay.PlayHurtFlashScreen();
         }
 
         private void IdleUpdate()

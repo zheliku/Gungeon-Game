@@ -17,8 +17,10 @@ namespace Game
     {
         protected override void OnExecute()
         {
-            var playerModel = this.GetModel<PlayerModel>();
-            playerModel.Property.Hp.SetValueWithoutEvent(3);
+            this.GetModel<PlayerModel>().Reset();
+            this.GetModel<LevelModel>().Reset();
+            this.GetSystem<GunSystem>().Reset();
+            // this.GetSystem<ShopSystem>().Reset();
             
             ResKit.LoadSceneAsync("Game", () =>
             {

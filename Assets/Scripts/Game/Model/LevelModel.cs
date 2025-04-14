@@ -12,7 +12,6 @@ namespace Game
     using Framework.Core;
     using Framework.Core.Model;
     using Framework.Toolkits.GridKit;
-    using Framework.Toolkits.TreeKit;
 
     public class LevelModel : AbstractModel
     {

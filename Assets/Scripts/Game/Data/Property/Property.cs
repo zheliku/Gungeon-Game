@@ -13,9 +13,9 @@ namespace Game
 
     public class Property
     {
-        public BindableProperty<float> Hp = new BindableProperty<float>();
+        public BindableProperty<int> Hp = new BindableProperty<int>();
         
-        public BindableProperty<float> MaxHp = new BindableProperty<float>();
+        public BindableProperty<int> MaxHp = new BindableProperty<int>();
         
         public float MoveSpeed = 3;
         
