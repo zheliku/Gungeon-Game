@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0d21daf50a7c17f4ba6dbfb628e19503
+guid: 1785e4dacc09d8d49bc87eb2e18bca6d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7266397795377542072
-    second: 63.BossB_0
+      213: 4783894091773387520
+    second: 63.BossC_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 63.BossB_0
+      name: 63.BossC_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84c07d144b1982b90800000000000000
-      internalID: -7266397795377542072
+      spriteID: 0032e3f845ec36240800000000000000
+      internalID: 4783894091773387520
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      63.BossB_0: -7266397795377542072
+      63.BossC_0: 4783894091773387520
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

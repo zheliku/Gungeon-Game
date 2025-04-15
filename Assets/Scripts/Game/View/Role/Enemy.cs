@@ -16,6 +16,7 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using Sirenix.OdinInspector;
     using UnityEngine;
+    using UnityEngine.Serialization;
 
     public abstract class Enemy : AbstractRole, IEnemy
     {
@@ -26,7 +27,7 @@ namespace Game
 
         public float BulletSpeed = 5;
 
-        protected Vector2 _playerSpriteOriginLocalPos;
+        public Vector2 PlayerSpriteOriginLocalPos;
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
@@ -57,7 +58,7 @@ namespace Game
         {
             base.Awake();
 
-            _playerSpriteOriginLocalPos = SpriteRenderer.GetLocalPosition();
+            PlayerSpriteOriginLocalPos = SpriteRenderer.GetLocalPosition();
 
             Bullet.Disable();
 
@@ -115,7 +116,7 @@ namespace Game
         /// 自动寻路
         /// </summary>
         /// <returns></returns>
-        protected void AutoMove()
+        public void AutoMove()
         {
             var directionToPlayer = Player.Instance.DirectionFrom(this); // 直线移动
 
@@ -135,7 +136,7 @@ namespace Game
             Rigidbody2D.linearVelocity = directionToPlayer.normalized * _property.MoveSpeed;
         }
 
-        protected void CalculateMovementPath()
+        public void CalculateMovementPath()
         {
             var grid          = LevelController.Instance.WallTilemap.layoutGrid;
             var myCellPos     = grid.WorldToCell(this.GetPosition());

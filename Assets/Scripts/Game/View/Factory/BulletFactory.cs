@@ -15,6 +15,7 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
     using UnityEngine;
+    using UnityEngine.Pool;
 
     public class BulletFactory : MonoSingleton<BulletFactory>
     {

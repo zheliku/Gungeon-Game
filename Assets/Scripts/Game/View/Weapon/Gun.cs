@@ -102,7 +102,7 @@ namespace Game
                             {
                                 return false;
                             }
-                            return true;
+                            return e.GameObject.name.StartsWith("Enemy"); // 仅对小怪生效
                         });
 
                     if (_TargetEnemy != null) // 自动瞄准
