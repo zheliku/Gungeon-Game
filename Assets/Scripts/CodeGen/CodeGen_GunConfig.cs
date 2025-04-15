@@ -8,18 +8,18 @@ using BansheeGz.BGDatabase;
 
 #pragma warning disable 414
 
-public partial class BG_GunConfig : BGEntity
+public partial class BG_GunTable : BGEntity
 {
 
 	public class Factory : BGEntity.EntityFactory
 	{
-		public BGEntity NewEntity(BGMetaEntity meta) => new BG_GunConfig(meta);
-		public BGEntity NewEntity(BGMetaEntity meta, BGId id) => new BG_GunConfig(meta, id);
+		public BGEntity NewEntity(BGMetaEntity meta) => new BG_GunTable(meta);
+		public BGEntity NewEntity(BGMetaEntity meta, BGId id) => new BG_GunTable(meta, id);
 	}
 
 	public static class __Names
 	{
-		public const string Meta = "GunConfig";
+		public const string Meta = "GunTable";
 		public const string name = "name";
 		public const string ShootInterval = "ShootInterval";
 		public const string BulletSpeed = "BulletSpeed";
@@ -121,19 +121,179 @@ public partial class BG_GunConfig : BGEntity
 	public static BansheeGz.BGDatabase.BGFieldInt _BackForceFrames => _ufle12jhs77_BackForceFrames ?? (_ufle12jhs77_BackForceFrames = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(4898030777058054216UL, 16830760087672593792UL), () => _ufle12jhs77_BackForceFrames = null));
 	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_AdditionalCameraSize;
 	public static BansheeGz.BGDatabase.BGFieldFloat _AdditionalCameraSize => _ufle12jhs77_AdditionalCameraSize ?? (_ufle12jhs77_AdditionalCameraSize = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5509063125276119044UL, 4860089744922829221UL), () => _ufle12jhs77_AdditionalCameraSize = null));
-	private static readonly BG_GunConfig.Factory _factory0_PFS = new BG_GunConfig.Factory();
-	private BG_GunConfig() : base(MetaDefault) {}
-	private BG_GunConfig(BGId id) : base(MetaDefault, id) {}
-	private BG_GunConfig(BGMetaEntity meta) : base(meta) {}
-	private BG_GunConfig(BGMetaEntity meta, BGId id) : base(meta, id) {}
-	public static BG_GunConfig FindEntity(Predicate<BG_GunConfig> filter) => BGCodeGenUtils.FindEntity(MetaDefault, filter);
-	public static List<BG_GunConfig> FindEntities(Predicate<BG_GunConfig> filter, List<BG_GunConfig> result=null, Comparison<BG_GunConfig> sort=null) => BGCodeGenUtils.FindEntities(MetaDefault, filter, result, sort);
-	public static void ForEachEntity(Action<BG_GunConfig> action, Predicate<BG_GunConfig> filter=null, Comparison<BG_GunConfig> sort=null) => BGCodeGenUtils.ForEachEntity(MetaDefault, action, filter, sort);
-	public static BG_GunConfig GetEntity(BGId entityId) => (BG_GunConfig) MetaDefault.GetEntity(entityId);
-	public static BG_GunConfig GetEntity(int index) => (BG_GunConfig) MetaDefault[index];
-	public static BG_GunConfig GetEntity(string entityName) => (BG_GunConfig) MetaDefault.GetEntity(entityName);
-	public static BG_GunConfig NewEntity() => (BG_GunConfig) MetaDefault.NewEntity();
-	public static BG_GunConfig NewEntity(BGId entityId) => (BG_GunConfig) MetaDefault.NewEntity(entityId);
-	public static BG_GunConfig NewEntity(Action<BG_GunConfig> callback) => (BG_GunConfig) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_GunConfig)entity)));
+	private static readonly BG_GunTable.Factory _factory0_PFS = new BG_GunTable.Factory();
+	private static readonly BG_EnemyTable.Factory _factory1_PFS = new BG_EnemyTable.Factory();
+	private static readonly BG_BossTable.Factory _factory2_PFS = new BG_BossTable.Factory();
+	private BG_GunTable() : base(MetaDefault) {}
+	private BG_GunTable(BGId id) : base(MetaDefault, id) {}
+	private BG_GunTable(BGMetaEntity meta) : base(meta) {}
+	private BG_GunTable(BGMetaEntity meta, BGId id) : base(meta, id) {}
+	public static BG_GunTable FindEntity(Predicate<BG_GunTable> filter) => BGCodeGenUtils.FindEntity(MetaDefault, filter);
+	public static List<BG_GunTable> FindEntities(Predicate<BG_GunTable> filter, List<BG_GunTable> result=null, Comparison<BG_GunTable> sort=null) => BGCodeGenUtils.FindEntities(MetaDefault, filter, result, sort);
+	public static void ForEachEntity(Action<BG_GunTable> action, Predicate<BG_GunTable> filter=null, Comparison<BG_GunTable> sort=null) => BGCodeGenUtils.ForEachEntity(MetaDefault, action, filter, sort);
+	public static BG_GunTable GetEntity(BGId entityId) => (BG_GunTable) MetaDefault.GetEntity(entityId);
+	public static BG_GunTable GetEntity(int index) => (BG_GunTable) MetaDefault[index];
+	public static BG_GunTable GetEntity(string entityName) => (BG_GunTable) MetaDefault.GetEntity(entityName);
+	public static BG_GunTable NewEntity() => (BG_GunTable) MetaDefault.NewEntity();
+	public static BG_GunTable NewEntity(BGId entityId) => (BG_GunTable) MetaDefault.NewEntity(entityId);
+	public static BG_GunTable NewEntity(Action<BG_GunTable> callback) => (BG_GunTable) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_GunTable)entity)));
+}
+
+public partial class BG_EnemyTable : BGEntity
+{
+
+	public class Factory : BGEntity.EntityFactory
+	{
+		public BGEntity NewEntity(BGMetaEntity meta) => new BG_EnemyTable(meta);
+		public BGEntity NewEntity(BGMetaEntity meta, BGId id) => new BG_EnemyTable(meta, id);
+	}
+
+	public static class __Names
+	{
+		public const string Meta = "EnemyTable";
+		public const string name = "name";
+		public const string Hp = "Hp";
+		public const string MoveSpeed = "MoveSpeed";
+		public const string BulletSpeed = "BulletSpeed";
+		public const string Damage = "Damage";
+		public const string FollowTimeRange = "FollowTimeRange";
+	}
+	private static BansheeGz.BGDatabase.BGMetaRow _metaDefault;
+	public static BansheeGz.BGDatabase.BGMetaRow MetaDefault => _metaDefault ?? (_metaDefault = BGCodeGenUtils.GetMeta<BansheeGz.BGDatabase.BGMetaRow>(new BGId(5057323662043038401UL,13816497804802230195UL), () => _metaDefault = null));
+	public static BansheeGz.BGDatabase.BGRepoEvents Events => BGRepo.I.Events;
+	public static int CountEntities => MetaDefault.CountEntities;
+	public System.String name
+	{
+		get => _name[Index];
+		set => _name[Index] = value;
+	}
+	public System.Int32 Hp
+	{
+		get => _Hp[Index];
+		set => _Hp[Index] = value;
+	}
+	public System.Single MoveSpeed
+	{
+		get => _MoveSpeed[Index];
+		set => _MoveSpeed[Index] = value;
+	}
+	public System.Single BulletSpeed
+	{
+		get => _BulletSpeed[Index];
+		set => _BulletSpeed[Index] = value;
+	}
+	public System.Single Damage
+	{
+		get => _Damage[Index];
+		set => _Damage[Index] = value;
+	}
+	public UnityEngine.Vector2 FollowTimeRange
+	{
+		get => _FollowTimeRange[Index];
+		set => _FollowTimeRange[Index] = value;
+	}
+	private static BansheeGz.BGDatabase.BGFieldEntityName _ufle12jhs77_name;
+	public static BansheeGz.BGDatabase.BGFieldEntityName _name => _ufle12jhs77_name ?? (_ufle12jhs77_name = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldEntityName>(MetaDefault, new BGId(5519679196484389304UL, 1125187658171509121UL), () => _ufle12jhs77_name = null));
+	private static BansheeGz.BGDatabase.BGFieldInt _ufle12jhs77_Hp;
+	public static BansheeGz.BGDatabase.BGFieldInt _Hp => _ufle12jhs77_Hp ?? (_ufle12jhs77_Hp = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(5272828214079190223UL, 14946191040264719248UL), () => _ufle12jhs77_Hp = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_MoveSpeed;
+	public static BansheeGz.BGDatabase.BGFieldFloat _MoveSpeed => _ufle12jhs77_MoveSpeed ?? (_ufle12jhs77_MoveSpeed = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5050556184367207465UL, 4195447396909326739UL), () => _ufle12jhs77_MoveSpeed = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_BulletSpeed;
+	public static BansheeGz.BGDatabase.BGFieldFloat _BulletSpeed => _ufle12jhs77_BulletSpeed ?? (_ufle12jhs77_BulletSpeed = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(4667700759435737296UL, 10952999737015829413UL), () => _ufle12jhs77_BulletSpeed = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_Damage;
+	public static BansheeGz.BGDatabase.BGFieldFloat _Damage => _ufle12jhs77_Damage ?? (_ufle12jhs77_Damage = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5528592877936874213UL, 181964880681621905UL), () => _ufle12jhs77_Damage = null));
+	private static BansheeGz.BGDatabase.BGFieldVector2 _ufle12jhs77_FollowTimeRange;
+	public static BansheeGz.BGDatabase.BGFieldVector2 _FollowTimeRange => _ufle12jhs77_FollowTimeRange ?? (_ufle12jhs77_FollowTimeRange = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldVector2>(MetaDefault, new BGId(5468927212364811650UL, 10609957430988193721UL), () => _ufle12jhs77_FollowTimeRange = null));
+	private static readonly BG_GunTable.Factory _factory0_PFS = new BG_GunTable.Factory();
+	private static readonly BG_EnemyTable.Factory _factory1_PFS = new BG_EnemyTable.Factory();
+	private static readonly BG_BossTable.Factory _factory2_PFS = new BG_BossTable.Factory();
+	private BG_EnemyTable() : base(MetaDefault) {}
+	private BG_EnemyTable(BGId id) : base(MetaDefault, id) {}
+	private BG_EnemyTable(BGMetaEntity meta) : base(meta) {}
+	private BG_EnemyTable(BGMetaEntity meta, BGId id) : base(meta, id) {}
+	public static BG_EnemyTable FindEntity(Predicate<BG_EnemyTable> filter) => BGCodeGenUtils.FindEntity(MetaDefault, filter);
+	public static List<BG_EnemyTable> FindEntities(Predicate<BG_EnemyTable> filter, List<BG_EnemyTable> result=null, Comparison<BG_EnemyTable> sort=null) => BGCodeGenUtils.FindEntities(MetaDefault, filter, result, sort);
+	public static void ForEachEntity(Action<BG_EnemyTable> action, Predicate<BG_EnemyTable> filter=null, Comparison<BG_EnemyTable> sort=null) => BGCodeGenUtils.ForEachEntity(MetaDefault, action, filter, sort);
+	public static BG_EnemyTable GetEntity(BGId entityId) => (BG_EnemyTable) MetaDefault.GetEntity(entityId);
+	public static BG_EnemyTable GetEntity(int index) => (BG_EnemyTable) MetaDefault[index];
+	public static BG_EnemyTable GetEntity(string entityName) => (BG_EnemyTable) MetaDefault.GetEntity(entityName);
+	public static BG_EnemyTable NewEntity() => (BG_EnemyTable) MetaDefault.NewEntity();
+	public static BG_EnemyTable NewEntity(BGId entityId) => (BG_EnemyTable) MetaDefault.NewEntity(entityId);
+	public static BG_EnemyTable NewEntity(Action<BG_EnemyTable> callback) => (BG_EnemyTable) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_EnemyTable)entity)));
+}
+
+public partial class BG_BossTable : BGEntity
+{
+
+	public class Factory : BGEntity.EntityFactory
+	{
+		public BGEntity NewEntity(BGMetaEntity meta) => new BG_BossTable(meta);
+		public BGEntity NewEntity(BGMetaEntity meta, BGId id) => new BG_BossTable(meta, id);
+	}
+
+	public static class __Names
+	{
+		public const string Meta = "BossTable";
+		public const string name = "name";
+		public const string Hp = "Hp";
+		public const string MoveSpeed = "MoveSpeed";
+		public const string BulletSpeed = "BulletSpeed";
+		public const string Damage = "Damage";
+	}
+	private static BansheeGz.BGDatabase.BGMetaRow _metaDefault;
+	public static BansheeGz.BGDatabase.BGMetaRow MetaDefault => _metaDefault ?? (_metaDefault = BGCodeGenUtils.GetMeta<BansheeGz.BGDatabase.BGMetaRow>(new BGId(5382939581893108435UL,4848239335096528527UL), () => _metaDefault = null));
+	public static BansheeGz.BGDatabase.BGRepoEvents Events => BGRepo.I.Events;
+	public static int CountEntities => MetaDefault.CountEntities;
+	public System.String name
+	{
+		get => _name[Index];
+		set => _name[Index] = value;
+	}
+	public System.Int32 Hp
+	{
+		get => _Hp[Index];
+		set => _Hp[Index] = value;
+	}
+	public System.Single MoveSpeed
+	{
+		get => _MoveSpeed[Index];
+		set => _MoveSpeed[Index] = value;
+	}
+	public System.Single BulletSpeed
+	{
+		get => _BulletSpeed[Index];
+		set => _BulletSpeed[Index] = value;
+	}
+	public System.Single Damage
+	{
+		get => _Damage[Index];
+		set => _Damage[Index] = value;
+	}
+	private static BansheeGz.BGDatabase.BGFieldEntityName _ufle12jhs77_name;
+	public static BansheeGz.BGDatabase.BGFieldEntityName _name => _ufle12jhs77_name ?? (_ufle12jhs77_name = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldEntityName>(MetaDefault, new BGId(5083876256200375495UL, 5674157576196423091UL), () => _ufle12jhs77_name = null));
+	private static BansheeGz.BGDatabase.BGFieldInt _ufle12jhs77_Hp;
+	public static BansheeGz.BGDatabase.BGFieldInt _Hp => _ufle12jhs77_Hp ?? (_ufle12jhs77_Hp = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(4630819813329416961UL, 7049057655487049404UL), () => _ufle12jhs77_Hp = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_MoveSpeed;
+	public static BansheeGz.BGDatabase.BGFieldFloat _MoveSpeed => _ufle12jhs77_MoveSpeed ?? (_ufle12jhs77_MoveSpeed = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5288296867372691877UL, 16944956437077848195UL), () => _ufle12jhs77_MoveSpeed = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_BulletSpeed;
+	public static BansheeGz.BGDatabase.BGFieldFloat _BulletSpeed => _ufle12jhs77_BulletSpeed ?? (_ufle12jhs77_BulletSpeed = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5718282150200584983UL, 11853481293265681794UL), () => _ufle12jhs77_BulletSpeed = null));
+	private static BansheeGz.BGDatabase.BGFieldFloat _ufle12jhs77_Damage;
+	public static BansheeGz.BGDatabase.BGFieldFloat _Damage => _ufle12jhs77_Damage ?? (_ufle12jhs77_Damage = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldFloat>(MetaDefault, new BGId(5211218897400145117UL, 9679887628932728210UL), () => _ufle12jhs77_Damage = null));
+	private static readonly BG_GunTable.Factory _factory0_PFS = new BG_GunTable.Factory();
+	private static readonly BG_EnemyTable.Factory _factory1_PFS = new BG_EnemyTable.Factory();
+	private static readonly BG_BossTable.Factory _factory2_PFS = new BG_BossTable.Factory();
+	private BG_BossTable() : base(MetaDefault) {}
+	private BG_BossTable(BGId id) : base(MetaDefault, id) {}
+	private BG_BossTable(BGMetaEntity meta) : base(meta) {}
+	private BG_BossTable(BGMetaEntity meta, BGId id) : base(meta, id) {}
+	public static BG_BossTable FindEntity(Predicate<BG_BossTable> filter) => BGCodeGenUtils.FindEntity(MetaDefault, filter);
+	public static List<BG_BossTable> FindEntities(Predicate<BG_BossTable> filter, List<BG_BossTable> result=null, Comparison<BG_BossTable> sort=null) => BGCodeGenUtils.FindEntities(MetaDefault, filter, result, sort);
+	public static void ForEachEntity(Action<BG_BossTable> action, Predicate<BG_BossTable> filter=null, Comparison<BG_BossTable> sort=null) => BGCodeGenUtils.ForEachEntity(MetaDefault, action, filter, sort);
+	public static BG_BossTable GetEntity(BGId entityId) => (BG_BossTable) MetaDefault.GetEntity(entityId);
+	public static BG_BossTable GetEntity(int index) => (BG_BossTable) MetaDefault[index];
+	public static BG_BossTable GetEntity(string entityName) => (BG_BossTable) MetaDefault.GetEntity(entityName);
+	public static BG_BossTable NewEntity() => (BG_BossTable) MetaDefault.NewEntity();
+	public static BG_BossTable NewEntity(BGId entityId) => (BG_BossTable) MetaDefault.NewEntity(entityId);
+	public static BG_BossTable NewEntity(Action<BG_BossTable> callback) => (BG_BossTable) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_BossTable)entity)));
 }
 #pragma warning restore 414

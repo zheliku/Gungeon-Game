@@ -44,7 +44,7 @@ namespace Game
         [ShowInInspector]
         public List<Enemy> TemplateEnemies = new List<Enemy>();
 
-        public IEnemy Enemy
+        public Enemy Enemy
         {
             get => TemplateEnemies.RandomTakeOne();
         }

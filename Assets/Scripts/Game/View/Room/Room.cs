@@ -55,7 +55,7 @@ namespace Game
             get => _grid;
         }
 
-        private List<IEnemy> _enemiesInRoom = new List<IEnemy>();
+        private List<Enemy> _enemiesInRoom = new List<Enemy>();
 
         private List<EnemyWaveData> _enemyWaves = new List<EnemyWaveData>();
 
@@ -74,7 +74,7 @@ namespace Game
         public Final Final;
 
         [ShowInInspector]
-        public List<IEnemy> EnemiesInRoom
+        public List<Enemy> EnemiesInRoom
         {
             get => _enemiesInRoom;
         }
@@ -151,10 +151,10 @@ namespace Game
                     {
                         State = RoomState.PlayerIn;
 
-                        var boss = EnemyFactory.Instance.Bosses[4].GameObject.Instantiate()
+                        var boss = EnemyFactory.Instance.Bosses[0].GameObject.Instantiate()
                            .SetPosition(EnemyGeneratePoses.RandomTakeOne())
                            .Enable()
-                           .GetComponent<IEnemy>();
+                           .GetComponent<Boss>();
 
                         boss.Room = this;
                         
@@ -282,7 +282,7 @@ namespace Game
                    .Instantiate(keepName: true)
                    .SetPosition(posGen.RandomTakeOneAndRemove())
                    .Enable()
-                   .GetComponent<IEnemy>();
+                   .GetComponent<Enemy>();
 
                 enemy.Room = this;
             }

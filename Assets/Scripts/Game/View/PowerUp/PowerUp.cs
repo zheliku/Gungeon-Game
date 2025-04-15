@@ -13,6 +13,13 @@ namespace Game
     using Sirenix.OdinInspector;
     using UnityEngine;
 
+    public interface IPowerUp
+    {
+        SpriteRenderer SpriteRenderer { get; }
+        
+        Room Room { get; set; }
+    }
+    
     public abstract class PowerUp : AbstractView, IPowerUp
     {
         public SpriteRenderer SpriteRenderer { get => this.GetComponent<SpriteRenderer>(); }

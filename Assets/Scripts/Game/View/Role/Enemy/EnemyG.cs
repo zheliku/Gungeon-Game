@@ -14,8 +14,6 @@ namespace Game
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.TimerKit;
     using UnityEngine;
-    using UnityEngine.Serialization;
-    using Random = UnityEngine.Random;
 
     public class EnemyG : Enemy
     {
@@ -26,7 +24,7 @@ namespace Game
             Shoot
         }
 
-        public (int min, int max) FireTimes = (1, 4 + 1); // 一次连续射击发射的子弹次数，一次发射 1s
+        public (int min, int max) FireTimes = (1, 2 + 1); // 一次连续射击发射的子弹次数，一次发射 1s
 
         public float FireInterval = 0.25f; // 发射间隔时间
 
@@ -42,10 +40,12 @@ namespace Game
         {
             base.Awake();
 
+            var followTime = FollowTimeRange.RandomSelect();
+
             FSM.State(State.Follow)
                .OnEnter(() =>
                 {
-                    FollowSeconds = Random.Range(0.5f, 3f);
+                    followTime = FollowTimeRange.RandomSelect();
                 })
                .OnUpdate(() =>
                 {
@@ -59,7 +59,7 @@ namespace Game
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, PlayerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
-                    if (FSM.SecondsOfCurrentState >= FollowSeconds)
+                    if (FSM.SecondsOfCurrentState >= followTime)
                     {
                         FSM.ChangeState(State.PrepareToShoot);
                     }

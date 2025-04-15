@@ -1,19 +1,17 @@
 // ------------------------------------------------------------
-// @file       IPowerUp.cs
+// @file       PlayerProperty.cs
 // @brief
 // @author     zheliku
-// @Modified   2025-03-15 18:03:56
+// @Modified   2025-04-11 11:04:04
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
 namespace Game
 {
-    using UnityEngine;
+    using Framework.Core;
 
-    public interface IPowerUp
+    public class EnemyProperty : Property
     {
-        SpriteRenderer SpriteRenderer { get; }
-        
-        Room Room { get; set; }
+        public float Damage;
     }
 }

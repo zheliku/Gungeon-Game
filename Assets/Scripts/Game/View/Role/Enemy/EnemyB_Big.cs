@@ -26,21 +26,20 @@ namespace Game
         }
 
         public int   FireCount     = 9;  // 一次射击发射的子弹个数
-        public float IntervalAngle = 15; // 间隔角度
+        public float IntervalAngle = 10; // 间隔角度
 
         public FSM<State> FSM = new FSM<State>();
 
         protected override void Awake()
         {
             base.Awake();
-            
-            BulletSpeed = 8f;                     // 子弹速度更快
-            _property.Hp.SetValueWithoutEvent(10); // 血量更高
+
+            var followTime = FollowTimeRange.RandomSelect();
 
             FSM.State(State.Follow)
                .OnEnter(() =>
                 {
-                    FollowSeconds = Random.Range(0.5f, 3f);
+                    followTime = FollowTimeRange.RandomSelect();
                 })
                .OnUpdate(() =>
                 {
@@ -54,7 +53,7 @@ namespace Game
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, PlayerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
-                    if (FSM.SecondsOfCurrentState >= FollowSeconds)
+                    if (FSM.SecondsOfCurrentState >= followTime)
                     {
                         FSM.ChangeState(State.PrepareToShoot);
                     }
@@ -85,11 +84,15 @@ namespace Game
             FSM.State(State.Shoot)
                .OnEnter(() =>
                 {
-                    Fire();
                     Rigidbody2D.linearVelocity = Vector2.zero;
                 })
                .OnUpdate(() =>
                 {
+                    if (TimerKit.HasPassedInterval(this, 0.4f))
+                    {
+                        Fire();
+                    }
+                    
                     if (FSM.SecondsOfCurrentState >= 1)
                     {
                         FSM.ChangeState(State.Follow);

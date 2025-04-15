@@ -31,13 +31,12 @@ namespace Game
         {
             base.Awake();
 
-            BulletSpeed = 10f;                     // 子弹速度更快
-            _property.Hp.SetValueWithoutEvent(10); // 血量更高
+            var followTime = FollowTimeRange.RandomSelect();
 
             FSM.State(State.Follow)
                .OnEnter(() =>
                 {
-                    FollowSeconds = Random.Range(0.5f, 3f);
+                    followTime = FollowTimeRange.RandomSelect();
                 })
                .OnUpdate(() =>
                 {
@@ -51,7 +50,7 @@ namespace Game
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, PlayerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
-                    if (FSM.SecondsOfCurrentState >= FollowSeconds)
+                    if (FSM.SecondsOfCurrentState >= followTime)
                     {
                         FSM.ChangeState(State.PrepareToShoot);
                     }
@@ -87,7 +86,7 @@ namespace Game
                 })
                .OnUpdate(() =>
                 {
-                    if (FSM.SecondsOfCurrentState >= 1)
+                    if (FSM.SecondsOfCurrentState >= 0.5f)
                     {
                         FSM.ChangeState(State.Follow);
                     }
@@ -110,12 +109,12 @@ namespace Game
 
         public void Fire()
         {
-            var bullet = Bullet.Instantiate(transform.position)
-               .Enable()
-               .GetComponent<EnemyBullet>();
-
-            bullet.Damage   = 1f;
-            bullet.Velocity = Player.Instance.Direction2DFrom(bullet) * BulletSpeed;
+            BulletHelper.Shoot(
+                this.GetPosition2D(),
+                Player.Instance.Direction2DFrom(this),
+                Bullet,
+                Property.Damage,
+                BulletSpeed);
 
             AudioKit.PlaySound(ShootSounds.RandomTakeOne());
         }

@@ -20,7 +20,18 @@ namespace Game
             if (other.gameObject.CompareTag("Enemy"))
             {
                 this.DisableGameObject();
-                var enemy = other.gameObject.GetComponent<IEnemy>();
+                var enemy = other.gameObject.GetComponent<Enemy>();
+                enemy.Hurt(Damage, other.ToHitInfo());
+                var soundClip = BulletFactory.Instance.HitEnemySounds.RandomTakeOne();
+                AudioKit.PlaySound(soundClip, 0.3f, onPlayFinish: _ =>
+                {
+                    this.DestroyGameObjectGracefully(); // 可能重复删除
+                });
+            }
+            else if (other.gameObject.CompareTag("Boss"))
+            {
+                this.DisableGameObject();
+                var enemy = other.gameObject.GetComponent<Boss>();
                 enemy.Hurt(Damage, other.ToHitInfo());
                 var soundClip = BulletFactory.Instance.HitEnemySounds.RandomTakeOne();
                 AudioKit.PlaySound(soundClip, 0.3f, onPlayFinish: _ =>

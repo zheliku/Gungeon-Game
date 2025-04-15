@@ -1472,13 +1472,12 @@ Transform:
   m_GameObject: {fileID: 232895482}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.93, y: 0.22, z: 0}
+  m_LocalPosition: {x: -2.09, y: -5.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 267245153}
   - {fileID: 2072863283}
-  - {fileID: 619604589}
   m_Father: {fileID: 1500943692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &232895484
@@ -1493,7 +1492,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 20
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -1559,8 +1558,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -1680,8 +1677,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -2061,7 +2056,7 @@ GameObject:
   - component: {fileID: 284161461}
   m_Layer: 8
   m_Name: BossA
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2095,8 +2090,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 100
+  m_LinearDamping: 10
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -2161,8 +2156,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -7416,7 +7409,7 @@ GameObject:
   - component: {fileID: 396448201}
   m_Layer: 8
   m_Name: BossC
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7450,8 +7443,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 100
+  m_LinearDamping: 10
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -7516,8 +7509,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -7637,8 +7628,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -7673,7 +7662,7 @@ Transform:
   m_GameObject: {fileID: 447822158}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.93, y: 0.22, z: 0}
+  m_LocalPosition: {x: 0.13, y: -4.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -7693,7 +7682,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 20
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -7759,8 +7748,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -8803,13 +8790,13 @@ Transform:
   m_GameObject: {fileID: 619604588}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.1, y: -2.54, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 2}
+  m_LocalPosition: {x: 14.01, y: -7.62, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 511640638}
   - {fileID: 1459545817}
-  m_Father: {fileID: 232895483}
+  m_Father: {fileID: 1500943692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &619604590
 Rigidbody2D:
@@ -8889,14 +8876,12 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
   - {fileID: 8300000, guid: 11ef35005d756cb49a951c1a87f12f2d, type: 3}
   - {fileID: 8300000, guid: e453276a327dcb94d8b7cfc3d7faab00, type: 3}
-  FireInterval: 0.25
+  FireInterval: 0.5
   FireCount: 8
   IntervalAngle: 15
 --- !u!1 &638592638
@@ -10328,7 +10313,7 @@ Transform:
   m_GameObject: {fileID: 860570080}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.93, y: 0.22, z: 0}
+  m_LocalPosition: {x: 4.36, y: -4.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -10348,7 +10333,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 20
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -10414,8 +10399,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -10958,8 +10941,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -11476,7 +11457,7 @@ GameObject:
   - component: {fileID: 994767395}
   m_Layer: 8
   m_Name: BossB
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11510,8 +11491,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 100
+  m_LinearDamping: 10
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -11576,8 +11557,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -13109,8 +13088,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -13883,8 +13860,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -14006,8 +13981,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -14789,6 +14762,7 @@ Transform:
   - {fileID: 1229256366}
   - {fileID: 928882587}
   - {fileID: 244201318}
+  - {fileID: 619604589}
   - {fileID: 232895483}
   - {fileID: 447822159}
   - {fileID: 1770092530}
@@ -14812,6 +14786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e8a8815f46f3448a5f2dfdb84974ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enemies: []
+  Bosses: []
 --- !u!1 &1508151762
 GameObject:
   m_ObjectHideFlags: 0
@@ -15933,7 +15909,7 @@ Transform:
   m_GameObject: {fileID: 1770092529}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.93, y: 0.22, z: 0}
+  m_LocalPosition: {x: 2.12, y: -5.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -15953,7 +15929,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 20
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -16019,8 +15995,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -16478,7 +16452,7 @@ GameObject:
   - component: {fileID: 1865283228}
   m_Layer: 8
   m_Name: BossD
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16512,8 +16486,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 100
+  m_LinearDamping: 10
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -16578,8 +16552,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -17514,8 +17486,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -17569,7 +17539,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -17845,7 +17815,7 @@ GameObject:
   - component: {fileID: 2038365792}
   m_Layer: 8
   m_Name: BossE
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17879,8 +17849,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 100
+  m_LinearDamping: 10
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -17945,8 +17915,6 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 0}
   Rigidbody2D: {fileID: 0}
   Bullet: {fileID: 0}
-  FollowSeconds: 3
-  BulletSpeed: 5
   PlayerSpriteOriginLocalPos: {x: 0, y: 0}
   ShootSounds:
   - {fileID: 8300000, guid: 3005b0d87fe9aa34dbd150e16a5e1257, type: 3}
@@ -18069,7 +18037,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.673, y: 0.071, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 232895483}

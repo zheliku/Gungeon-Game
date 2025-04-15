@@ -34,10 +34,12 @@ namespace Game
         {
             base.Awake();
 
+            var followTime = FollowTimeRange.RandomSelect();
+
             FSM.State(State.Follow)
                .OnEnter(() =>
                 {
-                    FollowSeconds = Random.Range(0.5f, 3f);
+                    followTime = FollowTimeRange.RandomSelect();
                 })
                .OnUpdate(() =>
                 {
@@ -51,7 +53,7 @@ namespace Game
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, PlayerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
-                    if (FSM.SecondsOfCurrentState >= FollowSeconds)
+                    if (FSM.SecondsOfCurrentState >= followTime)
                     {
                         FSM.ChangeState(State.PrepareToShoot);
                     }
@@ -110,17 +112,16 @@ namespace Game
 
         public void Fire()
         {
-            var direction = Player.Instance.Direction2DFrom(this);
-
             ActionKit.Repeat(3)
                .Callback(() =>
                 {
-                    var bullet = Bullet.Instantiate(transform.position)
-                       .Enable()
-                       .GetComponent<EnemyBullet>();
-
-                    bullet.Damage   = 1f;
-                    bullet.Velocity = direction * BulletSpeed;
+                    BulletHelper.Shoot(
+                        this.GetPosition2D(),
+                        Player.Instance.Direction2DFrom(this),
+                        Bullet,
+                        Property.Damage,
+                        BulletSpeed);
+                    
                     AudioKit.PlaySound(ShootSounds.RandomTakeOne());
                 })
                .Delay(IntervalTime)

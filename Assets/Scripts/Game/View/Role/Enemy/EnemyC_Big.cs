@@ -33,14 +33,13 @@ namespace Game
         protected override void Awake()
         {
             base.Awake();
-            
-            BulletSpeed = 8f;                     // 子弹速度更快
-            _property.Hp.SetValueWithoutEvent(10); // 血量更高
+
+            var followTime = FollowTimeRange.RandomSelect();
 
             FSM.State(State.Follow)
                .OnEnter(() =>
                 {
-                    FollowSeconds = Random.Range(0.5f, 3f);
+                    followTime = FollowTimeRange.RandomSelect();
                 })
                .OnUpdate(() =>
                 {
@@ -54,7 +53,7 @@ namespace Game
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, PlayerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
-                    if (FSM.SecondsOfCurrentState >= FollowSeconds)
+                    if (FSM.SecondsOfCurrentState >= followTime)
                     {
                         FSM.ChangeState(State.PrepareToShoot);
                     }
@@ -90,7 +89,7 @@ namespace Game
                 })
                .OnUpdate(() =>
                 {
-                    if (FSM.SecondsOfCurrentState >= 1)
+                    if (FSM.SecondsOfCurrentState >= 0.6f)
                     {
                         FSM.ChangeState(State.Follow);
                     }
@@ -115,7 +114,7 @@ namespace Game
         {
             var direction = Player.Instance.Direction2DFrom(this);
 
-            ActionKit.Repeat(3)
+            ActionKit.Repeat(5)
                .Callback(() =>
                 {
                     var bullet = Bullet.Instantiate(transform.position)

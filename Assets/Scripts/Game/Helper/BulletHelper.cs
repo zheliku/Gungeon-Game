@@ -8,12 +8,13 @@
 
 namespace Game
 {
+    using System.Collections.Generic;
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
     public class BulletHelper
     {
-        public static void Shoot(
+        public static Bullet Shoot(
             Vector2    pos,
             Vector2    direction,
             GameObject bulletPrefab,
@@ -31,12 +32,14 @@ namespace Game
 
             bullet.Damage   = damage;
             bullet.Velocity = unstableDir * speed;
+            
+            return bullet;
         }
 
         /// <summary>
         /// 圆圈攻击
         /// </summary>
-        public static void CircleShoot(
+        public static List<Bullet> CircleShoot(
             int        fireCount,
             Vector2    center,
             float      radius,
@@ -47,6 +50,8 @@ namespace Game
             float      unstableAngle = 0)
         {
             var stepAngle = 360f / fireCount;
+            
+            var bullets = new List<Bullet>(fireCount);
 
             for (int i = 0; i < fireCount; i++)
             {
@@ -61,13 +66,17 @@ namespace Game
 
                 bullet.Damage   = damage;
                 bullet.Velocity = unstableDir * speed;
+                
+                bullets.Add(bullet);
             }
+            
+            return bullets;
         }
 
         /// <summary>
         /// 扩散攻击
         /// </summary>
-        public static void SpreadShoot(
+        public static List<Bullet> SpreadShoot(
             int        fireCount,
             Vector2    center,
             float      radius,
@@ -78,6 +87,8 @@ namespace Game
             float      speed,
             float      unstableAngle = 0)
         {
+            var bullets = new List<Bullet>(fireCount);
+
             for (int i = -fireCount / 2; i <= fireCount / 2; i++)
             {
                 var eachDir     = direction.Rotate(i * intervalAngle);
@@ -92,7 +103,11 @@ namespace Game
 
                 bullet.Damage   = damage;
                 bullet.Velocity = unstableDir * speed;
+                
+                bullets.Add(bullet);
             }
+            
+            return bullets;
         }
     }
 }

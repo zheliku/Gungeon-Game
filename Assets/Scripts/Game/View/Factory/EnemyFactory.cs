@@ -8,42 +8,49 @@
 
 namespace Game
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
+    using Sirenix.OdinInspector;
 
     public class EnemyFactory : MonoSingleton<EnemyFactory>
     {
-        public List<IEnemy> Enemies = new List<IEnemy>();
+        [ShowInInspector]
+        public List<Enemy> Enemies = new List<Enemy>();
 
-        public List<IEnemy> Bosses = new List<IEnemy>();
+        public List<Boss> Bosses = new List<Boss>();
 
         public override void OnSingletonInit()
         {
             for (int i = 0; i < transform.childCount; i++)
             {
                 var child = transform.GetChild(i).gameObject;
-                var enemy = child.GetComponent<IEnemy>();
+                var enemy = child.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    if (enemy.GameObject.name.StartsWith("Enemy"))
-                    {
-                        Enemies.Add(enemy);
-                    }
-                    else if (enemy.GameObject.name.StartsWith("Boss"))
-                    {
-                        Bosses.Add(enemy);
-                    }
+                    Enemies.Add(enemy);
+                }
+                
+                var boss = child.GetComponent<Boss>();
+                if (boss != null)
+                {
+                    Bosses.Add(boss);
                 }
             }
         }
 
-        public static IEnemy GetEnemyByName(string name)
+        public static Enemy GetEnemyByName(string name)
         {
-            // return Instance.Enemies.FirstOrDefault(e => e.GameObject.name == "EnemyA");
-                
+            var testName = new[]
+            {
+                "EnemyG",
+                "EnemyH",
+            }.RandomTakeOne();
+            return Instance.Enemies.First(enemy => testName == enemy.GameObject.name);
+
             return Instance.Enemies.FirstOrDefault(e => e.GameObject.name == name);
         }
 
@@ -80,10 +87,11 @@ namespace Game
             {
                 return new[] { 2, 3, 4, 5, 9, }.RandomTakeOne();
             }
-            if (currentLevelData == Level4.DATA) {
+            if (currentLevelData == Level4.DATA)
+            {
                 return new[] { 3, 4, 5, 6, 7, 9, 10 }.RandomTakeOne();
             }
-            
+
             return new[] { 2, 3, 4, 5, 6, 7, 8, 9, 10 }.RandomTakeOne();
         }
 

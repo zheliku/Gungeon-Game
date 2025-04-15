@@ -23,7 +23,7 @@ namespace Game
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    public class Player : AbstractRole, ISingleton
+    public class Player : AbstractRole, ISingleton, IRole
     {
         public enum State
         {
@@ -90,6 +90,8 @@ namespace Game
             get;
             private set;
         }
+        
+        public GameObject GameObject { get => gameObject; }
 
         protected override void Awake()
         {
@@ -184,7 +186,7 @@ namespace Game
         {
             Fsm.FixedUpdate();
         }
-
+        
         public override void Hurt(float damage, HitInfo info)
         {
             Debug.Log("Player Hurt");
@@ -258,7 +260,7 @@ namespace Game
                 _rollDirection = this.Direction2DTo(CurrentGun.MousePosition);
             }
                     
-            var facing = _rollDirection.x.Sign();
+            var facing = _rollDirection.x.Sign(); // 当前的水平朝向
             if (facing == 0)
             {
                 facing = SpriteRenderer.flipX ? -1 : 1;
@@ -269,10 +271,12 @@ namespace Game
                 {
                     f = EasyTween.InSine(0, 1, f);
 
-                    this.SetLocalEulerAngles(z: -f * 360 * facing);
+                    SpriteRenderer.SetLocalEulerAngles(z: -f * 360 * facing);
+                    WeaponTransform.SetLocalEulerAngles(z: -f * 360 * facing);
                 }, () =>
                 {
-                    this.SetLocalEulerAngles(z: 0);
+                    SpriteRenderer.SetLocalEulerAngles(z: 0);
+                    WeaponTransform.SetLocalEulerAngles(z: 0);
                     Fsm.ChangeState(State.Idle);
                 })
                .Start(this);

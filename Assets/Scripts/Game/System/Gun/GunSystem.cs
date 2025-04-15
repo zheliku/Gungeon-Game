@@ -15,14 +15,14 @@ namespace Game
     public class GunSystem : AbstractSystem
     {
         [ShowInInspector]
-        protected List<BG_GunConfig> _bgGunConfigs;
+        protected List<BG_GunTable> _bgGunConfigs;
 
         [ShowInInspector]
         public List<GunData> GunDataList = new List<GunData>();
 
         protected override void OnInit()
         {
-            _bgGunConfigs = BG_GunConfig.FindEntities(config => true);
+            _bgGunConfigs = BG_GunTable.FindEntities(config => true);
             
             Reset();
         }

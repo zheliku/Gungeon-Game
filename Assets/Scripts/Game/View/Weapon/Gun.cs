@@ -23,7 +23,7 @@ namespace Game
 
     public abstract class Gun : AbstractView
     {
-        protected BG_GunConfig _bgGunConfig;
+        protected BG_GunTable _bgGunEntity;
 
         [HierarchyPath("Sprite")]
         public SpriteRenderer GunSprite;
@@ -44,7 +44,7 @@ namespace Game
         public InputAction AttackAction { get; private set; }
         
         [ShowInInspector]
-        protected IEnemy _TargetEnemy { get; set; }
+        protected Enemy _TargetEnemy { get; set; }
 
         public bool IsShooting { get; protected set; }
 
@@ -94,10 +94,10 @@ namespace Game
                 if (currentRoom && currentRoom.EnemiesInRoom.Count > 0)
                 {
                     _TargetEnemy = currentRoom.EnemiesInRoom
-                       .OrderBy(e => (e.Position - MousePosition).magnitude)
+                       .OrderBy(e => e.Distance2D(MousePosition))
                        .FirstOrDefault(e =>
                         {
-                            var vector2 = this.Position2DTo(e.Position);
+                            var vector2 = this.Position2DTo(e);
                             if (Physics2D.Raycast(this.GetPosition(), vector2.normalized, vector2.magnitude, LayerMask.GetMask("Wall")))
                             {
                                 return false;
@@ -107,9 +107,9 @@ namespace Game
 
                     if (_TargetEnemy != null) // 自动瞄准
                     {
-                        Aim.SetPosition(_TargetEnemy.Position);
+                        Aim.CopyPositionFrom(_TargetEnemy);
                         Aim.EnableGameObject();
-                        return this.Direction2DTo(_TargetEnemy.Position);
+                        return this.Direction2DTo(_TargetEnemy);
                     }
                 }
 
@@ -123,13 +123,13 @@ namespace Game
             this.BindHierarchyComponent();
 
             // 依据子类类名获取 BG 中的数据
-            _bgGunConfig = BG_GunConfig.GetEntity(GetType().Name);
+            _bgGunEntity = BG_GunTable.GetEntity(GetType().Name);
 
-            _BulletSpeed          = _bgGunConfig.BulletSpeed;
-            _UnstableAngle        = _bgGunConfig.UnstableAngle;
-            AdditionalCameraSize = _bgGunConfig.AdditionalCameraSize;
+            _BulletSpeed          = _bgGunEntity.BulletSpeed;
+            _UnstableAngle        = _bgGunEntity.UnstableAngle;
+            AdditionalCameraSize = _bgGunEntity.AdditionalCameraSize;
 
-            _ShootInterval = new GunShootInterval(_bgGunConfig.ShootInterval);
+            _ShootInterval = new GunShootInterval(_bgGunEntity.ShootInterval);
             Clip           = new GunClip(this);
             Bag            = new BulletBag(this);
             BackForce      = new ShootBackForce(GunSprite);
@@ -195,15 +195,15 @@ namespace Game
                 ShootPos.position,
                 direction,
                 BulletFactory.Instance.GunBullet.gameObject,
-                _bgGunConfig.DamageRange.RandomSelect(),
+                _bgGunEntity.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
 
-            BackForce.Shoot(_bgGunConfig.BackForceA, _bgGunConfig.BackForceFrames);
+            BackForce.Shoot(_bgGunEntity.BackForceA, _bgGunEntity.BackForceFrames);
 
             ShowGunShootLight(direction);
 
-            CameraController.SHAKE.Trigger(_bgGunConfig.ShootShakeA, _bgGunConfig.ShootShakeFrames);
+            CameraController.SHAKE.Trigger(_bgGunEntity.ShootShakeA, _bgGunEntity.ShootShakeFrames);
 
             TypeEventSystem.GLOBAL.Send(new GunShootEvent(this));
         }

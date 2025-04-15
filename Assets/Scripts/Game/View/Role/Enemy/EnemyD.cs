@@ -25,7 +25,7 @@ namespace Game
             Shoot
         }
 
-        public (int min, int max) FireCount = (12, 18 + 1); // 一次射击发射的子弹个数区间
+        public (int min, int max) FireCount = (8, 12 + 1); // 一次射击发射的子弹个数区间
 
         public FSM<State> FSM = new FSM<State>();
 
@@ -33,10 +33,12 @@ namespace Game
         {
             base.Awake();
 
+            var followTime = FollowTimeRange.RandomSelect();
+
             FSM.State(State.Follow)
                .OnEnter(() =>
                 {
-                    FollowSeconds = Random.Range(0.5f, 3f);
+                    followTime = FollowTimeRange.RandomSelect();
                 })
                .OnUpdate(() =>
                 {
@@ -50,7 +52,7 @@ namespace Game
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, PlayerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
-                    if (FSM.SecondsOfCurrentState >= FollowSeconds)
+                    if (FSM.SecondsOfCurrentState >= followTime)
                     {
                         FSM.ChangeState(State.PrepareToShoot);
                     }

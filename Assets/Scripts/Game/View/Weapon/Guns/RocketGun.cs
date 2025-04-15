@@ -45,15 +45,15 @@ namespace Game
                 ShootPos.position,
                 direction,
                 BulletFactory.Instance.RocketBullet.gameObject,
-                _bgGunConfig.DamageRange.RandomSelect(),
+                _bgGunEntity.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
             
-            BackForce.Shoot(_bgGunConfig.BackForceA, _bgGunConfig.BackForceFrames);
+            BackForce.Shoot(_bgGunEntity.BackForceA, _bgGunEntity.BackForceFrames);
             
             BulletFactory.GenBulletShell(direction, BulletFactory.Instance.RocketShell);
 
-            CameraController.SHAKE.Trigger(_bgGunConfig.ShootShakeA, _bgGunConfig.ShootShakeFrames);
+            CameraController.SHAKE.Trigger(_bgGunEntity.ShootShakeA, _bgGunEntity.ShootShakeFrames);
 
             ShowGunShootLight(direction);
 

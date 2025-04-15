@@ -11,11 +11,23 @@ namespace Game
     using Framework.Core;
     using UnityEngine;
 
+    public interface IRole
+    {
+        GameObject GameObject { get; }
+
+        Vector3 Position
+        {
+            get => GameObject.transform.position;
+        }
+        
+        public void Hurt(float damage, HitInfo info);
+    }
+
     public abstract class AbstractRole : AbstractView
     {
         [HierarchyPath("Sprite")]
         public SpriteRenderer SpriteRenderer;
-        
+
         [HierarchyPath]
         public Rigidbody2D Rigidbody2D;
 
