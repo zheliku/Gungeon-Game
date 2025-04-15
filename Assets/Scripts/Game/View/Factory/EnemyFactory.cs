@@ -18,6 +18,8 @@ namespace Game
     {
         public List<IEnemy> Enemies = new List<IEnemy>();
 
+        public List<IEnemy> Bosses = new List<IEnemy>();
+
         public override void OnSingletonInit()
         {
             for (int i = 0; i < transform.childCount; i++)
@@ -26,14 +28,21 @@ namespace Game
                 var enemy = child.GetComponent<IEnemy>();
                 if (enemy != null)
                 {
-                    Enemies.Add(enemy);
+                    if (enemy.GameObject.name.StartsWith("Enemy"))
+                    {
+                        Enemies.Add(enemy);
+                    }
+                    else if (enemy.GameObject.name.StartsWith("Boss"))
+                    {
+                        Bosses.Add(enemy);
+                    }
                 }
             }
         }
 
         public static IEnemy GetEnemyByName(string name)
         {
-            return Instance.Enemies.FirstOrDefault(e => e.GameObject.name == "EnemyA");
+            // return Instance.Enemies.FirstOrDefault(e => e.GameObject.name == "EnemyA");
                 
             return Instance.Enemies.FirstOrDefault(e => e.GameObject.name == name);
         }

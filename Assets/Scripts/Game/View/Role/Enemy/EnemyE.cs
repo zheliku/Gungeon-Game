@@ -44,21 +44,19 @@ namespace Game
                 })
                .OnUpdate(() =>
                 {
+                    if (TimerKit.HasPassedInterval(this, 1f)) // 每秒计算一次路径
+                    {
+                        CalculateMovementPath();
+                    }
+                    
+                    AutoMove();
+
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, _playerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
                     if (FSM.SecondsOfCurrentState >= FollowSeconds)
                     {
                         FSM.ChangeState(State.PrepareToShoot);
-                    }
-                })
-               .OnFixedUpdate(() =>
-                {
-                    var player = Player.Instance;
-
-                    if (player)
-                    {
-                        Rigidbody2D.linearVelocity = player.Direction2DFrom(transform) * _property.MoveSpeed;
                     }
                 });
             
@@ -106,22 +104,11 @@ namespace Game
             FSM.StartState(State.Follow);
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
+            
             FSM.Update();
-
-            var player = Player.Instance;
-
-            var directionToPlayer = player.Direction2DFrom(transform);
-
-            if (directionToPlayer.x > 0)
-            {
-                SpriteRenderer.flipX = false;
-            }
-            else if (directionToPlayer.x < 0)
-            {
-                SpriteRenderer.flipX = true;
-            }
         }
 
         private void FixedUpdate()

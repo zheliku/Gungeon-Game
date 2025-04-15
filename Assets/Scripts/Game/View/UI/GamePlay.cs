@@ -30,6 +30,9 @@ namespace Game
 
         [HierarchyPath("HPAndArmors/Content")]
         private Transform _hpAndArmors;
+        
+        [HierarchyPath("BossHpBar")]
+        private Transform _bossHpBar;
 
         [HierarchyPath("HPAndArmors/Template/Hp")]
         private Image _imgHp;
@@ -39,6 +42,9 @@ namespace Game
 
         [HierarchyPath("Gun/Panel/imgIcon")]
         private Image _imgIcon;
+
+        [HierarchyPath("BossHpBar/imgBossHp")]
+        private Image _imgBossHp;
         
         [HierarchyPath("Gun/Panel/txtBullet")]
         private TextMeshProUGUI _txtBullet;
@@ -100,6 +106,22 @@ namespace Game
             {
                 UpdateGunView(e.Gun);
             }).UnRegisterWhenGameObjectDisabled(this);
+            
+            TypeEventSystem.GLOBAL.Register<BossCreateEvent>(e =>
+            {
+                _bossHpBar.EnableGameObject();
+                _imgBossHp.fillAmount = 1;
+            }).UnRegisterWhenGameObjectDisabled(this);
+            
+            TypeEventSystem.GLOBAL.Register<BossDieEvent>(e =>
+            {
+                _bossHpBar.DisableGameObject();
+            }).UnRegisterWhenGameObjectDisabled(this);
+            
+            TypeEventSystem.GLOBAL.Register<BossHpChangeEvent>(e =>
+            {
+                _imgBossHp.fillAmount = e.HpRatio;
+            }).UnRegisterWhenGameObjectDisabled(this);
 
             InputKit.BindPerformed(AssetConfig.Action.OPEN_MAP, context =>
             {
@@ -147,6 +169,11 @@ namespace Game
 
         public void UpdateGunView(Gun gun)
         {
+            if (gun == null)
+            {
+                return;
+            }
+            
             var clipInfo = $"{gun.Clip.RemainBulletCount}/{gun.Clip.MaxBulletCount}";
             _imgIcon.sprite = gun.GunSprite.sprite;
             _imgIcon.SetNativeSize();

@@ -40,7 +40,7 @@ namespace Framework.Toolkits.GridKit
                     return _grid[row, column];
                 }
 
-                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({Row}, {Column}");
+                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({Row}, {Column})");
             }
 
             set
@@ -51,7 +51,7 @@ namespace Framework.Toolkits.GridKit
                     return;
                 }
 
-                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({Row}, {Column}");
+                throw new FrameworkException($"Grid index ({row}, {column}) out of range ({Row}, {Column})");
             }
         }
 

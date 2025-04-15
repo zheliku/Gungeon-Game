@@ -8,7 +8,9 @@
 
 namespace Game
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
@@ -27,6 +29,9 @@ namespace Game
         protected Vector2 _playerSpriteOriginLocalPos;
 
         public List<AudioClip> ShootSounds = new List<AudioClip>();
+
+        [ShowInInspector]
+        public List<PathFindingHelper.NodeBase<Vector3Int>> MovementPath = new List<PathFindingHelper.NodeBase<Vector3Int>>();
 
         [ShowInInspector]
         protected Property _property = new Property() { Hp = { Value = 2 } };
@@ -72,6 +77,20 @@ namespace Game
             TypeEventSystem.GLOBAL.Send(new EnemyCreateEvent(this));
         }
 
+        protected virtual void Update()
+        {
+            var directionToPlayer = Player.Instance.Direction2DFrom(transform);
+
+            if (directionToPlayer.x > 0)
+            {
+                SpriteRenderer.flipX = false;
+            }
+            else if (directionToPlayer.x < 0)
+            {
+                SpriteRenderer.flipX = true;
+            }
+        }
+
         protected virtual void OnDestroy()
         {
             // 死亡时发送死亡事件
@@ -90,6 +109,41 @@ namespace Game
             {
                 FxFactory.PlayDieBody(this.GetPosition(), GetType().Name.Substring(0, 6) + "Die", info, SpriteRenderer.GetLocalScaleX());
             }
+        }
+
+        /// <summary>
+        /// 自动寻路
+        /// </summary>
+        /// <returns></returns>
+        protected void AutoMove()
+        {
+            var directionToPlayer = Player.Instance.DirectionFrom(this); // 直线移动
+
+            if (MovementPath.Count > 0)
+            {
+                // 自动寻路计算
+                var pathPos = MovementPath.Last().Coords.Pos;
+                var moveVec = new Vector2(pathPos.x + 0.5f, pathPos.y + 0.5f) - (Vector2) this.GetPosition();
+                directionToPlayer = moveVec.normalized;
+
+                if (moveVec.magnitude < 0.1f) // 如果距离目标点小于等于0.1，则到达目标位置，删除上一个位置
+                {
+                    MovementPath.RemoveAt(MovementPath.Count - 1);
+                }
+            }
+
+            Rigidbody2D.linearVelocity = directionToPlayer.normalized * _property.MoveSpeed;
+        }
+
+        protected void CalculateMovementPath()
+        {
+            var grid          = LevelController.Instance.WallTilemap.layoutGrid;
+            var myCellPos     = grid.WorldToCell(this.GetPosition());
+            var playerCellPos = grid.WorldToCell(Player.Instance.GetPosition());
+
+            MovementPath = PathFindingHelper.FindPath(
+                Room.PathFindingGrid[myCellPos.x, myCellPos.y],
+                Room.PathFindingGrid[playerCellPos.x, playerCellPos.y]);
         }
     }
 }

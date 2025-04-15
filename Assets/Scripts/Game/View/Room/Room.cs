@@ -71,6 +71,8 @@ namespace Game
 
         public HashSet<IPowerUp> PowerUps { get; private set; } = new HashSet<IPowerUp>();
 
+        public Final Final;
+
         [ShowInInspector]
         public List<IEnemy> EnemiesInRoom
         {
@@ -109,23 +111,12 @@ namespace Game
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);
 
-            TypeEventSystem.GLOBAL.Register<RoomClearEvent>(e =>
+            TypeEventSystem.GLOBAL.Register<BossDieEvent>(e =>
             {
-                if (e.Room != this)
+                if (Final != null)
                 {
-                    return;
+                    Final.EnableGameObject();
                 }
-
-                // foreach (var powerUp in PowerUps)
-                // {
-                //     var cachedPowerUp = powerUp;
-                //     ActionKit.OnFixedUpdate.Register(() =>
-                //     {
-                //         var spriteRenderer = cachedPowerUp.SpriteRenderer;
-                //         spriteRenderer.transform.Translate(
-                //             spriteRenderer.Direction2DTo(Player.Instance) * Time.fixedDeltaTime * 5);
-                //     }).UnRegisterWhenGameObjectDestroyed(powerUp.SpriteRenderer);
-                // }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
@@ -138,15 +129,10 @@ namespace Game
                     door.State.ChangeState(DoorState.Open);
                 }
             }
-
-            // else if (RoomType == RoomType.Normal)
-            // {
-            //     var randomCount = (1, 3 + 1).RandomSelect(); // 随机生成 1 到 3 波敌人
-            //     for (int i = 0; i < randomCount; i++)
-            //     {
-            //         _enemyWaves.Add(new EnemyWaveConfig());
-            //     }
-            // }
+            else if (RoomType == RoomType.Final)
+            {
+                Final.DisableGameObject();
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -160,6 +146,22 @@ namespace Game
                     if (Node.RoomType == RoomType.Normal)
                     {
                         OnFirstEnterNormalRoom();
+                    }
+                    else if (Node.RoomType == RoomType.Final)
+                    {
+                        State = RoomState.PlayerIn;
+
+                        var boss = EnemyFactory.Instance.Bosses[0].GameObject.Instantiate()
+                           .SetPosition(EnemyGeneratePoses.RandomTakeOne())
+                           .Enable()
+                           .GetComponent<IEnemy>();
+
+                        boss.Room = this;
+                        
+                        foreach (var door in _doors)
+                        {
+                            door.State.ChangeState(DoorState.BattleClose);
+                        }
                     }
                     else
                     {
@@ -285,7 +287,7 @@ namespace Game
                 enemy.Room = this;
             }
         }
-        
+
         // 准备A*节点
         public void PrepareAStarNodes()
         {
@@ -301,9 +303,9 @@ namespace Game
                     for (var j = LB.y; j <= RT.y; j++)
                     {
                         // 判断节点是否可通行
-                        var walkable = 
+                        var walkable =
                             LevelController.Instance.WallTilemap.GetTile(new Vector3Int(i, j, 0)) == null;
-                        
+
                         // 初始化节点
                         PathFindingGrid[i, j] = new PathFindingHelper.TileNode(PathFindingGrid);
                         PathFindingGrid[i, j].Init(walkable, new PathFindingHelper.TileCoords()

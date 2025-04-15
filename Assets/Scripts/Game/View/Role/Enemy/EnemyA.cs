@@ -14,6 +14,7 @@ namespace Game
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
+    using Framework.Toolkits.TimerKit;
     using Sirenix.OdinInspector;
     using UnityEngine;
     using Random = UnityEngine.Random;
@@ -29,78 +30,25 @@ namespace Game
 
         public FSM<State> FSM = new FSM<State>();
 
-        [ShowInInspector]
-        public List<PathFindingHelper.NodeBase<Vector3Int>> MovementPath = new List<PathFindingHelper.NodeBase<Vector3Int>>();
-
         protected override void Awake()
         {
             base.Awake();
-
-            Vector2? posToMove = null;
-
-            Vector2 Move()
-            {
-                if (posToMove == null)
-                {
-                    if (MovementPath.Count > 0)
-                    {
-                        var pathPos = MovementPath.Last().Coords.Pos;
-                        posToMove = new Vector2(pathPos.x + 0.5f, pathPos.y + 0.5f);
-                        MovementPath.RemoveAt(MovementPath.Count - 1);
-                    }
-                }
-
-                var directionToPlayer = Player.Instance.DirectionFrom(this);
-
-                if (posToMove == null)
-                {
-                    Rigidbody2D.linearVelocity = directionToPlayer * _property.MoveSpeed;
-                }
-                else
-                {
-                    var direction = posToMove.Value - (Vector2) this.GetPosition();
-                    Rigidbody2D.linearVelocity = direction.normalized * _property.MoveSpeed;
-
-                    if (direction.magnitude < 0.2f)
-                    {
-                        posToMove = null;
-                    }
-                }
-
-                return directionToPlayer;
-            }
 
             FSM.State(State.Follow)
                .OnEnter(() =>
                 {
                     FollowSeconds = Random.Range(0.5f, 3f);
-                    MovementPath.Clear();
                 })
                .OnUpdate(() =>
                 {
-                    var directionToPlayer = Move();
-
-                    if (directionToPlayer.x > 0)
+                    if (TimerKit.HasPassedInterval(this, 1f)) // 每秒计算一次路径
                     {
-                        SpriteRenderer.flipX = false;
-                    }
-                    else if (directionToPlayer.x < 0)
-                    {
-                        SpriteRenderer.flipX = true;
+                        Debug.Log("HasPassedInterval");
+                        CalculateMovementPath();
                     }
 
-                    if (MovementPath.Count == 0)
-                    {
-                        var grid          = LevelController.Instance.WallTilemap.layoutGrid;
-                        var myCellPos     = grid.WorldToCell(this.GetPosition());
-                        var playerCellPos = grid.WorldToCell(Player.Instance.GetPosition());
-
-                        PathFindingHelper.FindPath(
-                            Room.PathFindingGrid[myCellPos.x, myCellPos.y],
-                            Room.PathFindingGrid[playerCellPos.x, playerCellPos.y],
-                            MovementPath);
-                    }
-
+                    AutoMove();
+                    
                     AnimationHelper.UpDownAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.2f, _playerSpriteOriginLocalPos.y, 0.05f);
                     AnimationHelper.RotateAnimation(SpriteRenderer, FSM.SecondsOfCurrentState, 0.4f, 3);
 
@@ -149,8 +97,10 @@ namespace Game
             FSM.StartState(State.Follow);
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
+            
             FSM.Update();
         }
 

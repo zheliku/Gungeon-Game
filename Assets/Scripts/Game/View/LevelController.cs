@@ -16,7 +16,6 @@ namespace Game
     using Framework.Toolkits.SingletonKit;
     using Framework.Toolkits.TreeKit;
     using Sirenix.OdinInspector;
-    using Unity.VisualScripting;
     using UnityEngine;
     using UnityEngine.Tilemaps;
 
@@ -99,7 +98,7 @@ namespace Game
             var maxRoomHeight = 0;
             level.RoomTree.Traverse(type =>
             {
-                maxRoomWidth = maxRoomWidth.MaxWith(GetRoomGridByType(type).Column);
+                maxRoomWidth  = maxRoomWidth.MaxWith(GetRoomGridByType(type).Column);
                 maxRoomHeight = maxRoomHeight.MaxWith(GetRoomGridByType(type).Row);
             });
 
@@ -236,9 +235,10 @@ namespace Game
                     }
                     else if (code == '#')
                     {
-                        FinalTemplate.Instantiate(keepName: true)
-                           .EnableGameObject()
+                        var final = FinalTemplate.Instantiate(keepName: true)
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+
+                        room.Final = final;
                     }
                     else if (code == 'd')
                     {
@@ -262,9 +262,9 @@ namespace Game
                     }
                 }
             }
-            
+
             // return room;
-            
+
             var openDirections  = node.ConnectNodes.Keys.ToList();
             var closeDirections = Enum.GetValues(typeof(Direction)).Cast<Direction>().Except(openDirections).ToList();
 
@@ -328,9 +328,9 @@ namespace Game
 
             room.LB = new Vector3Int(pos.x - roomWidth / 2, pos.y - roomHeight / 2, 0);
             room.RT = new Vector3Int(pos.x + roomWidth / 2, pos.y + roomHeight / 2, 0);
-            
+
             room.PrepareAStarNodes();
-            
+
             return room;
         }
 
