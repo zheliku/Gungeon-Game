@@ -67,13 +67,6 @@ namespace Game
             TypeEventSystem.GLOBAL.Send(new BossDieEvent(this));
         }
 
-        public void Fire()
-        {
-            BulletHelper.CircleShoot(30, this.GetPosition(), 1.5f, Bullet, 1, 10);
-
-            AudioKit.PlaySound(ShootSounds.RandomTakeOne());
-        }
-
         public override void Hurt(float damage, HitInfo info)
         {
             _property.Hp.Value -= (int) damage;

@@ -16,8 +16,8 @@ namespace Game
         public static void Shoot(
             Vector2    pos,
             Vector2    direction,
-            GameObject bulletPrefab, 
-            float      damage, 
+            GameObject bulletPrefab,
+            float      damage,
             float      speed,
             float      unstableAngle = 0)
         {
@@ -40,13 +40,13 @@ namespace Game
             int        fireCount,
             Vector2    center,
             float      radius,
+            float      angleOffset,
             GameObject bulletPrefab,
             float      damage,
             float      speed,
             float      unstableAngle = 0)
         {
-            var angleOffset = (0f, 360f).RandomSelect();
-            var stepAngle   = 360f / fireCount;
+            var stepAngle = 360f / fireCount;
 
             for (int i = 0; i < fireCount; i++)
             {
@@ -54,7 +54,7 @@ namespace Game
                 var shootAngle  = direction.ToAngle() + (-unstableAngle, unstableAngle).RandomSelect();
                 var unstableDir = shootAngle.Deg2Direction2D();
 
-                var initPos    = center + unstableDir * radius; // 中心偏移 radius 个单位
+                var initPos = center + unstableDir * radius; // 中心偏移 radius 个单位
                 var bullet = bulletPrefab.Instantiate(initPos)
                    .Enable()
                    .GetComponent<Bullet>();
@@ -83,8 +83,8 @@ namespace Game
                 var eachDir     = direction.Rotate(i * intervalAngle);
                 var shootAngle  = eachDir.ToAngle() + (-unstableAngle, unstableAngle).RandomSelect();
                 var unstableDir = shootAngle.Deg2Direction2D();
-                
-                var initPos    = center + unstableDir * radius; // 中心偏移 radius 个单位
+
+                var initPos = center + unstableDir * radius; // 中心偏移 radius 个单位
 
                 var bullet = bulletPrefab.Instantiate(initPos)
                    .Enable()

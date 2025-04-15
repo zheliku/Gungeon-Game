@@ -8,6 +8,8 @@
 
 namespace Game
 {
+    using Framework.Toolkits.AudioKit;
+    using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.TimerKit;
     using UnityEngine;
@@ -34,16 +36,18 @@ namespace Game
 
         private void Stage1Update() // 阶段一，只攻击一次
         {
-            _owner.Fire();
-
-            _fsm.ChangeState(BossE.State.Follow);
-        }
-
-        private void Stage2Update() // 阶段二，持续攻击 1 s
-        {
-            if (TimerKit.HasPassedInterval(this, 0.3f))
+            if (TimerKit.HasPassedInterval(this, 0.1f))
             {
-                _owner.Fire();
+                BulletHelper.CircleShoot(
+                    3, 
+                    _owner.GetPosition(), 
+                    1.5f, 
+                    _fsm.FrameCountOfCurrentState,
+                    _owner.Bullet, 
+                    1, 
+                    20);
+
+                AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
             }
 
             if (_fsm.SecondsOfCurrentState >= 1.2f)
@@ -52,11 +56,47 @@ namespace Game
             }
         }
 
+        private void Stage2Update() // 阶段二，持续攻击 1 s
+        {
+            if (TimerKit.HasPassedInterval(this, 0.08f))
+            {
+                BulletHelper.CircleShoot(
+                    5, 
+                    _owner.GetPosition(), 
+                    1.5f, 
+                    _fsm.FrameCountOfCurrentState,
+                    _owner.Bullet, 
+                    1, 
+                    15);
+
+                AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
+            }
+
+            if (_fsm.SecondsOfCurrentState >= 1.5f)
+            {
+                _fsm.ChangeState(BossE.State.Follow);
+            }
+        }
+
         private void Stage3Update() // 阶段二，持续攻击 1 s
         {
-            if (TimerKit.HasPassedInterval(this, 0.25f))
+            if (TimerKit.HasPassedInterval(this, 0.06f))
             {
-                _owner.Fire();
+                BulletHelper.CircleShoot(
+                    8, 
+                    _owner.GetPosition(), 
+                    1.5f, 
+                    _fsm.FrameCountOfCurrentState,
+                    _owner.Bullet, 
+                    1, 
+                    12);
+
+                AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
+            }
+            
+            if (_fsm.SecondsOfCurrentState >= 2.5f)
+            {
+                _fsm.ChangeState(BossE.State.Follow);
             }
         }
     }

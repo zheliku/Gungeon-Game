@@ -36,7 +36,14 @@ namespace Game
 
         private void Stage1Update() // 阶段一，只攻击一次
         {
-            BulletHelper.CircleShoot(24, _owner.GetPosition(), 1.5f, _owner.Bullet, 1, 15);
+            BulletHelper.CircleShoot(
+                24,
+                _owner.GetPosition(),
+                1.5f,
+                (0f, 360f).RandomSelect(),
+                _owner.Bullet,
+                1,
+                15);
 
             AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
 
@@ -47,7 +54,14 @@ namespace Game
         {
             if (TimerKit.HasPassedInterval(this, 0.25f))
             {
-                BulletHelper.CircleShoot(20, _owner.GetPosition(), 1.5f, _owner.Bullet, 1, 12);
+                BulletHelper.CircleShoot(
+                    20,
+                    _owner.GetPosition(),
+                    1.5f,
+                    (0f, 360f).RandomSelect(),
+                    _owner.Bullet,
+                    1,
+                    12);
 
                 AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
             }
@@ -62,7 +76,14 @@ namespace Game
         {
             if (TimerKit.HasPassedInterval(this, 0.22f))
             {
-                BulletHelper.CircleShoot(30, _owner.GetPosition(), 1.5f, _owner.Bullet, 1, 8);
+                BulletHelper.CircleShoot(
+                    30,
+                    _owner.GetPosition(),
+                    1.5f,
+                    (0f, 360f).RandomSelect(),
+                    _owner.Bullet,
+                    1,
+                    8);
 
                 AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
             }

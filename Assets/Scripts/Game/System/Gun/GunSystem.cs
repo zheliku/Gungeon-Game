@@ -32,6 +32,7 @@ namespace Game
             GunDataList.Clear();
             GunDataList.Add(GunConfig.Pistol.CreateData());
             GunDataList.Add(GunConfig.AK.CreateData());
+            GunDataList.Add(GunConfig.MP5.CreateData());
         }
     }
 }

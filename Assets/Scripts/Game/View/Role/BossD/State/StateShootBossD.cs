@@ -8,6 +8,8 @@
 
 namespace Game
 {
+    using Framework.Toolkits.AudioKit;
+    using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.TimerKit;
     using UnityEngine;
@@ -34,7 +36,17 @@ namespace Game
 
         private void Stage1Update() // 阶段一，只攻击一次
         {
-            _owner.Fire();
+            BulletHelper.SpreadShoot(
+                8, 
+                _owner.GetPosition(), 
+                1.5f, 
+                _owner.DirectionTo(Player.Instance),
+                10,
+                _owner.Bullet, 
+                1, 
+                12);
+
+            AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
 
             _fsm.ChangeState(BossD.State.Follow);
         }
@@ -43,7 +55,17 @@ namespace Game
         {
             if (TimerKit.HasPassedInterval(this, 0.3f))
             {
-                _owner.Fire();
+                BulletHelper.SpreadShoot(
+                    8, 
+                    _owner.GetPosition(), 
+                    1.5f, 
+                    _owner.DirectionTo(Player.Instance),
+                    10,
+                    _owner.Bullet, 
+                    1, 
+                    12);
+
+                AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
             }
 
             if (_fsm.SecondsOfCurrentState >= 1.2f)
@@ -56,7 +78,17 @@ namespace Game
         {
             if (TimerKit.HasPassedInterval(this, 0.25f))
             {
-                _owner.Fire();
+                BulletHelper.SpreadShoot(
+                    8, 
+                    _owner.GetPosition(), 
+                    1.5f, 
+                    _owner.DirectionTo(Player.Instance),
+                    10,
+                    _owner.Bullet, 
+                    1, 
+                    12);
+
+                AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
             }
         }
     }
