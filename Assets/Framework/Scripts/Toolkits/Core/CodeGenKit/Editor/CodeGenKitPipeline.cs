@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+#if UNITY_EDITOR
+
 namespace Framework.Toolkits.CodeGenKit.Editor
 {
     using System;
@@ -33,7 +35,7 @@ namespace Framework.Toolkits.CodeGenKit.Editor
                 }
 
                 _Default = CreateInstance<CodeGenKitPipeline>();
-                
+
                 // 保存为 asset 文件
                 AssetDatabase.CreateAsset(_Default, filePath);
                 AssetDatabase.SaveAssets();
@@ -50,7 +52,7 @@ namespace Framework.Toolkits.CodeGenKit.Editor
         public string GlobalFileName;
 
         public string GlobalArchitecture = "Game";
-        
+
         [ReadOnly]
         public bool IsGenerating;
 
@@ -68,7 +70,7 @@ namespace Framework.Toolkits.CodeGenKit.Editor
 
         [ReadOnly]
         public string Architecture = "Game";
-        
+
         public string GenerateFileContent()
         {
             var templateContent = File.ReadAllText(CodeGenKit.CODE_TEMPLATE_PATH);
@@ -81,7 +83,7 @@ namespace Framework.Toolkits.CodeGenKit.Editor
                .Replace("__Game__", NameSpace)
                .Replace("CodeTemplate", FileName)
                .Replace("__modifiedTime__", modifiedTime)
-               .Replace("null", string.IsNullOrEmpty(Architecture) ? "null" : Architecture + ".Interface");
+               .Replace("null", string.IsNullOrEmpty(Architecture) ? "null" : Architecture + ".Architecture");
 
             return content;
         }
@@ -118,7 +120,7 @@ namespace Framework.Toolkits.CodeGenKit.Editor
         {
             Default.OnDidReloadScripts();
         }
-        
+
         [MenuItem("Framework/CodeGen/Select CodeGen Pipeline &S")]
         public static void SelectPipeline()
         {
@@ -126,3 +128,4 @@ namespace Framework.Toolkits.CodeGenKit.Editor
         }
     }
 }
+#endif

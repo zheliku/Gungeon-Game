@@ -8,7 +8,6 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Framework.Core;
@@ -36,8 +35,6 @@ namespace Game
 
         [ShowInInspector]
         public EnemyProperty Property = new EnemyProperty();
-
-        public GameObject GameObject { get => gameObject; }
 
         public Vector2 FollowTimeRange { get; private set; }
 

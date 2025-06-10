@@ -27,7 +27,7 @@ namespace Framework.Toolkits.AudioKit
 
         public static AudioPlayer Create(BindableProperty<float> volume)
         {
-            var player = SingletonObjectPool<AudioPlayer>.Instance.Create();
+            var player = SingletonObjectPool<AudioPlayer>.Instance.Get();
             player.Volume         = volume; // 指向 AudioKitSetting 中的 Volume
             player._onStart       = null;
             player._onFinish      = null;
@@ -71,7 +71,7 @@ namespace Framework.Toolkits.AudioKit
         [ShowInInspector]
         public AudioSource AudioSource { get; private set; }
 
-        public bool IsRecycled { get; set; }
+        public bool IsInPool { get; set; }
 
         public bool UsedCache { get; set; } = true;
 
@@ -159,7 +159,7 @@ namespace Framework.Toolkits.AudioKit
                 }
                 else // 不指定 attachedObject，则默认挂载到 AudioManager.Instance.gameObject 上
                 {
-                    AudioSource = AudioManager.Instance.gameObject.AddComponent<AudioSource>();
+                    AudioSource = AudioMgr.Instance.gameObject.AddComponent<AudioSource>();
                 }
             }
 
@@ -168,7 +168,7 @@ namespace Framework.Toolkits.AudioKit
             _loader = null;
             ClearResources();
 
-            _loader = AudioKit.AudioLoaderPool.Create();
+            _loader = AudioKit.AudioLoaderPool.Get();
 
             // 记录设置
             IsLoop        = loop;
@@ -198,7 +198,7 @@ namespace Framework.Toolkits.AudioKit
             if (preLoader != null)
             {
                 preLoader.Unload();
-                AudioKit.AudioLoaderPool.Recycle(preLoader);
+                AudioKit.AudioLoaderPool.Release(preLoader);
             }
 
             return this;
@@ -225,7 +225,7 @@ namespace Framework.Toolkits.AudioKit
                 }
                 else
                 {
-                    AudioSource = AudioManager.Instance.gameObject.AddComponent<AudioSource>();
+                    AudioSource = AudioMgr.Instance.gameObject.AddComponent<AudioSource>();
                 }
             }
 
@@ -276,9 +276,9 @@ namespace Framework.Toolkits.AudioKit
         }
 
 
-        public void OnSpawn() { }
+        public void OnGet() { }
 
-        public void OnRecycle()
+        public void OnRelease()
         {
             Volume?.UnRegister(OnAudioSettingVolumeChanged);
             Volume = null;
@@ -294,10 +294,10 @@ namespace Framework.Toolkits.AudioKit
 
         public void RecycleToCache()
         {
-            if (!SingletonObjectPool<AudioPlayer>.Instance.Recycle(this))
+            if (!SingletonObjectPool<AudioPlayer>.Instance.Release(this))
             {
                 // 如果无法回收，则直接销毁 AudioSource
-                if (AudioSource != null)
+                if (AudioSource)
                 {
                     Object.Destroy(AudioSource);
                     AudioSource = null;
@@ -321,7 +321,7 @@ namespace Framework.Toolkits.AudioKit
                 _timer = null;
             }
 
-            if (AudioSource != null) // 不回收 _audioSource，重复利用
+            if (AudioSource) // 不回收 _audioSource，重复利用
             {
                 if (AudioSource.clip == AudioClip)
                 {
@@ -335,7 +335,7 @@ namespace Framework.Toolkits.AudioKit
             if (_loader != null)
             {
                 _loader.Unload();
-                AudioKit.AudioLoaderPool.Recycle(_loader);
+                AudioKit.AudioLoaderPool.Release(_loader);
                 _loader = null;
             }
         }
@@ -378,7 +378,7 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         private void PlayInternal()
         {
-            if (AudioSource == null || AudioClip == null)
+            if (!AudioSource || !AudioClip)
             {
                 Release();
                 return;

@@ -31,12 +31,12 @@ namespace Framework.Toolkits.AudioKit
 
         public static ObjectPool<IAudioLoader> AudioLoaderPool { get; set; } = new ObjectPool<IAudioLoader>(
             () => new DefaultAudioLoader(),
-            initCount: 10
+            defaultCapacity: 10
         );
 
-        public static AudioPlayer MusicPlayer { get => AudioManager.Instance.MusicPlayer; }
+        public static AudioPlayer MusicPlayer { get => AudioMgr.Instance.MusicPlayer; }
 
-        public static AudioPlayer NarrationPlayer { get => AudioManager.Instance.NarrationPlayer; }
+        public static AudioPlayer NarrationPlayer { get => AudioMgr.Instance.NarrationPlayer; }
 
         public static SoundMode SoundMode { get; set; } = SoundMode.IgnoreSameSoundInGlobalTimes;
 
@@ -67,7 +67,7 @@ namespace Framework.Toolkits.AudioKit
             Action<AudioPlayer> onPlayStart  = null,
             Action<AudioPlayer> onPlayFinish = null)
         {
-            var mgr = AudioManager.Instance;
+            var mgr = AudioMgr.Instance;
             mgr.CheckAudioListener();
 
             if (!Setting.IsMusicOn.Value)
@@ -78,14 +78,14 @@ namespace Framework.Toolkits.AudioKit
             MusicPlayer.VolumeScale(volume)
                .OnStart((player) =>
                 {
-                    AudioManager.Instance.CurrentMusic = player.AudioClip;
+                    AudioMgr.Instance.CurrentMusic = player.AudioClip;
                     onPlayStart?.Invoke(player);
                 })
                .OnFinish((player) =>
                 {
                     if (!player.IsLoop)
                     {
-                        AudioManager.Instance.CurrentMusic = null;
+                        AudioMgr.Instance.CurrentMusic = null;
                     }
                     onPlayFinish?.Invoke(player);
                 })
@@ -107,7 +107,7 @@ namespace Framework.Toolkits.AudioKit
             Action<AudioPlayer> onPlayStart  = null,
             Action<AudioPlayer> onPlayFinish = null)
         {
-            var mgr = AudioManager.Instance;
+            var mgr = AudioMgr.Instance;
             mgr.CheckAudioListener();
 
             if (!Setting.IsMusicOn.Value)
@@ -118,14 +118,14 @@ namespace Framework.Toolkits.AudioKit
             MusicPlayer.VolumeScale(volume)
                .OnStart((player) =>
                 {
-                    AudioManager.Instance.CurrentMusic = player.AudioClip;
+                    AudioMgr.Instance.CurrentMusic = player.AudioClip;
                     onPlayStart?.Invoke(player);
                 })
                .OnFinish((player) =>
                 {
                     if (!player.IsLoop)
                     {
-                        AudioManager.Instance.CurrentMusic = null;
+                        AudioMgr.Instance.CurrentMusic = null;
                     }
                     onPlayFinish?.Invoke(player);
                 })
@@ -137,7 +137,7 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         public static void StopMusic()
         {
-            AudioManager.Instance.MusicPlayer.Stop();
+            AudioMgr.Instance.MusicPlayer.Stop();
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         public static void PauseMusic()
         {
-            AudioManager.Instance.MusicPlayer.Pause();
+            AudioMgr.Instance.MusicPlayer.Pause();
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         public static void UnPauseMusic()
         {
-            AudioManager.Instance.MusicPlayer.UnPause();
+            AudioMgr.Instance.MusicPlayer.UnPause();
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Framework.Toolkits.AudioKit
             Action<AudioPlayer> onPlayStart  = null,
             Action<AudioPlayer> onPlayFinish = null)
         {
-            var mgr = AudioManager.Instance;
+            var mgr = AudioMgr.Instance;
             mgr.CheckAudioListener();
 
             if (!Setting.IsNarrationOn.Value)
@@ -182,14 +182,14 @@ namespace Framework.Toolkits.AudioKit
             NarrationPlayer.VolumeScale(volume)
                .OnStart((player) =>
                 {
-                    AudioManager.Instance.CurrentNarration = player.AudioClip;
+                    AudioMgr.Instance.CurrentNarration = player.AudioClip;
                     onPlayStart?.Invoke(player);
                 })
                .OnFinish((player) =>
                 {
                     if (!player.IsLoop)
                     {
-                        AudioManager.Instance.CurrentNarration = null;
+                        AudioMgr.Instance.CurrentNarration = null;
                     }
                     onPlayFinish?.Invoke(player);
                 })
@@ -211,7 +211,7 @@ namespace Framework.Toolkits.AudioKit
             Action<AudioPlayer> onPlayStart  = null,
             Action<AudioPlayer> onPlayFinish = null)
         {
-            var mgr = AudioManager.Instance;
+            var mgr = AudioMgr.Instance;
             mgr.CheckAudioListener();
 
             if (!Setting.IsNarrationOn.Value)
@@ -222,14 +222,14 @@ namespace Framework.Toolkits.AudioKit
             NarrationPlayer.VolumeScale(volume)
                .OnStart((player) =>
                 {
-                    AudioManager.Instance.CurrentNarration = player.AudioClip;
+                    AudioMgr.Instance.CurrentNarration = player.AudioClip;
                     onPlayStart?.Invoke(player);
                 })
                .OnFinish((player) =>
                 {
                     if (!player.IsLoop)
                     {
-                        AudioManager.Instance.CurrentNarration = null;
+                        AudioMgr.Instance.CurrentNarration = null;
                     }
                     onPlayFinish?.Invoke(player);
                 })
@@ -241,7 +241,7 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         public static void StopNarration()
         {
-            AudioManager.Instance.NarrationPlayer.Stop();
+            AudioMgr.Instance.NarrationPlayer.Stop();
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         public static void PauseNarration()
         {
-            AudioManager.Instance.NarrationPlayer.Pause();
+            AudioMgr.Instance.NarrationPlayer.Pause();
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         public static void UnPauseNarration()
         {
-            AudioManager.Instance.NarrationPlayer.UnPause();
+            AudioMgr.Instance.NarrationPlayer.UnPause();
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace Framework.Toolkits.AudioKit
             Action<AudioPlayer> onPlayFinish = null
         )
         {
-            var mgr = AudioManager.Instance;
+            var mgr = AudioMgr.Instance;
             mgr.CheckAudioListener();
 
             if (!Setting.IsSoundOn.Value)
@@ -323,7 +323,7 @@ namespace Framework.Toolkits.AudioKit
             Action<AudioPlayer> onPlayFinish = null
         )
         {
-            var mgr = AudioManager.Instance;
+            var mgr = AudioMgr.Instance;
             mgr.CheckAudioListener();
 
             if (!Setting.IsSoundOn.Value)
@@ -359,9 +359,9 @@ namespace Framework.Toolkits.AudioKit
         /// </summary>
         public static void StopAllSound()
         {
-            AudioManager.Instance.ForEachSound(player => player.Stop());
+            AudioMgr.Instance.ForEachSound(player => player.Stop());
 
-            AudioManager.Instance.ClearAllPlayingSound();
+            AudioMgr.Instance.ClearAllPlayingSound();
         }
 
         /// <summary>

@@ -113,11 +113,12 @@ namespace Framework.Toolkits.ActionKit
             },
             null,
             null,
+            true,
             10);
 
         public new static Custom Create()
         {
-            return _OBJECT_POOL.Create();
+            return _OBJECT_POOL.Get();
         }
 
         public new void Deinit()
@@ -129,7 +130,7 @@ namespace Framework.Toolkits.ActionKit
                 _onExecute = null;
                 _onFinish  = null;
 
-                _OBJECT_POOL.Recycle(this);
+                _OBJECT_POOL.Release(this);
             }
         }
     }

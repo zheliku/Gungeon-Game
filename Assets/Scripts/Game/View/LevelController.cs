@@ -260,6 +260,14 @@ namespace Game
                     {
                         room.ShopGeneratePoses.Add(new Vector3(x + 0.5f, y + 0.5f, 0));
                     }
+                    else if (code == 'p')
+                    {
+                        var palette = PowerUpFactory.Instance.Palette.Instantiate(parent: room)
+                           .EnableGameObject()
+                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
+
+                        palette.Room = room;
+                    }
                 }
             }
 

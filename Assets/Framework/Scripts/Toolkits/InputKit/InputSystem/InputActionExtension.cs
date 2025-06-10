@@ -22,21 +22,21 @@ namespace Framework.Toolkits.InputKit
         public static InputAction BindPerformed(this InputAction self, Action<InputAction.CallbackContext> action)
         {
             self.performed += action;
-            InputManager.Instance.GetInputActionMapMono(self).Init(self.actionMap);
-            InputManager.Instance.GetInputActionMono(self).PerformedActions.Add(action);
+            InputMgr.Instance.GetInputActionMapMono(self).Init(self.actionMap);
+            InputMgr.Instance.GetInputActionMono(self).PerformedActions.Add(action);
             return self;
         }
 
         public static InputAction UnBindPerformed(this InputAction self, Action<InputAction.CallbackContext> action)
         {
             self.performed -= action;
-            InputManager.Instance.GetInputActionMono(self).PerformedActions.Remove(action);
+            InputMgr.Instance.GetInputActionMono(self).PerformedActions.Remove(action);
             return self;
         }
 
         public static InputAction UnBindAllPerformed(this InputAction self)
         {
-            var actions = InputManager.Instance.GetInputActionMono(self).PerformedActions;
+            var actions = InputMgr.Instance.GetInputActionMono(self).PerformedActions;
             foreach (var action in actions)
             {
                 self.performed -= action;
@@ -48,21 +48,21 @@ namespace Framework.Toolkits.InputKit
         public static InputAction BindStarted(this InputAction self, Action<InputAction.CallbackContext> action)
         {
             self.started += action;
-            InputManager.Instance.GetInputActionMapMono(self).Init(self.actionMap);
-            InputManager.Instance.GetInputActionMono(self).StartedActions.Add(action);
+            InputMgr.Instance.GetInputActionMapMono(self).Init(self.actionMap);
+            InputMgr.Instance.GetInputActionMono(self).StartedActions.Add(action);
             return self;
         }
 
         public static InputAction UnBindStarted(this InputAction self, Action<InputAction.CallbackContext> action)
         {
             self.started -= action;
-            InputManager.Instance.GetInputActionMono(self).StartedActions.Remove(action);
+            InputMgr.Instance.GetInputActionMono(self).StartedActions.Remove(action);
             return self;
         }
 
         public static InputAction UnBindAllStarted(this InputAction self)
         {
-            var actions = InputManager.Instance.GetInputActionMono(self).StartedActions;
+            var actions = InputMgr.Instance.GetInputActionMono(self).StartedActions;
             foreach (var action in actions)
             {
                 self.started -= action;
@@ -74,21 +74,21 @@ namespace Framework.Toolkits.InputKit
         public static InputAction BindCanceled(this InputAction self, Action<InputAction.CallbackContext> action)
         {
             self.canceled += action;
-            InputManager.Instance.GetInputActionMapMono(self).Init(self.actionMap);
-            InputManager.Instance.GetInputActionMono(self).CanceledActions.Add(action);
+            InputMgr.Instance.GetInputActionMapMono(self).Init(self.actionMap);
+            InputMgr.Instance.GetInputActionMono(self).CanceledActions.Add(action);
             return self;
         }
 
         public static InputAction UnBindCanceled(this InputAction self, Action<InputAction.CallbackContext> action)
         {
             self.canceled -= action;
-            InputManager.Instance.GetInputActionMono(self).CanceledActions.Remove(action);
+            InputMgr.Instance.GetInputActionMono(self).CanceledActions.Remove(action);
             return self;
         }
 
         public static InputAction UnBindAllCanceled(this InputAction self)
         {
-            var actions = InputManager.Instance.GetInputActionMono(self).CanceledActions;
+            var actions = InputMgr.Instance.GetInputActionMono(self).CanceledActions;
             foreach (var action in actions)
             {
                 self.canceled -= action;
@@ -108,28 +108,28 @@ namespace Framework.Toolkits.InputKit
         public static InputAction Activate(this InputAction self)
         {
             self.Enable();
-            InputManager.Instance.GetInputActionMono(self).EnableGameObject();
+            InputMgr.Instance.GetInputActionMono(self).EnableGameObject();
             return self;
         }
 
         public static InputAction Deactivate(this InputAction self)
         {
             self.Disable();
-            InputManager.Instance.GetInputActionMono(self).DisableGameObject();
+            InputMgr.Instance.GetInputActionMono(self).DisableGameObject();
             return self;
         }
 
         public static InputActionMap Activate(this InputActionMap self)
         {
             self.Enable();
-            InputManager.Instance.GetInputActionMapMono(self).EnableGameObject();
+            InputMgr.Instance.GetInputActionMapMono(self).EnableGameObject();
             return self;
         }
 
         public static InputActionMap Deactivate(this InputActionMap self)
         {
             self.Disable();
-            InputManager.Instance.GetInputActionMapMono(self).DisableGameObject();
+            InputMgr.Instance.GetInputActionMapMono(self).DisableGameObject();
             return self;
         }
 

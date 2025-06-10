@@ -10,9 +10,13 @@ namespace Framework.Toolkits.PoolKit
 {
     using System;
     using System.Collections.Generic;
-    using Framework.Core;
+    using Core;
     using SingletonKit;
 
+    /// <summary>
+    /// 对象必须继承 IPoolable
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class SingletonObjectPool<T> : Pool<T>, ISingleton where T : IPoolable, new()
     {
         protected SingletonObjectPool()
@@ -42,24 +46,24 @@ namespace Framework.Toolkits.PoolKit
                 throw new FrameworkException("initCount must not be greater than maxCount");
             }
 
-            _maxCount   = maxCount;
-            _cacheStack = new Stack<T>(_maxCount);
+            _maxSize   = maxCount;
+            _cacheStack = new Stack<T>(_maxSize);
 
             for (var i = 0; i < initCount; ++i)
             {
                 _cacheStack.Push(_factory.Create());
             }
-            _allCount = initCount;
+            _countAll = initCount;
         }
 
         /// <summary>
         /// Allocate T instance.
         /// </summary>
-        public override T Create()
+        public override T Get()
         {
-            var result = base.Create();
-            result.IsRecycled = false;
-            result.OnSpawn();
+            var result = base.Get();
+            result.IsInPool = false;
+            result.OnGet();
             return result;
         }
 
@@ -67,19 +71,24 @@ namespace Framework.Toolkits.PoolKit
         /// Recycle the T instance
         /// </summary>
         /// <param name="t">T.</param>
-        public override bool Recycle(T t)
+        public override bool Release(T t)
         {
-            if (t == null || t.IsRecycled)
+            if (_collectionCheck && _cacheStack.Contains(t))
+            {
+                throw new InvalidOperationException("Trying to release an object that has already been released to the pool.");
+            }
+            
+            if (t == null || t.IsInPool)
             {
                 return false;
             }
 
-            t.OnRecycle();
-            t.IsRecycled = true;
+            t.OnRelease();
+            t.IsInPool = true;
 
-            if (_maxCount > 0 && _cacheStack.Count >= _maxCount)
+            if (_maxSize > 0 && _cacheStack.Count >= _maxSize)
             {
-                --_allCount;
+                --_countAll;
                 t.OnDestroy();
                 return false;
             }

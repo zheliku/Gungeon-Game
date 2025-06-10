@@ -8,12 +8,12 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
+    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.InputKit;
@@ -90,8 +90,6 @@ namespace Game
             get;
             private set;
         }
-        
-        public GameObject GameObject { get => gameObject; }
 
         protected override void Awake()
         {
@@ -104,7 +102,7 @@ namespace Game
 
             _moveAction = InputKit.GetInputAction(AssetConfig.Action.MOVE);
 
-            _Property.Hp.Register((oldValue, value) =>
+            _Property.Hp.Register((_, value) =>
             {
                 if (value <= 0)
                 {
@@ -135,7 +133,7 @@ namespace Game
                .OnEnter(OnRollEnter)
                .OnFixedUpdate(() =>
                 {
-                    Rigidbody2D.linearVelocity = _rollDirection * (_Property.MoveSpeed * 1.5f);
+                    Rigidbody2D.linearVelocity = _rollDirection * (_Property.MoveSpeed * 2f);
                 })
                .OnExit(() =>
                 {
@@ -170,7 +168,7 @@ namespace Game
                 UseGun(newIndex);
             }).UnBindAllWhenGameObjectDisabled(this);
 
-            InputKit.BindPerformed(AssetConfig.Action.ROLL, context =>
+            InputKit.BindPerformed(AssetConfig.Action.ROLL, _ =>
             {
                 Fsm.StartState(State.Rolling);
             }).UnBindAllPerformedWhenGameObjectDisabled(this);
@@ -186,7 +184,7 @@ namespace Game
         {
             Fsm.FixedUpdate();
         }
-        
+
         public override void Hurt(float damage, HitInfo info)
         {
             Debug.Log("Player Hurt");
@@ -210,13 +208,13 @@ namespace Game
                 return;
             }
 
-            _Property.Hp.Value -= (int) damage;
+            // _Property.Hp.Value -= (int) damage;
 
             FxFactory.PlayHurtFx(this.GetPosition(), Color.green);
             FxFactory.PlayPlayerBlood(this.GetPosition());
 
             AudioKit.PlaySound(AssetConfig.Sound.PLAYER_HURT);
-            
+
             GamePlay.PlayHurtFlashScreen();
         }
 
@@ -259,13 +257,13 @@ namespace Game
             {
                 _rollDirection = this.Direction2DTo(CurrentGun.MousePosition);
             }
-                    
+
             var facing = _rollDirection.x.Sign(); // 当前的水平朝向
             if (facing == 0)
             {
                 facing = SpriteRenderer.flipX ? -1 : 1;
             }
-                    
+
             // 播放动画
             ActionKit.Lerp01(0.4f, f =>
                 {

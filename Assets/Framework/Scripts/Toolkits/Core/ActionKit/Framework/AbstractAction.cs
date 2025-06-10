@@ -29,11 +29,12 @@ namespace Framework.Toolkits.ActionKit
             },
             null,
             null,
+            true,
             10);
 
         protected static TAction CreateInternal()
         {
-            return _POOL.Create();
+            return _POOL.Get();
         }
         
         public ulong ActionID { get; set; }

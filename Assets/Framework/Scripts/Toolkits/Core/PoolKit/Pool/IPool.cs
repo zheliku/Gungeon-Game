@@ -8,23 +8,33 @@
 
 namespace Framework.Toolkits.PoolKit
 {
+    using System;
+
     /// <summary>
     /// 对象池接口
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IPool<T>
     {
+        public int CountAll { get; }
+
+        public int CountInactive { get; }
+
+        public int CountActive { get; }
+
         /// <summary>
         /// 分配对象
         /// </summary>
         /// <returns></returns>
-        T Create();
+        T Get();
 
         /// <summary>
         /// 回收对象
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        bool Recycle(T obj);
+        bool Release(T obj);
+
+        void Clear(Action<T> onClear);
     }
 }

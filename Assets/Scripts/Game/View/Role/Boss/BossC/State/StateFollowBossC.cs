@@ -8,6 +8,8 @@
 
 namespace Game
 {
+    using Framework.Toolkits.ActionKit;
+    using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.TimerKit;
     using UnityEngine;

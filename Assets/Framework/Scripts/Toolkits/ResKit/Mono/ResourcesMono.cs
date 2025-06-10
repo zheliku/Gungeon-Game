@@ -42,7 +42,7 @@ namespace Framework.Toolkits.ResKit
                 if (info.RefCount <= 0) // 资源引用计数为 0，则清空记录
                 {
                     ResMap.Remove(res.AssetPath());
-                    ResManager.ResourceAssetPathMap.Remove(res);
+                    ResMgr.ResourceAssetPathMap.Remove(res);
                 }
             }
         }

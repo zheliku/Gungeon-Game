@@ -21,7 +21,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static string AssetPath(this Object obj)
         {
-            if (ResManager.ResourceAssetPathMap.TryGetValue(obj, out var name))
+            if (ResMgr.ResourceAssetPathMap.TryGetValue(obj, out var name))
             {
                 return name;
             }
@@ -34,7 +34,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static string AssetPath<T>(this T obj) where T : Object
         {
-            if (ResManager.ResourceAssetPathMap.TryGetValue(obj, out var name))
+            if (ResMgr.ResourceAssetPathMap.TryGetValue(obj, out var name))
             {
                 return name;
             }

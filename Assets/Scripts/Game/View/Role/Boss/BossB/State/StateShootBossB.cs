@@ -8,7 +8,9 @@
 
 namespace Game
 {
+    using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
+    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.TimerKit;
@@ -28,22 +30,23 @@ namespace Game
         {
             switch (_owner.HpRatio)
             {
-                case > 0.7f: Stage1Update(); break;
-                case > 0.3f: Stage2Update(); break;
+                case > 0.8f: Stage1Update(); break;
+                case > 0.4f: Stage2Update(); break;
                 case >= 0f:  Stage3Update(); break;
             }
         }
 
         private void Stage1Update() // 阶段一，只攻击一次
         {
-            BulletHelper.CircleShoot(
-                24,
-                _owner.GetPosition(),
-                1.5f,
-                (0f, 360f).RandomSelect(),
-                _owner.Bullet,
-                1,
-                15);
+            BulletHelper.SpreadShoot(
+                15, 
+                _owner.GetPosition(), 
+                1.5f, 
+                _owner.DirectionTo(Player.Instance),
+                5,
+                _owner.Bullet, 
+                1, 
+                _owner.BulletSpeed);
 
             AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
 
@@ -52,16 +55,17 @@ namespace Game
 
         private void Stage2Update() // 阶段二，持续攻击 1 s
         {
-            if (TimerKit.HasPassedInterval(this, 0.25f))
+            if (TimerKit.HasPassedInterval(this, 0.2f))
             {
-                BulletHelper.CircleShoot(
-                    20,
-                    _owner.GetPosition(),
-                    1.5f,
-                    (0f, 360f).RandomSelect(),
-                    _owner.Bullet,
-                    1,
-                    12);
+                var bullets = BulletHelper.SpreadShoot(
+                    3, 
+                    _owner.GetPosition(), 
+                    1.5f, 
+                    _owner.DirectionTo(Player.Instance),
+                    10,
+                    _owner.Bullet, 
+                    1, 
+                    _owner.BulletSpeed * 1.5f);
 
                 AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
             }
@@ -74,18 +78,39 @@ namespace Game
 
         private void Stage3Update() // 阶段二，持续攻击 1 s
         {
-            if (TimerKit.HasPassedInterval(this, 0.22f))
+            if (TimerKit.HasPassedInterval(this, 0.8f))
             {
-                BulletHelper.CircleShoot(
-                    30,
-                    _owner.GetPosition(),
-                    1.5f,
+                var bullets = BulletHelper.FocusShoot(
+                    15, 
+                    Player.Instance.GetPosition(), 
+                    6f, 
                     (0f, 360f).RandomSelect(),
-                    _owner.Bullet,
-                    1,
-                    8);
+                    _owner.Bullet, 
+                    1, 
+                    _owner.BulletSpeed * 0.8f);
+                
+                foreach (var bullet in bullets)
+                {
+                    var initVelocity = bullet.Rigidbody.linearVelocity;
+                    bullet.Rigidbody.linearVelocity = Vector2.zero;
+                    
+                    var initLocalScale = _owner.GetLocalScale();
+
+                    ActionKit.Lerp(0, 1, 0.6f, f =>
+                    {
+                        bullet.SetLocalScale(initLocalScale * f);
+                    }, () =>
+                    {
+                        bullet.Rigidbody.linearVelocity = initVelocity;
+                    }).Start(bullet);
+                }
 
                 AudioKit.PlaySound(_owner.ShootSounds.RandomTakeOne());
+            }
+            
+            if (_fsm.SecondsOfCurrentState >= 2.4f)
+            {
+                _fsm.ChangeState(BossB.State.Follow);
             }
         }
     }

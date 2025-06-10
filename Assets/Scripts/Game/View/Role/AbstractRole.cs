@@ -14,6 +14,8 @@ namespace Game
     public interface IRole
     {
         GameObject GameObject { get; }
+        
+        Collider2D Collider2D { get; }
 
         Vector3 Position
         {
@@ -23,18 +25,25 @@ namespace Game
         public void Hurt(float damage, HitInfo info);
     }
 
-    public abstract class AbstractRole : AbstractView
+    public abstract class AbstractRole : AbstractView, IRole
     {
         [HierarchyPath("Sprite")]
         public SpriteRenderer SpriteRenderer;
 
         [HierarchyPath]
         public Rigidbody2D Rigidbody2D;
+        
+        [HierarchyPath]
+        public Collider2D Collider2D;
 
         protected virtual void Awake()
         {
             this.BindHierarchyComponent();
         }
+
+        public GameObject GameObject { get => gameObject; }
+
+        Collider2D IRole.Collider2D { get => Collider2D; }
 
         public abstract void Hurt(float damage, HitInfo info);
 

@@ -368,6 +368,16 @@ namespace Framework.Toolkits.FluentAPI
             return selfComponent.transform.position;
         }
         
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return component.transform.position;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// var localPosition = spriteRenderer.GetPosition2D();
+        /// ]]>
+        /// </code> </example>
         public static Vector2 GetPosition2D<T>(this T selfComponent) where T : Component
         {
             return selfComponent.transform.position;
@@ -388,6 +398,16 @@ namespace Framework.Toolkits.FluentAPI
             return self.transform.position;
         }
         
+        /// <summary>
+        /// <c> <![CDATA[
+        /// return gameObject.transform.position;
+        /// ]]> </c>
+        /// </summary>
+        /// <example> <code>
+        /// <![CDATA[
+        /// Debug.Log(new GameObject().GetPosition2D());
+        /// ]]>
+        /// </code> </example>
         public static Vector2 GetPosition2D(this GameObject self)
         {
             return self.transform.position;

@@ -20,3 +20,6 @@ abcdefghijklmnopqrstuvwxyz
 射击
 装载
 切枪
+枪械库
+解锁
+火箭枪

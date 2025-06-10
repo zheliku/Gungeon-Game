@@ -19,33 +19,37 @@ namespace Framework.Toolkits.PoolKit.Example._0.ObjectPoolExample
 
         void Start()
         {
-            _objectPool = new ObjectPool<GameObject>(() =>
-            {
-                var gameObj = new GameObject();
-                gameObj.SetActive(false);
-                return gameObj;
-            }, onRecycle: gameObj => { gameObj.SetActive(false); }, initCount: 10);
+            _objectPool = new ObjectPool<GameObject>(
+                () =>
+                {
+                    var gameObj = new GameObject();
+                    gameObj.SetActive(false);
+                    return gameObj;
+                },
+                actionOnRelease: gameObj => { gameObj.SetActive(false); },
+                actionOnDestroy: Destroy,
+                defaultCapacity: 10);
         }
 
         private void OnGUI()
         {
             if (GUILayout.Button("Spawn GameObject", GUILayout.Width(150), GUILayout.Height(50)))
             {
-                var obj = _objectPool.Create();
+                var obj = _objectPool.Get();
                 obj.SetActive(true);
                 StartCoroutine(Recycle(obj));
             }
 
             if (GUILayout.Button("Clear GameObject", GUILayout.Width(150), GUILayout.Height(50)))
             {
-                _objectPool.Clear(Destroy);
+                _objectPool.Clear();
             }
         }
 
         private IEnumerator Recycle(GameObject obj)
         {
             yield return new WaitForSeconds(1);
-            _objectPool.Recycle(obj);
+            _objectPool.Release(obj);
         }
     }
 }

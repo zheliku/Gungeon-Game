@@ -19,6 +19,9 @@ namespace Game
     {
         [HierarchyPath("Coin")]
         public Coin Coin;
+
+        [HierarchyPath("Palette")]
+        public Palette Palette;
         
         [HierarchyPath("Key")]
         public Key Key;

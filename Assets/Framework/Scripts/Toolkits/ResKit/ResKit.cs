@@ -31,8 +31,8 @@ namespace Framework.Toolkits.ResKit
             var res = Resources.Load<T>(path);
 
             // 更新 Mono 显示
-            ResManager.ResourceAssetPathMap.TryAdd(res, path);
-            ResManager.Instance.GetResourcesMono(res).BindRes(res);
+            ResMgr.ResourceAssetPathMap.TryAdd(res, path);
+            ResMgr.Instance.GetResourcesMono(res).BindRes(res);
 
             return res;
         }
@@ -58,9 +58,9 @@ namespace Framework.Toolkits.ResKit
             var handle = Addressables.InstantiateAsync(assetNameOrLabel, position, rotation, parent, instantiateInWorldSpace);
 
             // 更新 Mono 显示
-            ResManager.HandleAssetNameMap.TryAdd(handle, assetNameOrLabel);
-            ResManager.HandleAssetTypeMap.TryAdd(handle, typeof(GameObject));
-            ResManager.Instance.GetAddressableMono(handle).BindHandle(handle);
+            ResMgr.HandleAssetNameMap.TryAdd(handle, assetNameOrLabel);
+            ResMgr.HandleAssetTypeMap.TryAdd(handle, typeof(GameObject));
+            ResMgr.Instance.GetAddressableMono(handle).BindHandle(handle);
 
             if (callback != null)
             {
@@ -101,9 +101,9 @@ namespace Framework.Toolkits.ResKit
         {
             var handle = Addressables.LoadAssetAsync<T>(assetNameOrLabel);
 
-            ResManager.HandleAssetNameMap.TryAdd(handle, assetNameOrLabel);
-            ResManager.HandleAssetTypeMap.TryAdd(handle, typeof(T));
-            ResManager.Instance.GetAddressableMono(handle).BindHandle(handle);
+            ResMgr.HandleAssetNameMap.TryAdd(handle, assetNameOrLabel);
+            ResMgr.HandleAssetTypeMap.TryAdd(handle, typeof(T));
+            ResMgr.Instance.GetAddressableMono(handle).BindHandle(handle);
 
             if (callback != null)
             {
@@ -141,9 +141,9 @@ namespace Framework.Toolkits.ResKit
         {
             var handle = Addressables.LoadAssetsAsync<T>(names, null, mode, releaseDependenciesOnFailure);
 
-            ResManager.HandleAssetNameMap.TryAdd(handle, names.Join(", "));
-            ResManager.HandleAssetTypeMap.TryAdd(handle, typeof(T));
-            ResManager.Instance.GetAddressableMono(handle).BindHandle(handle);
+            ResMgr.HandleAssetNameMap.TryAdd(handle, names.Join(", "));
+            ResMgr.HandleAssetTypeMap.TryAdd(handle, typeof(T));
+            ResMgr.Instance.GetAddressableMono(handle).BindHandle(handle);
 
             if (callback != null)
             {
@@ -218,7 +218,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static void Unload(Object res)
         {
-            var mono = ResManager.Instance.GetResourcesMono(res);
+            var mono = ResMgr.Instance.GetResourcesMono(res);
 
             if (mono)
             {
@@ -241,7 +241,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static void Unload(AsyncOperationHandle handle)
         {
-            ResManager.Instance.GetAddressableMono(handle).UnbindHandle(handle);
+            ResMgr.Instance.GetAddressableMono(handle).UnbindHandle(handle);
             handle.Release();
         }
 
@@ -250,7 +250,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static void Unload<T>(AsyncOperationHandle<T> handle)
         {
-            ResManager.Instance.GetAddressableMono(handle).UnbindHandle(handle);
+            ResMgr.Instance.GetAddressableMono(handle).UnbindHandle(handle);
             handle.Release();
         }
 
@@ -259,7 +259,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static void Unload<T>(AsyncOperationHandle<IList<T>> handle)
         {
-            ResManager.Instance.GetAddressableMono(handle).UnbindHandle(handle);
+            ResMgr.Instance.GetAddressableMono(handle).UnbindHandle(handle);
             handle.Release();
         }
     }

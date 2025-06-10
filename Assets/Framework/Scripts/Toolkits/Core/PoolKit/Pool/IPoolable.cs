@@ -13,12 +13,20 @@ namespace Framework.Toolkits.PoolKit
     /// </summary>
     public interface IPoolable
     {
-        void OnSpawn();
-        
-        void OnRecycle();
+        void OnGet();
+
+        void OnRelease();
 
         void OnDestroy();
 
-        bool IsRecycled { get; set; }
+        bool IsInPool { get; set; }
+    }
+
+    public static class IPooableExtension
+    {
+        public static void Release2Pool<T>(this T poolable) where T : IPoolable, new()
+        {
+            SingletonObjectPool<T>.Instance.Release(poolable);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Framework.Toolkits.UIKit
 
         public static AsyncOperationHandle<GameObject> LoadPanelAsync<T>(string panelName, Action<T> callback = null, UILevel level = UILevel.Common) where T : IPanel
         {
-            return UIManager.Instance.LoadPanelAsync<T>(panelName, callback, level);
+            return UIMgr.Instance.LoadPanelAsync<T>(panelName, callback, level);
         }
         
         public static T LoadPanel<T>(UILevel level = UILevel.Common) where T : IPanel
@@ -37,12 +37,12 @@ namespace Framework.Toolkits.UIKit
         
         public static T GetPanel<T>(string panelName) where T : IPanel
         {
-            return UIManager.Instance.GetPanel<T>(panelName);
+            return UIMgr.Instance.GetPanel<T>(panelName);
         }
         
         public static T GetPanel<T>() where T : IPanel
         {
-            return UIManager.Instance.GetPanel<T>(typeof(T).Name);
+            return UIMgr.Instance.GetPanel<T>(typeof(T).Name);
         }
 
         public static void UnloadPanel<T>(Action callback = null) where T : IPanel
@@ -52,7 +52,7 @@ namespace Framework.Toolkits.UIKit
 
         public static void UnloadPanel(string panelName, Action callback = null)
         {
-             UIManager.Instance.UnloadPanel(panelName, callback);
+             UIMgr.Instance.UnloadPanel(panelName, callback);
         }
 
         public static AsyncOperationHandle<GameObject> ShowPanelAsync<T>(Action<T> callback = null, UILevel level = UILevel.Common) where T : IPanel
@@ -62,7 +62,7 @@ namespace Framework.Toolkits.UIKit
 
         public static AsyncOperationHandle<GameObject> ShowPanelAsync<T>(string panelName, Action<T> callback = null, UILevel level = UILevel.Common) where T : IPanel
         {
-            return UIManager.Instance.ShowPanelAsync<T>(panelName, callback, level);
+            return UIMgr.Instance.ShowPanelAsync<T>(panelName, callback, level);
         }
         
         public static T ShowPanel<T>(UILevel level = UILevel.Common) where T : IPanel
@@ -83,17 +83,17 @@ namespace Framework.Toolkits.UIKit
 
         public static void HidePanel<T>(string panelName, Action<T> callback = null) where T : IPanel
         {
-            UIManager.Instance.HidePanel<T>(panelName, callback);
+            UIMgr.Instance.HidePanel<T>(panelName, callback);
         }
 
         public static void HideAllPanel(Action<IPanel> callback = null)
         {
-            UIManager.Instance.HideAllPanel(callback);
+            UIMgr.Instance.HideAllPanel(callback);
         }
 
         public static void UnloadAllPanel(Action callback = null)
         {
-            UIManager.Instance.UnloadAllPanel(callback);
+            UIMgr.Instance.UnloadAllPanel(callback);
         }
 
         public static bool IsPanelShown<T>(string panelName) where T : IPanel

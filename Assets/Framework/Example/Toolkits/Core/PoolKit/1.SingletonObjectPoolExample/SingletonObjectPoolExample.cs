@@ -35,7 +35,7 @@ namespace Framework.Toolkits.PoolKit.Example._1.SingletonObjectPoolExample
         {
             if (GUILayout.Button("Spawn GameObject", GUILayout.Width(150), GUILayout.Height(50)))
             {
-                var bullet = SingletonObjectPool<Bullet>.Instance.Create();
+                var bullet = SingletonObjectPool<Bullet>.Instance.Get();
                 StartCoroutine(Recycle(bullet));
             }
 
@@ -48,7 +48,9 @@ namespace Framework.Toolkits.PoolKit.Example._1.SingletonObjectPoolExample
         private IEnumerator Recycle(Bullet bullet)
         {
             yield return new WaitForSeconds(1);
-            SingletonObjectPool<Bullet>.Instance.Recycle(bullet);
+            
+            // SingletonObjectPool<Bullet>.Instance.Release(bullet);
+            bullet.Release2Pool();
         }
     }
 }

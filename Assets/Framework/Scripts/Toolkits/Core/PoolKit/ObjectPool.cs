@@ -15,56 +15,63 @@ namespace Framework.Toolkits.PoolKit
     public sealed class ObjectPool<T> : Pool<T>
     {
         [ShowInInspector]
-        private readonly Action<T> _onCreate;
+        private readonly Action<T> _actionOnGet;
 
         [ShowInInspector]
-        private readonly Action<T> _onRecycle;
+        private readonly Action<T> _actionOnRelease;
 
         [ShowInInspector]
-        private readonly Action<T> _onDestroy;
+        private readonly Action<T> _actionOnDestroy;
 
         public ObjectPool(
-            Func<T>   createMethod,
-            Action<T> onCreate  = null,
-            Action<T> onRecycle = null,
-            Action<T> onDestroy = null,
-            int       initCount = 0,
-            int       maxCount  = 50)
+            Func<T>   createFunc,
+            Action<T> actionOnGet     = null,
+            Action<T> actionOnRelease = null,
+            Action<T> actionOnDestroy = null,
+            bool      collectionCheck = false,
+            int       defaultCapacity = 10,
+            int       maxSize         = 100)
         {
-            _factory    = new CustomObjectFactory<T>(createMethod);
-            _onCreate   = onCreate;
-            _onRecycle  = onRecycle;
-            _onDestroy  = onDestroy;
-            _maxCount   = maxCount;
-            _cacheStack = new Stack<T>(maxCount);
+            _factory         = new CustomObjectFactory<T>(createFunc);
+            _actionOnGet     = actionOnGet;
+            _actionOnRelease = actionOnRelease;
+            _actionOnDestroy = actionOnDestroy;
+            _collectionCheck = collectionCheck;
+            _maxSize         = maxSize;
+            _cacheStack      = new Stack<T>(defaultCapacity);
 
-            for (var i = 0; i < initCount; i++)
+            for (var i = 0; i < defaultCapacity; i++)
             {
                 _cacheStack.Push(_factory.Create());
             }
-            _allCount = initCount;
+            _countAll = defaultCapacity;
         }
 
-        public override T Create()
+        public override T Get()
         {
-            var item = base.Create();
-            _onCreate?.Invoke(item);
+            var item = base.Get();
+            _actionOnGet?.Invoke(item);
             return item;
         }
 
-        public override bool Recycle(T obj)
+        public override bool Release(T obj)
         {
-            _onRecycle?.Invoke(obj);
+            if (_collectionCheck && _cacheStack.Contains(obj))
+            {
+                throw new InvalidOperationException("Trying to release an object that has already been released to the pool.");
+            }
 
-            if (InactiveCount < _maxCount)
+            _actionOnRelease?.Invoke(obj);
+
+            if (CountInactive < _maxSize)
             {
                 _cacheStack.Push(obj);
                 return true;
             }
             else
             {
-                --_allCount;
-                _onDestroy?.Invoke(obj);
+                --_countAll;
+                _actionOnDestroy?.Invoke(obj);
                 return false;
             }
         }
@@ -79,11 +86,11 @@ namespace Framework.Toolkits.PoolKit
                 }
             }
 
-            if (_onDestroy != null)
+            if (_actionOnDestroy != null)
             {
                 foreach (var t in _cacheStack)
                 {
-                    _onDestroy.Invoke(t);
+                    _actionOnDestroy.Invoke(t);
                 }
             }
 

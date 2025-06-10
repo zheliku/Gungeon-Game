@@ -12,12 +12,12 @@ namespace Framework.Toolkits.PoolKit.Example._1.SingletonObjectPoolExample
 
     public class Bullet : IPoolable
     {
-        public void OnSpawn()
+        public void OnGet()
         {
             Debug.Log("Bullet OnSpawn");
         }
 
-        public void OnRecycle()
+        public void OnRelease()
         {
             Debug.Log("Bullet OnRecycle");
         }
@@ -27,6 +27,6 @@ namespace Framework.Toolkits.PoolKit.Example._1.SingletonObjectPoolExample
             Debug.Log("Bullet OnDestroy");
         }
 
-        public bool IsRecycled { get; set; }
+        public bool IsInPool { get; set; }
     }
 }

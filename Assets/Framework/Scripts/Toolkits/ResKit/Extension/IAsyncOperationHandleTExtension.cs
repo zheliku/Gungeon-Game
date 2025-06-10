@@ -24,7 +24,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static string AssetName(this AsyncOperationHandle handle)
         {
-            if (ResManager.HandleAssetNameMap.TryGetValue(handle, out var name))
+            if (ResMgr.HandleAssetNameMap.TryGetValue(handle, out var name))
             {
                 return name;
             }
@@ -45,7 +45,7 @@ namespace Framework.Toolkits.ResKit
         /// </summary>
         public static Type AssetType(this AsyncOperationHandle handle)
         {
-            if (ResManager.HandleAssetTypeMap.TryGetValue(handle, out var type))
+            if (ResMgr.HandleAssetTypeMap.TryGetValue(handle, out var type))
             {
                 return type;
             }
@@ -60,7 +60,7 @@ namespace Framework.Toolkits.ResKit
         {
             handle.Completed += op => OnCompletedAction(op, onSuccessfulCompleted);
             
-            var mono = ResManager.Instance.GetAddressableMono(handle);
+            var mono = ResMgr.Instance.GetAddressableMono(handle);
             mono.AddOnCompletedAction(handle, onSuccessfulCompleted);
             
             return handle;
@@ -73,7 +73,7 @@ namespace Framework.Toolkits.ResKit
         {
             handle.Completed += op => OnCompletedAction(op, onSuccessfulCompleted);
             
-            var mono = ResManager.Instance.GetAddressableMono(handle);
+            var mono = ResMgr.Instance.GetAddressableMono(handle);
             mono.AddOnCompletedAction(handle, onSuccessfulCompleted);
             
             return handle;

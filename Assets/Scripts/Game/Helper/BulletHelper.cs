@@ -109,5 +109,43 @@ namespace Game
             
             return bullets;
         }
+        
+        /// <summary>
+        /// 圆圈攻击
+        /// </summary>
+        public static List<Bullet> FocusShoot(
+            int        fireCount,
+            Vector2    center,
+            float      radius,
+            float      angleOffset,
+            GameObject bulletPrefab,
+            float      damage,
+            float      speed,
+            float      unstableAngle = 0)
+        {
+            var stepAngle = 360f / fireCount;
+            
+            var bullets = new List<Bullet>(fireCount);
+
+            for (int i = 0; i < fireCount; i++)
+            {
+                var direction   = (angleOffset + stepAngle * i).Deg2Direction2D();
+                var shootAngle  = direction.ToAngle() + (-unstableAngle, unstableAngle).RandomSelect();
+                var unstableDir = shootAngle.Deg2Direction2D();
+
+                var initPos = center + unstableDir * radius; // 中心偏移 radius 个单位
+                var bullet = bulletPrefab.Instantiate(initPos)
+                   .Enable()
+                   .GetComponent<Bullet>();
+
+                bullet.Damage   = damage;
+                bullet.Velocity = -unstableDir * speed;
+                
+                bullets.Add(bullet);
+            }
+            
+            return bullets;
+        }
+
     }
 }

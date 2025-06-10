@@ -38,8 +38,6 @@ namespace Game
 
         [ShowInInspector]
         public EnemyProperty Property { get; }= new EnemyProperty() { Hp = { Value = 2 } };
-
-        public GameObject GameObject { get => gameObject; }
         
         public Vector2 FollowTimeRange { get; private set; }
 

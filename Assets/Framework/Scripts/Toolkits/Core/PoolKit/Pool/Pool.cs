@@ -19,7 +19,7 @@ namespace Framework.Toolkits.PoolKit
         /// 存储相关数据的栈
         /// </summary>
         [ShowInInspector]
-        protected Stack<T> _cacheStack = new Stack<T>(50);
+        protected Stack<T> _cacheStack = new(50);
 
         [ShowInInspector]
         protected IObjectFactory<T> _factory;
@@ -28,45 +28,47 @@ namespace Framework.Toolkits.PoolKit
         /// default is 50
         /// </summary>
         [ShowInInspector]
-        protected int _maxCount = 50;
+        protected int _maxSize = 100;
 
-        protected int _allCount;
+        protected int _countAll;
+
+        protected bool _collectionCheck = false;
 
         [ShowInInspector]
-        public int AllCount { get => _allCount; }
+        public int CountAll { get => _countAll; }
 
         /// <summary>
         /// Gets the current count.
         /// </summary>
         /// <value>The current count.</value>
         [ShowInInspector]
-        public int InactiveCount { get => _cacheStack.Count; }
+        public int CountInactive { get => _cacheStack.Count; }
 
         [ShowInInspector]
-        public int ActiveCount { get => _allCount - _cacheStack.Count; }
+        public int CountActive { get => _countAll - _cacheStack.Count; }
 
         public void SetObjectFactory(IObjectFactory<T> factory)
         {
             _factory = factory;
         }
 
-        public virtual T Create()
+        public virtual T Get()
         {
             if (_cacheStack.Count > 0)
             {
                 return _cacheStack.Pop();
             }
 
-            ++_allCount;
+            ++_countAll;
             return _factory.Create();
         }
 
-        public abstract bool Recycle(T obj);
+        public abstract bool Release(T obj);
 
         public virtual void Clear(Action<T> onClear = null)
         {
             _cacheStack.Clear();
-            _allCount = 0;
+            _countAll = 0;
         }
     }
 }

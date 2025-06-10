@@ -54,7 +54,10 @@ namespace Game
 
         [HierarchyPath("Key/txtKey")]
         private TextMeshProUGUI _textKey;
-
+        
+        [HierarchyPath("Palette/txtPalette")]
+        private TextMeshProUGUI _textPalette;
+        
         protected override void OnLoad()
         {
             _imgHp.DisableGameObject();
@@ -85,6 +88,11 @@ namespace Game
             this.GetModel<PlayerModel>().Key.RegisterWithInitValue((oldValue, value) =>
             {
                 _textKey.text = $"{value}";
+            }).UnRegisterWhenGameObjectDisabled(gameObject);
+            
+            this.GetModel<PlayerModel>().Palette.RegisterWithInitValue((oldValue, value) =>
+            {
+                _textPalette.text = $"{value}";
             }).UnRegisterWhenGameObjectDisabled(gameObject);
 
             TypeEventSystem.GLOBAL.Register<GunShootEvent>(e =>

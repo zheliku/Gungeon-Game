@@ -33,6 +33,7 @@ namespace Framework.Toolkits.ActionKit
             null,
             task => task.Recycle(),
             null,
+            true,
             10);
 
         private void Update()
@@ -60,7 +61,7 @@ namespace Framework.Toolkits.ActionKit
                     // 执行成功，将 action 添加到 _actionsToRemove 中
                     _tobeRemovedActions.Add(controller);
 
-                    _actionTaskPool.Recycle(task); // 回收 task
+                    _actionTaskPool.Release(task); // 回收 task
                 }
             }
 
@@ -89,7 +90,7 @@ namespace Framework.Toolkits.ActionKit
             }
 
             // 从 _actionTaskPool 中获取一个任务
-            var task = _actionTaskPool.Create();
+            var task = _actionTaskPool.Get();
 
             task.Action     = controller.Action;
             task.Controller = controller;

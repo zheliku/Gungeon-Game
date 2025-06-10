@@ -8,16 +8,12 @@
 
 namespace Game
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.TimerKit;
-    using Sirenix.OdinInspector;
     using UnityEngine;
-    using Random = UnityEngine.Random;
 
     public class EnemyA : Enemy
     {

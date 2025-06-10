@@ -37,8 +37,8 @@ namespace Framework.Toolkits.ResKit
                 if (info.RefCount <= 0) // 如果引用计数为 0，则从字典中移除
                 {
                     ResMap.Remove(handle.AssetName());
-                    ResManager.HandleAssetNameMap.Remove(handle);
-                    ResManager.HandleAssetTypeMap.Remove(handle);
+                    ResMgr.HandleAssetNameMap.Remove(handle);
+                    ResMgr.HandleAssetTypeMap.Remove(handle);
                 }
             }
         }

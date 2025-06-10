@@ -10,7 +10,7 @@ namespace Framework.Toolkits.ActionKit
 {
     using PoolKit;
 
-    public struct ActionQueueRecycleCallback<T> : IActionQueueCallback
+    public struct ActionQueueRecycleCallback<T> : IActionQueueCallback where T : class, IAction
     {
         /// <summary>
         /// 需要回收倒哪个 Pool 中
@@ -33,7 +33,7 @@ namespace Framework.Toolkits.ActionKit
         /// </summary>
         public void Call()
         {
-            Pool.Recycle(Action);
+            Pool.Release(Action);
             Pool   = null;
             Action = default;
         }

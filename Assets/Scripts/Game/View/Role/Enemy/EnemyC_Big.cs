@@ -119,7 +119,7 @@ namespace Game
                 {
                     var bullet = Bullet.Instantiate(transform.position)
                        .Enable()
-                       .GetComponent<EnemyBullet>();
+                       .GetComponent<NormalEnemyBullet>();
 
                     bullet.Damage   = 1f;
                     bullet.Velocity = direction * BulletSpeed;

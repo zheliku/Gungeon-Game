@@ -10,6 +10,7 @@ namespace Game
 {
     using Framework.Core;
     using Framework.Core.Model;
+    using Framework.Toolkits.BindableKit;
 
     public class PlayerModel : AbstractModel
     {
@@ -18,6 +19,8 @@ namespace Game
         public BindableProperty<int> Coin = new BindableProperty<int>();
         
         public BindableProperty<int> Key = new BindableProperty<int>();
+        
+        public PlayerPrefsIntProperty Palette = new PlayerPrefsIntProperty(nameof(Palette));
         
         protected override void OnInit()
         {
@@ -30,6 +33,7 @@ namespace Game
             Property.MaxHp.SetValueWithoutEvent(6);
             Coin.SetValueWithoutEvent(100);
             Key.SetValueWithoutEvent(0);
+            // Palette.SetValueWithoutEvent(0);
             Property.MoveSpeed = 5;
             Property.Armor.SetValueWithoutEvent(1);
         }

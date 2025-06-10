@@ -8,7 +8,9 @@
 
 namespace Game
 {
+    using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using Framework.Toolkits.FluentAPI;
 
     public class AssetConfig
@@ -18,6 +20,7 @@ namespace Game
             public const string EMPTY_BULLET         = "EmptyBullet";
             public const string HP1                  = "Hp1";
             public const string CHEST                = "Chest";
+            public const string PALETTE             = "Palette";
             public const string KEY                  = "Key";
             public const string DOOR_OPEN            = "DoorOpen";
             public const string PLAYER_HURT          = "PlayerHurt";
@@ -47,20 +50,33 @@ namespace Game
             public const string ONLY_IN_DREAM         = "OnlyInDreams";
             public const string REST_EASY             = "Rest Easy";
 
-            public static readonly List<string> ALL = new List<string>()
+            public static List<string> ALL
             {
-                SMOOTH_SAILING,
-                UNDERGROUND_CONCOURSE,
-                CHECKING_INSTRUMENTS,
-                D0_S_88_MARATHON_MAN,
-                DARKASCENT,
-                DOS_88_AUTOMATAV2,
-                DOS_88_PRESS_START,
-                FLOW_STATE,
-                NIGHT_LIFE,
-                ONLY_IN_DREAM,
-                REST_EASY,
-            };
+                get
+                {
+                    Type musicType = typeof(Music);
+        
+                    // 获取所有public static字段（包括const）
+                    FieldInfo[] fields = musicType.GetFields(
+                        BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy
+                    );
+                    
+                    var musicList = new List<string>();
+
+                    foreach (FieldInfo field in fields)
+                    {
+                        // 确保字段是const string类型
+                        if (field.IsLiteral && !field.IsInitOnly && field.FieldType == typeof(string))
+                        {
+                            string fieldName  = field.Name;
+                            string fieldValue = (string)field.GetValue(null); // const字段是static，传null
+                            musicList.Add(fieldValue);
+                        }
+                    }
+                    
+                    return musicList;
+                }
+            }
         }
 
         public class Action

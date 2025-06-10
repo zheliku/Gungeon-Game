@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+#if UNITY_EDITOR
+
 namespace Framework.Toolkits.CodeGenKit.Editor
 {
     using System.IO;
@@ -142,3 +144,5 @@ namespace Framework.Toolkits.CodeGenKit.Editor
         }
     }
 }
+
+#endif

@@ -22,11 +22,12 @@ namespace Framework.Toolkits.ActionKit
                 controller.Action     = null;
             },
             null,
+            true,
             10);
         
         public static IActionController Spawn()
         {
-            return _POOL.Create() as ActionController;
+            return _POOL.Get() as ActionController;
         }
 
         public ulong ActionID { get; set; }
@@ -59,7 +60,7 @@ namespace Framework.Toolkits.ActionKit
 
         public void Recycle()
         {
-            _POOL.Recycle(this);
+            _POOL.Release(this);
         }
     }
 }
