@@ -30,7 +30,6 @@ namespace Game
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void AutoInit()
         {
-            
             // this.GetModel<LevelModel>().PacingQueue = new Queue<int>(Level1.CONFIG.Pacing);
         }
     }
