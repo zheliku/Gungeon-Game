@@ -65,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e33ee2fdbd851094cb896fa9bf94ab6b
+    m_Address: UnlockGun
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e3b21d9035d25d949bc65a9c0a1887be
     m_Address: Coin
     m_ReadOnly: 0

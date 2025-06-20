@@ -172,6 +172,11 @@ namespace Game
             {
                 Fsm.StartState(State.Rolling);
             }).UnBindAllPerformedWhenGameObjectDisabled(this);
+            
+            InputKit.BindPerformed(AssetConfig.Action.ROLL, _ =>
+            {
+                UIKit.ShowPanel<UIGunList>();
+            }).UnBindAllPerformedWhenGameObjectDisabled(this);
         }
 
         // Update is called once per frame

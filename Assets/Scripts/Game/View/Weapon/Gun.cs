@@ -141,7 +141,7 @@ namespace Game
         {
             AttackAction = InputKit.BindPerformed(AssetConfig.Action.ATTACK, context =>
             {
-                if (!UIKit.IsPanelShown<UIMap>()) // 地图界面打开时，不允许射击
+                if (!UIKit.IsPanelShown<UIMap>() && !UIKit.IsPanelShown<UIGunList>()) // 地图界面打开时，不允许射击
                 {
                     ShootDown(ShootDirection);
                 }

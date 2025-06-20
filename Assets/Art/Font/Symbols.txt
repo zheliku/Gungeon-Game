@@ -23,3 +23,12 @@ abcdefghijklmnopqrstuvwxyz
 枪械库
 解锁
 火箭枪
+ShotGun 喷子"
+MP5 冲锋枪", K
+AK47 自动步枪",
+AWP 狙击枪", K
+Laser 激光枪",
+Bow 弓箭", Ke
+Rocket 火箭",
+解锁成功！
+你的颜色不够

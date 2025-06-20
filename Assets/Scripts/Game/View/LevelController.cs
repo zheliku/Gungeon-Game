@@ -60,6 +60,9 @@ namespace Game
 
         [HierarchyPath("Template/ShopItem")]
         public ShopItem ShopItemTemplate;
+        
+        [HierarchyPath("Template/GunBase")]
+        public GunBase GunBaseTemplate;
 
         protected void Awake()
         {
@@ -69,6 +72,7 @@ namespace Game
             RoomTemplate.DisableGameObject();
             DoorTemplate.DisableGameObject();
             ShopItemTemplate.DisableGameObject();
+            GunBaseTemplate.DisableGameObject();
 
             // DontDestroyOnLoad(this); // 防止被销毁
         }
@@ -267,6 +271,12 @@ namespace Game
                            .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
 
                         palette.Room = room;
+                    }
+                    else if (code == 'g')
+                    {
+                        var gunBase = Instance.GunBaseTemplate.Instantiate(parent: room)
+                           .EnableGameObject()
+                           .SetPosition(x + 0.5f, y + 0.5f, 0); // +0.5f to the center grid
                     }
                 }
             }

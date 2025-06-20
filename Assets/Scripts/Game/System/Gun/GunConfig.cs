@@ -13,63 +13,63 @@ namespace Game
 
     public partial class GunConfig
     {
-        public static GunConfig Pistol = new GunConfig()
+        public static GunConfig Pistol => new GunConfig()
         {
-            Key               = nameof(Pistol),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(Pistol)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(Pistol)).BagBulletCount,
+            Key                = nameof(Pistol),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(Pistol)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(Pistol)).BagBulletCount,
         };
 
-        public static GunConfig MP5 = new GunConfig()
+        public static GunConfig MP5 => new GunConfig()
         {
-            Key               = nameof(MP5),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(MP5)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(MP5)).BagBulletCount
+            Key                = nameof(MP5),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(MP5)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(MP5)).BagBulletCount
         };
 
-        public static GunConfig ShotGun = new GunConfig()
+        public static GunConfig ShotGun => new GunConfig()
         {
-            Key               = nameof(ShotGun),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(ShotGun)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(ShotGun)).BagBulletCount
+            Key                = nameof(ShotGun),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(ShotGun)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(ShotGun)).BagBulletCount
         };
-        
-        public static GunConfig AK = new GunConfig()
+
+        public static GunConfig AK => new GunConfig()
         {
-            Key               = nameof(AK),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(AK)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(AK)).BagBulletCount
+            Key                = nameof(AK),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(AK)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(AK)).BagBulletCount
         };
-        
-        public static GunConfig AWP = new GunConfig()
+
+        public static GunConfig AWP => new GunConfig()
         {
-            Key               = nameof(AWP),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(AWP)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(AWP)).BagBulletCount
+            Key                = nameof(AWP),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(AWP)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(AWP)).BagBulletCount
         };
-        
-        public static GunConfig Bow = new GunConfig()
+
+        public static GunConfig Bow => new GunConfig()
         {
-            Key               = nameof(Bow),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(Bow)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(Bow)).BagBulletCount
+            Key                = nameof(Bow),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(Bow)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(Bow)).BagBulletCount
         };
-        
-        public static GunConfig LaserGun = new GunConfig()
+
+        public static GunConfig LaserGun => new GunConfig()
         {
-            Key               = nameof(LaserGun),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(LaserGun)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(LaserGun)).BagBulletCount
+            Key                = nameof(LaserGun),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(LaserGun)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(LaserGun)).BagBulletCount
         };
-        
-        public static GunConfig RocketGun = new GunConfig()
+
+        public static GunConfig RocketGun => new GunConfig()
         {
-            Key               = nameof(RocketGun),
-            ClipMaxBulletCount   = BG_GunTable.GetEntity(nameof(RocketGun)).ClipBulletCount,
-            BagMaxBulletCount = BG_GunTable.GetEntity(nameof(RocketGun)).BagBulletCount
+            Key                = nameof(RocketGun),
+            ClipMaxBulletCount = BG_GunTable.GetEntity(nameof(RocketGun)).ClipBulletCount,
+            BagMaxBulletCount  = BG_GunTable.GetEntity(nameof(RocketGun)).BagBulletCount
         };
-        
-        public static List<GunConfig> AllConfigs = new List<GunConfig>()
+
+        public static List<GunConfig> AllConfigs => new List<GunConfig>()
         {
             Pistol, MP5, ShotGun, AK, AWP, Bow, LaserGun, RocketGun
         };
@@ -85,10 +85,10 @@ namespace Game
         {
             return new GunData()
             {
-                Key                     = Key,
-                ClipRemainBulletCount      = ClipMaxBulletCount,
-                BagRemainBulletCount = BagMaxBulletCount,
-                Config                  = this
+                Key                   = Key,
+                ClipRemainBulletCount = ClipMaxBulletCount,
+                BagRemainBulletCount  = BagMaxBulletCount,
+                Config                = this
             };
         }
     }
@@ -99,7 +99,7 @@ namespace Game
         public int       ClipRemainBulletCount;
         public int       BagRemainBulletCount;
         public GunConfig Config;
-        
+
         public void AddClipBullet(int bulletCountToAdd)
         {
             ClipRemainBulletCount += bulletCountToAdd;
@@ -111,7 +111,7 @@ namespace Game
             ClipRemainBulletCount -= bulletCountToUse;
             ClipRemainBulletCount =  ClipRemainBulletCount.MaxWith(0);
         }
-        
+
         public void AddBagBullet(int bulletCountToAdd)
         {
             BagRemainBulletCount += bulletCountToAdd;

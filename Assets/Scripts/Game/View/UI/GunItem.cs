@@ -21,8 +21,14 @@ namespace Game
         [HierarchyPath("Icon/imgIcon")]
         public Image ImgIcon;
         
+        [HierarchyPath("Palette/imgPalette")]
+        public Image ImgPalette;
+        
         [HierarchyPath("Palette/txtPrice")]
         public TextMeshProUGUI TxtPrice;
+        
+        [HierarchyPath("btnUnlock")]
+        public Button BtnUnlock;
 
         private void Awake()
         {

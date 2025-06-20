@@ -77,6 +77,7 @@ namespace Framework.Toolkits.UIKit
                 {
                     obj.name = panelName;
                     var panel = obj.GetComponent<T>();
+                    Debug.Log(panel);
                     panel.Level = level;
                     panel.Load();
                     value.Panel = panel;
@@ -113,6 +114,9 @@ namespace Framework.Toolkits.UIKit
         public AsyncOperationHandle<GameObject> ShowPanelAsync<T>(string panelName, Action<T> callback = null, UILevel level = UILevel.Common) where T : IPanel
         {
             var handle = LoadPanelAsync<T>(panelName);
+            
+            Debug.Log(handle.IsDone);
+            Debug.Log(handle.Result);
 
             if (!handle.IsDone)
             {

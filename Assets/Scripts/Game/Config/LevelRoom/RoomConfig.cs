@@ -18,6 +18,7 @@ namespace Game
         /// e：敌人
         /// d: 门
         /// p: 调色板
+        /// g: 武器架
         /// </summary>
         public static readonly RoomGrid INIT_ROOM = new RoomGrid().Set(new List<string>()
         {
@@ -25,7 +26,7 @@ namespace Game
             "1                 1",
             "1   p  p   p  p   1",
             "1                 1",
-            "1                 1",
+            "1             g   1",
             "1                 1",
             "1                 1",
             "1                 1",

@@ -41,21 +41,50 @@ namespace Framework.Toolkits.ResKit
         /// 使用 Addressables 异步加载 GameObject 并实例化
         /// </summary>
         /// <param name="assetNameOrLabel">资源名称或标签</param>
-        /// <param name="callback">加载成功时的回调</param>
         /// <param name="position">实例化的位置</param>
         /// <param name="rotation">实例化的角度</param>
+        /// <param name="callback">加载成功时的回调</param>
+        /// <param name="parent">实例化的父物体</param>
+        /// <param name="instantiateInWorldSpace">是否在世界空间下实例化</param>
+        /// <returns>异步加载句柄</returns>
+        public static AsyncOperationHandle<GameObject> InstantiateAsync(
+            string             assetNameOrLabel,
+            Vector3            position,
+            Quaternion         rotation,
+            Action<GameObject> callback                = null,
+            Transform          parent                  = null,
+            bool               instantiateInWorldSpace = false)
+        {
+            var handle = Addressables.InstantiateAsync(assetNameOrLabel, position, rotation, parent, instantiateInWorldSpace);
+
+            // 更新 Mono 显示
+            ResMgr.HandleAssetNameMap.TryAdd(handle, assetNameOrLabel);
+            ResMgr.HandleAssetTypeMap.TryAdd(handle, typeof(GameObject));
+            ResMgr.Instance.GetAddressableMono(handle).BindHandle(handle);
+
+            if (callback != null)
+            {
+                handle.OnCompleted(callback);
+            }
+
+            return handle;
+        }
+
+        /// <summary>
+        /// 使用 Addressables 异步加载 GameObject 并实例化
+        /// </summary>
+        /// <param name="assetNameOrLabel">资源名称或标签</param>
+        /// <param name="callback">加载成功时的回调</param>
         /// <param name="parent">实例化的父物体</param>
         /// <param name="instantiateInWorldSpace">是否在世界空间下实例化</param>
         /// <returns>异步加载句柄</returns>
         public static AsyncOperationHandle<GameObject> InstantiateAsync(
             string             assetNameOrLabel,
             Action<GameObject> callback                = null,
-            Vector3            position                = default,
-            Quaternion         rotation                = default,
             Transform          parent                  = null,
             bool               instantiateInWorldSpace = false)
         {
-            var handle = Addressables.InstantiateAsync(assetNameOrLabel, position, rotation, parent, instantiateInWorldSpace);
+            var handle = Addressables.InstantiateAsync(assetNameOrLabel, parent, instantiateInWorldSpace);
 
             // 更新 Mono 显示
             ResMgr.HandleAssetNameMap.TryAdd(handle, assetNameOrLabel);
@@ -86,7 +115,7 @@ namespace Framework.Toolkits.ResKit
             Transform  parent                  = null,
             bool       instantiateInWorldSpace = false)
         {
-            var handle = InstantiateAsync(assetNameOrLabel, null, position, rotation, parent, instantiateInWorldSpace);
+            var handle = InstantiateAsync(assetNameOrLabel, position, rotation, null, parent, instantiateInWorldSpace);
             handle.WaitForCompletion();
             return handle;
         }
