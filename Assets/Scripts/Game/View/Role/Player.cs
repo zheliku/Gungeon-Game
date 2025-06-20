@@ -147,8 +147,12 @@ namespace Game
         {
             InputKit.BindPerformed(AssetConfig.Action.CHANGE_GUN, context =>
             {
-                // 射击、切枪时不可切换 Gun
-                if (CurrentGun.IsShooting || CurrentGun.Clip.IsReloading)
+                if (CurrentGun.IsShooting || CurrentGun.Clip.IsReloading) // 射击、切枪时不可切换 Gun
+                {
+                    return;
+                }
+
+                if (UIKit.IsPanelShown<UIGunList>()) // 购买枪时不可切换 Gun
                 {
                     return;
                 }
@@ -172,7 +176,7 @@ namespace Game
             {
                 Fsm.StartState(State.Rolling);
             }).UnBindAllPerformedWhenGameObjectDisabled(this);
-            
+
             InputKit.BindPerformed(AssetConfig.Action.ROLL, _ =>
             {
                 UIKit.ShowPanel<UIGunList>();

@@ -332,13 +332,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31c396c57c8349ea9100b4dc17ffa69c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 2146301182}
+  ShootPos: {fileID: 1871027655}
   ShootSounds:
   - {fileID: 8300000, guid: 57e4f38a45afb774393b90b8db67ef0c, type: 3}
   ReloadSound: {fileID: 8300000, guid: c48202b37eaa61049bbe8256231e9286, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
 --- !u!1 &55251034
 GameObject:
   m_ObjectHideFlags: 0
@@ -12606,15 +12606,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c477012f8efc46118fc30842689c24e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 81602586}
+  ShootPos: {fileID: 651060845}
   ShootSounds:
   - {fileID: 8300000, guid: 31efd9b4233a4f4428206209e60a688f, type: 3}
   - {fileID: 8300000, guid: 502315ed3ca790241984ee5733571d59, type: 3}
   - {fileID: 8300000, guid: 6f4267c35e02c064fb363fbbbd6a6fc7, type: 3}
   ReloadSound: {fileID: 8300000, guid: 3caa6dacee20bb248ba3bfc12f87d8e7, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
   IntervalAngle: 10
   OneShootCount: 5
 --- !u!1 &1154151053
@@ -12937,14 +12937,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f06250f21224f93999240368f00720a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 573614226}
+  ShootPos: {fileID: 2098625939}
   ShootSounds:
   - {fileID: 8300000, guid: 080b1a17117d81e4c995dc006ee2f8d7, type: 3}
   - {fileID: 8300000, guid: ae8bac6bb5da2cc4cb26766837d1a12b, type: 3}
   ReloadSound: {fileID: 8300000, guid: 3caa6dacee20bb248ba3bfc12f87d8e7, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
 --- !u!1 &1194887375
 GameObject:
   m_ObjectHideFlags: 0
@@ -15417,13 +15417,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af417f1bfa349a2a909a7c36e142221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 1778728564}
+  ShootPos: {fileID: 1447213242}
   ShootSounds:
   - {fileID: 8300000, guid: 93a1bef0ad509814fa0f31544497eda5, type: 3}
   ReloadSound: {fileID: 8300000, guid: b7e989a7fd1df8a46a04078f80145dee, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
 --- !u!1 &1487942501
 GameObject:
   m_ObjectHideFlags: 0
@@ -16081,15 +16081,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf982f50f28540c285d3cd8244aaef95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 819781751}
+  ShootPos: {fileID: 283729165}
   ShootSounds:
   - {fileID: 8300000, guid: 768f31e19a030314eb54ad81462a2b1d, type: 3}
   - {fileID: 8300000, guid: f240793c78fc5e2479b7b77278f0572a, type: 3}
   - {fileID: 8300000, guid: f16761a6e5e413e46872a38be53cd912, type: 3}
   ReloadSound: {fileID: 8300000, guid: 43c52b5f467d7c544a95e594f29e17e7, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
 --- !u!1 &1607784317
 GameObject:
   m_ObjectHideFlags: 0
@@ -16611,15 +16611,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d0b4e3d5424ae49718236f56733590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 1796940700}
+  ShootPos: {fileID: 463886377}
   ShootSounds:
   - {fileID: 8300000, guid: 9aac8173d24c75243851480ae074adee, type: 3}
   ReloadSound: {fileID: 8300000, guid: b7e989a7fd1df8a46a04078f80145dee, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
   Distance: 10
-  LineRenderer: {fileID: 0}
+  LineRenderer: {fileID: 977327990}
 --- !u!1 &1732569079
 GameObject:
   m_ObjectHideFlags: 0
@@ -18217,8 +18217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761479c29be84503bc85b199ea94a90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 1391191228}
+  ShootPos: {fileID: 550481040}
   ShootSounds:
   - {fileID: 8300000, guid: 85165ba2da705cc4b95a6f1a830b0f78, type: 3}
   - {fileID: 8300000, guid: 796d34c72437e504c9589ca2257f7c53, type: 3}
@@ -18229,8 +18229,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 85b45158359b5144db03a2ae9892adaf, type: 3}
   - {fileID: 8300000, guid: 116b0bb3e861b864cae5ed82c6fdecd1, type: 3}
   ReloadSound: {fileID: 8300000, guid: 80756905d7f188d46ab955fe490ef710, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
 --- !u!1 &1980597813
 GameObject:
   m_ObjectHideFlags: 0
@@ -18520,14 +18520,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d6762c50c145c18a0cce392ff3f78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunSprite: {fileID: 0}
-  ShootPos: {fileID: 0}
+  GunSprite: {fileID: 992977796}
+  ShootPos: {fileID: 2028686167}
   ShootSounds:
   - {fileID: 8300000, guid: f7afcff92badcd44db265c75a05b9945, type: 3}
   - {fileID: 8300000, guid: 1b74b47061aa65744a6db5c4dc263403, type: 3}
   ReloadSound: {fileID: 8300000, guid: b1bb7742c99cad041a16fcec9331b938, type: 3}
-  GunShootLight: {fileID: 0}
-  Aim: {fileID: 0}
+  GunShootLight: {fileID: 886777887}
+  Aim: {fileID: 1865646889}
 --- !u!1 &2015799880
 GameObject:
   m_ObjectHideFlags: 0

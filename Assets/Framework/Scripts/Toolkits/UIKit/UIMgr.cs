@@ -77,7 +77,6 @@ namespace Framework.Toolkits.UIKit
                 {
                     obj.name = panelName;
                     var panel = obj.GetComponent<T>();
-                    Debug.Log(panel);
                     panel.Level = level;
                     panel.Load();
                     value.Panel = panel;
@@ -115,9 +114,6 @@ namespace Framework.Toolkits.UIKit
         {
             var handle = LoadPanelAsync<T>(panelName);
             
-            Debug.Log(handle.IsDone);
-            Debug.Log(handle.Result);
-
             if (!handle.IsDone)
             {
                 handle.OnCompleted(obj =>

@@ -52,9 +52,8 @@ namespace Game
             {
                 var itemObj = _gunItemInfoTemplate.Instantiate(_gunItemRoot).EnableGameObject();
 
-                itemObj.TxtName.text = gunItem.Name;
-
-                // item.ImgIcon.sprite = gunItem.Icon;
+                itemObj.TxtName.text     = gunItem.Name;
+                itemObj.ImgIcon.sprite   = gunItem.Icon;
 
                 if (gunItem.IsUnlocked)
                 {
@@ -65,8 +64,8 @@ namespace Game
                 }
                 else
                 {
-                    itemObj.TxtPrice.text = "x" + gunItem.Price;
-                    itemObj.ImgIcon.color = Color.gray;
+                    itemObj.TxtPrice.text   = "x" + gunItem.Price;
+                    itemObj.ImgIcon.color   = new Color(0.5f, 0.5f, 0.5f, 0.3f);
 
                     itemObj.BtnUnlock.onClick.AddListener(() =>
                     {
@@ -76,7 +75,7 @@ namespace Game
                             var showText = $"<color=yellow>{gunItem.Name}</color>解锁成功！";
                             Player.DisplayText(showText, 1f);
                             itemObj.BtnUnlock.DisableGameObject();
-                            itemObj.ImgIcon.color = Color.gray;
+                            itemObj.ImgIcon.color   = new Color(0.5f, 0.5f, 0.5f, 0.3f);
                             AudioKit.PlaySound(AssetConfig.Sound.UNLOCK_GUN);
 
                             this.GetModel<PlayerModel>().Palette.Value -= gunItem.Price;
@@ -118,8 +117,13 @@ namespace Game
             public string Key;
             public int    Price;
             public bool   IsUnlocked;
-            public Sprite Icon;
-            public bool   InitUnlockState;
+
+            public Sprite Icon
+            {
+                get => Player.Instance.GetGun(Key).GunSprite.sprite;
+            }
+
+            public bool InitUnlockState;
         }
     }
 }

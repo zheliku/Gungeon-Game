@@ -18,6 +18,12 @@ namespace Framework.Core
     [HideReferenceObjectPicker]
     public abstract class AbstractView : MonoBehaviour, IView
     {
+        [Button] [PropertyOrder(100)]
+        private void BindHierarchyComponent()
+        {
+            AbstractViewExtension.BindHierarchyComponent(this);
+        }
+        
         // 仅能通过 IBelongToArchitecture 接口访问 Architecture 属性
         IArchitecture IBelongToArchitecture.Architecture
         {
