@@ -59,6 +59,7 @@ namespace Game
             {
                 return false; // 游戏通关
             }
+            
             CurrentLevel = LevelConfig.LEVELS[levelIndex];
             return true;
         }
