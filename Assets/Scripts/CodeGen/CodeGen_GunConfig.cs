@@ -124,6 +124,7 @@ public partial class BG_GunTable : BGEntity
 	private static readonly BG_GunTable.Factory _factory0_PFS = new BG_GunTable.Factory();
 	private static readonly BG_EnemyTable.Factory _factory1_PFS = new BG_EnemyTable.Factory();
 	private static readonly BG_BossTable.Factory _factory2_PFS = new BG_BossTable.Factory();
+	private static readonly BG_UnlockTable.Factory _factory3_PFS = new BG_UnlockTable.Factory();
 	private BG_GunTable() : base(MetaDefault) {}
 	private BG_GunTable(BGId id) : base(MetaDefault, id) {}
 	private BG_GunTable(BGMetaEntity meta) : base(meta) {}
@@ -207,6 +208,7 @@ public partial class BG_EnemyTable : BGEntity
 	private static readonly BG_GunTable.Factory _factory0_PFS = new BG_GunTable.Factory();
 	private static readonly BG_EnemyTable.Factory _factory1_PFS = new BG_EnemyTable.Factory();
 	private static readonly BG_BossTable.Factory _factory2_PFS = new BG_BossTable.Factory();
+	private static readonly BG_UnlockTable.Factory _factory3_PFS = new BG_UnlockTable.Factory();
 	private BG_EnemyTable() : base(MetaDefault) {}
 	private BG_EnemyTable(BGId id) : base(MetaDefault, id) {}
 	private BG_EnemyTable(BGMetaEntity meta) : base(meta) {}
@@ -282,6 +284,7 @@ public partial class BG_BossTable : BGEntity
 	private static readonly BG_GunTable.Factory _factory0_PFS = new BG_GunTable.Factory();
 	private static readonly BG_EnemyTable.Factory _factory1_PFS = new BG_EnemyTable.Factory();
 	private static readonly BG_BossTable.Factory _factory2_PFS = new BG_BossTable.Factory();
+	private static readonly BG_UnlockTable.Factory _factory3_PFS = new BG_UnlockTable.Factory();
 	private BG_BossTable() : base(MetaDefault) {}
 	private BG_BossTable(BGId id) : base(MetaDefault, id) {}
 	private BG_BossTable(BGMetaEntity meta) : base(meta) {}
@@ -295,5 +298,73 @@ public partial class BG_BossTable : BGEntity
 	public static BG_BossTable NewEntity() => (BG_BossTable) MetaDefault.NewEntity();
 	public static BG_BossTable NewEntity(BGId entityId) => (BG_BossTable) MetaDefault.NewEntity(entityId);
 	public static BG_BossTable NewEntity(Action<BG_BossTable> callback) => (BG_BossTable) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_BossTable)entity)));
+}
+
+public partial class BG_UnlockTable : BGEntity
+{
+
+	public class Factory : BGEntity.EntityFactory
+	{
+		public BGEntity NewEntity(BGMetaEntity meta) => new BG_UnlockTable(meta);
+		public BGEntity NewEntity(BGMetaEntity meta, BGId id) => new BG_UnlockTable(meta, id);
+	}
+
+	public static class __Names
+	{
+		public const string Meta = "UnlockTable";
+		public const string name = "name";
+		public const string Description = "Description";
+		public const string Price = "Price";
+		public const string Unlocked = "Unlocked";
+	}
+	private static BansheeGz.BGDatabase.BGMetaRow _metaDefault;
+	public static BansheeGz.BGDatabase.BGMetaRow MetaDefault => _metaDefault ?? (_metaDefault = BGCodeGenUtils.GetMeta<BansheeGz.BGDatabase.BGMetaRow>(new BGId(4806049016795802487UL,2330173172810614699UL), () => _metaDefault = null));
+	public static BansheeGz.BGDatabase.BGRepoEvents Events => BGRepo.I.Events;
+	public static int CountEntities => MetaDefault.CountEntities;
+	public System.String name
+	{
+		get => _name[Index];
+		set => _name[Index] = value;
+	}
+	public System.String Description
+	{
+		get => _Description[Index];
+		set => _Description[Index] = value;
+	}
+	public System.Int32 Price
+	{
+		get => _Price[Index];
+		set => _Price[Index] = value;
+	}
+	public System.Boolean Unlocked
+	{
+		get => _Unlocked[Index];
+		set => _Unlocked[Index] = value;
+	}
+	private static BansheeGz.BGDatabase.BGFieldEntityName _ufle12jhs77_name;
+	public static BansheeGz.BGDatabase.BGFieldEntityName _name => _ufle12jhs77_name ?? (_ufle12jhs77_name = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldEntityName>(MetaDefault, new BGId(5574084003957451737UL, 10189048618645057207UL), () => _ufle12jhs77_name = null));
+	private static BansheeGz.BGDatabase.BGFieldString _ufle12jhs77_Description;
+	public static BansheeGz.BGDatabase.BGFieldString _Description => _ufle12jhs77_Description ?? (_ufle12jhs77_Description = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldString>(MetaDefault, new BGId(4623285026434781268UL, 16947911403342909603UL), () => _ufle12jhs77_Description = null));
+	private static BansheeGz.BGDatabase.BGFieldInt _ufle12jhs77_Price;
+	public static BansheeGz.BGDatabase.BGFieldInt _Price => _ufle12jhs77_Price ?? (_ufle12jhs77_Price = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldInt>(MetaDefault, new BGId(5106273358301657073UL, 12699347389193519785UL), () => _ufle12jhs77_Price = null));
+	private static BansheeGz.BGDatabase.BGFieldBool _ufle12jhs77_Unlocked;
+	public static BansheeGz.BGDatabase.BGFieldBool _Unlocked => _ufle12jhs77_Unlocked ?? (_ufle12jhs77_Unlocked = BGCodeGenUtils.GetField<BansheeGz.BGDatabase.BGFieldBool>(MetaDefault, new BGId(4790922586179901918UL, 15055010063543156885UL), () => _ufle12jhs77_Unlocked = null));
+	private static readonly BG_GunTable.Factory _factory0_PFS = new BG_GunTable.Factory();
+	private static readonly BG_EnemyTable.Factory _factory1_PFS = new BG_EnemyTable.Factory();
+	private static readonly BG_BossTable.Factory _factory2_PFS = new BG_BossTable.Factory();
+	private static readonly BG_UnlockTable.Factory _factory3_PFS = new BG_UnlockTable.Factory();
+	private BG_UnlockTable() : base(MetaDefault) {}
+	private BG_UnlockTable(BGId id) : base(MetaDefault, id) {}
+	private BG_UnlockTable(BGMetaEntity meta) : base(meta) {}
+	private BG_UnlockTable(BGMetaEntity meta, BGId id) : base(meta, id) {}
+	public static BG_UnlockTable FindEntity(Predicate<BG_UnlockTable> filter) => BGCodeGenUtils.FindEntity(MetaDefault, filter);
+	public static List<BG_UnlockTable> FindEntities(Predicate<BG_UnlockTable> filter, List<BG_UnlockTable> result=null, Comparison<BG_UnlockTable> sort=null) => BGCodeGenUtils.FindEntities(MetaDefault, filter, result, sort);
+	public static void ForEachEntity(Action<BG_UnlockTable> action, Predicate<BG_UnlockTable> filter=null, Comparison<BG_UnlockTable> sort=null) => BGCodeGenUtils.ForEachEntity(MetaDefault, action, filter, sort);
+	public static BG_UnlockTable GetEntity(BGId entityId) => (BG_UnlockTable) MetaDefault.GetEntity(entityId);
+	public static BG_UnlockTable GetEntity(int index) => (BG_UnlockTable) MetaDefault[index];
+	public static BG_UnlockTable GetEntity(string entityName) => (BG_UnlockTable) MetaDefault.GetEntity(entityName);
+	public static BG_UnlockTable NewEntity() => (BG_UnlockTable) MetaDefault.NewEntity();
+	public static BG_UnlockTable NewEntity(BGId entityId) => (BG_UnlockTable) MetaDefault.NewEntity(entityId);
+	public static BG_UnlockTable NewEntity(Action<BG_UnlockTable> callback) => (BG_UnlockTable) MetaDefault.NewEntity(new BGMetaEntity.NewEntityContext(entity => callback((BG_UnlockTable)entity)));
 }
 #pragma warning restore 414

@@ -8,54 +8,36 @@
 
 namespace Game
 {
-    using System;
-    using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.AudioKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.UIKit;
     using UnityEngine;
 
-    public partial class UIGunList : UIPanel
+    public class UIGunList : UIPanel
     {
-        private List<GunItemInfo> _gunItems;
-
         [HierarchyPath("Scroll View/Viewport/GunItemRoot")]
         private Transform _gunItemRoot;
 
-        [HierarchyPath("Scroll View/GunItem")]
-        private GunItem _gunItemInfoTemplate;
+        [HierarchyPath("Scroll View/GunItem")] private GunItem _gunItemInfoTemplate;
 
         private void Awake()
         {
             this.BindHierarchyComponent();
-
-            _gunItems = new List<GunItemInfo>()
-            {
-                new() { Name = "ShotGun 喷子", Key = GunConfig.ShotGun.Key, Price   = 0, InitUnlockState = true },
-                new() { Name = "MP5 冲锋枪", Key    = GunConfig.MP5.Key, Price       = 0, InitUnlockState = true },
-                new() { Name = "AK47 自动步枪", Key  = GunConfig.AK.Key, Price        = 5, },
-                new() { Name = "AWP 狙击枪", Key    = GunConfig.AWP.Key, Price       = 6, },
-                new() { Name = "Laser 激光枪", Key  = GunConfig.LaserGun.Key, Price  = 7, },
-                new() { Name = "Bow 弓箭", Key     = GunConfig.Bow.Key, Price       = 10, },
-                new() { Name = "Rocket 火箭", Key  = GunConfig.RocketGun.Key, Price = 15, },
-            };
-
-            Load();
         }
 
         private void OnEnable()
         {
             _gunItemRoot.DestroyChildren();
 
-            foreach (var gunItem in _gunItems)
+            foreach (var gunData in this.GetSystem<GunSystem>().AllGuns)
             {
                 var itemObj = _gunItemInfoTemplate.Instantiate(_gunItemRoot).EnableGameObject();
 
-                itemObj.TxtName.text     = gunItem.Name;
-                itemObj.ImgIcon.sprite   = gunItem.Icon;
+                itemObj.TxtName.text = gunData.Config.Description;
+                itemObj.ImgIcon.sprite = Player.Instance.GetGun(gunData.Key).GunSprite.sprite;
 
-                if (gunItem.IsUnlocked)
+                if (gunData.IsUnlocked)
                 {
                     itemObj.TxtPrice.DisableGameObject();
                     itemObj.ImgPalette.DisableGameObject();
@@ -64,22 +46,24 @@ namespace Game
                 }
                 else
                 {
-                    itemObj.TxtPrice.text   = "x" + gunItem.Price;
-                    itemObj.ImgIcon.color   = new Color(0.5f, 0.5f, 0.5f, 0.3f);
+                    itemObj.TxtPrice.text = "x" + gunData.Config.Price;
+                    itemObj.ImgIcon.color = new Color(0.5f, 0.5f, 0.5f, 0.3f);
 
                     itemObj.BtnUnlock.onClick.AddListener(() =>
                     {
-                        if (gunItem.Price <= this.GetModel<PlayerModel>().Palette)
+                        if (gunData.Config.Price <= this.GetModel<PlayerModel>().Palette)
                         {
-                            gunItem.IsUnlocked = true;
-                            var showText = $"<color=yellow>{gunItem.Name}</color>解锁成功！";
-                            Player.DisplayText(showText, 1f);
-                            itemObj.BtnUnlock.DisableGameObject();
-                            itemObj.ImgIcon.color   = new Color(0.5f, 0.5f, 0.5f, 0.3f);
-                            AudioKit.PlaySound(AssetConfig.Sound.UNLOCK_GUN);
+                            gunData.IsUnlocked.Value = true;
+                            this.GetModel<PlayerModel>().Palette.Value -= gunData.Config.Price;
 
-                            this.GetModel<PlayerModel>().Palette.Value -= gunItem.Price;
-                            Save();
+                            itemObj.TxtPrice.DisableGameObject();
+                            itemObj.ImgPalette.DisableGameObject();
+                            itemObj.BtnUnlock.DisableGameObject();
+                            itemObj.ImgIcon.color = new Color(0.5f, 0.5f, 0.5f, 0.3f);
+                            AudioKit.PlaySound(AssetConfig.Sound.UNLOCK_GUN);
+                            
+                            var showText = $"<color=yellow>{gunData.Key}</color>解锁成功！";
+                            Player.DisplayText(showText, 1f);
                         }
                         else
                         {
@@ -90,40 +74,9 @@ namespace Game
             }
         }
 
-        private void Load()
+        protected override IArchitecture _Architecture
         {
-            foreach (var gunItem in _gunItems)
-            {
-                gunItem.IsUnlocked = PlayerPrefs.GetInt(gunItem.Key, gunItem.InitUnlockState ? 1 : 0) == 1;
-            }
-        }
-
-        private void Save()
-        {
-            foreach (var gunItem in _gunItems)
-            {
-                PlayerPrefs.SetInt(gunItem.Key, gunItem.IsUnlocked ? 1 : 0);
-            }
-        }
-
-        protected override IArchitecture _Architecture { get => Game.Architecture; }
-    }
-
-    public partial class UIGunList
-    {
-        public class GunItemInfo
-        {
-            public string Name;
-            public string Key;
-            public int    Price;
-            public bool   IsUnlocked;
-
-            public Sprite Icon
-            {
-                get => Player.Instance.GetGun(Key).GunSprite.sprite;
-            }
-
-            public bool InitUnlockState;
+            get => Game.Architecture;
         }
     }
 }

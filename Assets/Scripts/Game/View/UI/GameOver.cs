@@ -9,7 +9,6 @@
 namespace Game
 {
     using Framework.Core;
-    using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.UIKit;
     using UnityEngine;
     using UnityEngine.UI;

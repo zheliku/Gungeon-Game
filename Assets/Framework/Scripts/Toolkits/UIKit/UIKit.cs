@@ -106,5 +106,45 @@ namespace Framework.Toolkits.UIKit
         {
             return IsPanelShown<T>(typeof(T).Name);
         }
+        
+        public static void TogglePanelAsync<T>(string panelName, Action<T, bool> callback = null, UILevel level = UILevel.Common) where T : IPanel
+        {
+            if (IsPanelShown<T>(panelName))
+            {
+                HidePanel<T>(panelName, panel =>
+                {
+                    callback?.Invoke(panel, false);
+                });
+            }
+            else
+            {
+                ShowPanelAsync<T>(panelName, panel =>
+                {
+                    callback?.Invoke(panel, true);
+                }, level);
+            }
+        }
+        
+        public static void TogglePanelAsync<T>(Action<T, bool> callback = null, UILevel level = UILevel.Common) where T : IPanel
+        {
+            TogglePanelAsync<T>(typeof(T).Name, callback, level);
+        }
+        
+        public static void TogglePanel<T>(string panelName, UILevel level = UILevel.Common) where T : IPanel
+        {
+            if (IsPanelShown<T>(panelName))
+            {
+                HidePanel<T>(panelName);
+            }
+            else
+            {
+                ShowPanel<T>(panelName, level);
+            }
+        }
+        
+        public static void TogglePanel<T>(UILevel level = UILevel.Common) where T : IPanel
+        {
+            TogglePanel<T>(typeof(T).Name, level);
+        }
     }
 }

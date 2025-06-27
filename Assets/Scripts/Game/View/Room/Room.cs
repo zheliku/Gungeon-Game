@@ -151,7 +151,8 @@ namespace Game
                     {
                         State = RoomState.PlayerIn;
 
-                        var boss = EnemyFactory.Instance.Bosses[3].GameObject.Instantiate()
+                        var levelIndex = this.GetModel<LevelModel>().CurrentLevel.LevelId - 1;
+                        var boss = EnemyFactory.Instance.Bosses[levelIndex].GameObject.Instantiate()
                            .SetPosition(EnemyGeneratePoses.RandomTakeOne())
                            .Enable()
                            .GetComponent<Boss>();

@@ -36,34 +36,34 @@ namespace Game
         public static void DisplayText(string text, float duration)
         {
             var textLocalScale = Instance.FloatingText.GetLocalScale();
-            var textLocalPos   = Instance.FloatingText.GetLocalPosition();
+            var textLocalPos = Instance.FloatingText.GetLocalPosition();
 
             var floatingText = Instance.FloatingText.Instantiate(Instance)
-               .EnableGameObject();
+                .EnableGameObject();
 
             // 播放显示动画
             ActionKit.Sequence()
-               .Callback(() =>
+                .Callback(() =>
                 {
                     floatingText.text = text;
                 })
-               .Lerp01(0.5f, f =>
+                .Lerp01(0.5f, f =>
                 {
                     floatingText.SetLocalScale(textLocalScale * f);
                     floatingText.SetLocalPosition(textLocalPos + Vector3.up * f);
                 })
-               .Delay(duration)
-               .Lerp01(0.5f, f =>
+                .Delay(duration)
+                .Lerp01(0.5f, f =>
                 {
                     f = 1 - f;
                     floatingText.SetLocalScale(textLocalScale * f);
                     floatingText.SetLocalPosition(textLocalPos + Vector3.up * f);
                 })
-               .Callback(() =>
+                .Callback(() =>
                 {
                     floatingText.DestroyGameObject();
                 })
-               .Start(Instance);
+                .Start(Instance);
         }
 
         [HierarchyPath("Weapon")]
@@ -95,7 +95,7 @@ namespace Game
         {
             base.Awake();
 
-            _playerSpriteOriginLocalPosY    = SpriteRenderer.GetLocalPositionY();
+            _playerSpriteOriginLocalPosY = SpriteRenderer.GetLocalPositionY();
             _weaponTransformOriginLocalPosY = WeaponTransform.GetLocalPositionY();
 
             FloatingText.DisableGameObject();
@@ -121,21 +121,21 @@ namespace Game
 
         private void Start()
         {
-            var gunData = this.GetSystem<GunSystem>().GunDataList.First();
+            var gunData = this.GetSystem<GunSystem>().OwnedGuns.First();
             if (gunData.Key == GunConfig.Pistol.Key)
             {
                 UseGun(0);
             }
 
             Fsm.State(State.Idle)
-               .OnUpdate(OnIdleUpdate);
+                .OnUpdate(OnIdleUpdate);
             Fsm.State(State.Rolling)
-               .OnEnter(OnRollEnter)
-               .OnFixedUpdate(() =>
+                .OnEnter(OnRollEnter)
+                .OnFixedUpdate(() =>
                 {
                     Rigidbody2D.linearVelocity = _rollDirection * (_Property.MoveSpeed * 2f);
                 })
-               .OnExit(() =>
+                .OnExit(() =>
                 {
                     GetComponent<Collider2D>().excludeLayers = 0; // 取消限制
                 });
@@ -157,10 +157,10 @@ namespace Game
                     return;
                 }
 
-                var gunList         = this.GetSystem<GunSystem>().GunDataList;
+                var gunList = this.GetSystem<GunSystem>().OwnedGuns;
                 var currentGunIndex = gunList.FindIndex(gun => gun == CurrentGun.Data);
 
-                var newIndex = currentGunIndex + (int) context.ReadValue<float>();
+                var newIndex = currentGunIndex + (int)context.ReadValue<float>();
                 if (newIndex < 0)
                 {
                     newIndex = gunList.Count - 1;
@@ -169,6 +169,7 @@ namespace Game
                 {
                     newIndex = 0;
                 }
+
                 UseGun(newIndex);
             }).UnBindAllWhenGameObjectDisabled(this);
 
@@ -179,7 +180,7 @@ namespace Game
 
             InputKit.BindPerformed(AssetConfig.Action.ROLL, _ =>
             {
-                UIKit.ShowPanel<UIGunList>();
+                UIKit.TogglePanelAsync<UIGunList>();
             }).UnBindAllPerformedWhenGameObjectDisabled(this);
         }
 
@@ -200,8 +201,8 @@ namespace Game
 
             if (_Property.Armor.Value > 0)
             {
-                damage                -= _Property.Armor;
-                _Property.Armor.Value -= ((int) damage).MaxWith(1);
+                damage -= _Property.Armor;
+                _Property.Armor.Value -= ((int)damage).MaxWith(1);
 
                 if (_Property.Armor.Value < 0)
                 {
@@ -235,7 +236,8 @@ namespace Game
             if (moveDirection != Vector2.zero)
             {
                 AnimationHelper.UpDownAnimation(SpriteRenderer, Time.time, 0.2f, _playerSpriteOriginLocalPosY, 0.05f);
-                AnimationHelper.UpDownAnimation(WeaponTransform, Time.time, 0.2f, _weaponTransformOriginLocalPosY, 0.05f);
+                AnimationHelper.UpDownAnimation(WeaponTransform, Time.time, 0.2f, _weaponTransformOriginLocalPosY,
+                    0.05f);
 
                 AnimationHelper.RotateAnimation(SpriteRenderer, Time.time, 0.4f, 3);
             }
@@ -286,7 +288,7 @@ namespace Game
                     WeaponTransform.SetLocalEulerAngles(z: 0);
                     Fsm.ChangeState(State.Idle);
                 })
-               .Start(this);
+                .Start(this);
         }
 
         public Gun GetGun(string key)
@@ -313,7 +315,9 @@ namespace Game
             var oldGun = CurrentGun;
             CurrentGun?.DisableGameObject();
 
-            var newGunData = this.GetSystem<GunSystem>().GunDataList[gunIndex];
+            var newGunData = gunIndex >= 0
+                ? this.GetSystem<GunSystem>().OwnedGuns[gunIndex]
+                : this.GetSystem<GunSystem>().OwnedGuns[^-gunIndex];
             CurrentGun = GetGun(newGunData.Key);
             CurrentGun.EnableGameObject();
             CurrentGun.SetData(newGunData);

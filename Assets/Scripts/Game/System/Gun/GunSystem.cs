@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using System.Linq;
+
 namespace Game
 {
     using System.Collections.Generic;
@@ -18,21 +20,38 @@ namespace Game
         protected List<BG_GunTable> _bgGunConfigs;
 
         [ShowInInspector]
-        public List<GunData> GunDataList = new List<GunData>();
+        public List<GunData> AllGuns = new();
+
+        [ShowInInspector]
+        public List<GunData> UnlockedGuns
+        {
+            get { return AllGuns.Where(gun => gun.IsUnlocked).ToList(); }
+        }
+
+        [ShowInInspector]
+        public List<GunData> OwnedGuns // All unlocked guns that are not yet owned
+        {
+            get { return AllGuns.Where(gun => gun.Owned).ToList(); }
+        }
 
         protected override void OnInit()
         {
             _bgGunConfigs = BG_GunTable.FindEntities(config => true);
-            
+
+            foreach (var config in GunConfig.All)
+            {
+                AllGuns.Add(config.CreateData());
+            }
+
             Reset();
         }
 
         public void Reset()
         {
-            GunDataList.Clear();
-            GunDataList.Add(GunConfig.Pistol.CreateData());
-            GunDataList.Add(GunConfig.AK.CreateData());
-            GunDataList.Add(GunConfig.MP5.CreateData());
+            // AvailableGuns.Clear();
+            // AvailableGuns.Add(GunConfig.Pistol.CreateData());
+            // AvailableGuns.Add(GunConfig.AK.CreateData());
+            // AvailableGuns.Add(GunConfig.MP5.CreateData());
         }
     }
 }

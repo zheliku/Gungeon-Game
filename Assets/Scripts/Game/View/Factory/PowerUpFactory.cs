@@ -8,7 +8,6 @@
 
 namespace Game
 {
-    using System;
     using System.Collections.Generic;
     using Framework.Core;
     using Framework.Toolkits.SingletonKit;
@@ -22,7 +21,7 @@ namespace Game
 
         [HierarchyPath("Palette")]
         public Palette Palette;
-        
+
         [HierarchyPath("Key")]
         public Key Key;
 
@@ -46,18 +45,9 @@ namespace Game
             this.BindHierarchyComponent();
         }
 
-        public static void GenPowerUp(IEnemy enemy)
+        public static void GenEnemyPowerUp(IEnemy enemy)
         {
             var powerUps = new List<IPowerUp>();
-
-            // {
-            //     Instance.Hp1,
-            //     Instance.Hp1,
-            //     Instance.Armor1,
-            //     Instance.Armor1,
-            //     Instance.SingleGunFullBullet,
-            //     Instance.AllGunHalfBullet
-            // };
 
             if (Instance.GetModel<PlayerModel>().Property.Hp.Value < 6)
             {
@@ -71,13 +61,56 @@ namespace Game
 
             if (powerUps.Count > 0)
             {
-                var angle   = (0f, 360f).RandomSelect();
+                var angle = (0f, 360f).RandomSelect();
                 var powerUp = powerUps.RandomTakeOne();
                 powerUp.SpriteRenderer.Instantiate()
-                   .SetPosition(enemy.GameObject.GetPosition() + (Vector3) angle.Deg2Direction2D() * (0.25f, 0.5f).RandomSelect())
-                   .EnableGameObject()
-                   .GetComponent<IPowerUp>()
-                   .Room = Instance.GetModel<LevelModel>().CurrentRoom;
+                    .SetPosition(enemy.GameObject.GetPosition() +
+                                 (Vector3)angle.Deg2Direction2D() * (0.25f, 0.5f).RandomSelect())
+                    .EnableGameObject()
+                    .GetComponent<IPowerUp>()
+                    .Room = Instance.GetModel<LevelModel>().CurrentRoom;
+            }
+        }
+
+        public static void GenBossPowerUp(IBoss boss)
+        {
+            var colorCount = (3, 5 + 1).RandomSelect();
+
+            for (int i = 0; i < colorCount; i++)
+            {
+                var angle = (0f, 360f).RandomSelect();
+                var palette = Instance.Palette.SpriteRenderer.Instantiate()
+                    .SetPosition(boss.GameObject.GetPosition() +
+                                 (Vector3)angle.Deg2Direction2D() * (0.25f, 0.5f).RandomSelect())
+                    .EnableGameObject()
+                    .GetComponent<Palette>()
+                    .Room = Instance.GetModel<LevelModel>().CurrentRoom;
+            }
+
+            // todo 枪械生成 
+
+            // 补给生成
+            var powerUpCount = (1, 3 + 1).RandomSelect();
+            var powerUps = new List<IPowerUp>()
+            {
+                Instance.Hp1,
+                Instance.Hp1,
+                Instance.Armor1,
+                Instance.Armor1,
+                Instance.SingleGunFullBullet,
+                Instance.AllGunHalfBullet
+            };
+            
+            for (int i = 0; i < powerUpCount; i++)
+            {
+                var angle = (0f, 360f).RandomSelect();
+                var powerUp = powerUps.RandomTakeOne();
+                powerUp.SpriteRenderer.Instantiate()
+                    .SetPosition(boss.GameObject.GetPosition() +
+                                 (Vector3)angle.Deg2Direction2D() * (0.25f, 0.5f).RandomSelect())
+                    .EnableGameObject()
+                    .GetComponent<IPowerUp>()
+                    .Room = Instance.GetModel<LevelModel>().CurrentRoom;
             }
         }
 

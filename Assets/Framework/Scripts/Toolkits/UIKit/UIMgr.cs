@@ -107,6 +107,7 @@ namespace Framework.Toolkits.UIKit
                 value.Handle.Release();
                 callback?.Invoke();
                 _panels.Remove(panelName);
+                Destroy(value.Panel.Transform.gameObject);
             }
         }
 

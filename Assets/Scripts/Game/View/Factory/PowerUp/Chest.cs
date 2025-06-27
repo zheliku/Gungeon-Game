@@ -29,25 +29,24 @@ namespace Game
                 {
                     this.GetModel<PlayerModel>().Key.Value--;
                 }
-                
+
                 Room.PowerUps.Remove(this); // 从房间中移除
 
-                var gunDataList = this.GetSystem<GunSystem>().GunDataList;
-                var gun = GunConfig.AllConfigs
-                   .Except(gunDataList.Select(gunData => gunData.Config))
-                   .ToList();
+                var ownedGuns = this.GetSystem<GunSystem>().OwnedGuns;
+                var unlockedGuns = this.GetSystem<GunSystem>().UnlockedGuns;
+                var availableGuns = unlockedGuns.Except(ownedGuns).ToList();
 
-                if (gun.Count > 0) // 随机获取一把枪
+                if (availableGuns.Count > 0) // 随机获取一把枪
                 {
-                    var randomGun = gun.RandomTakeOne();
-                    gunDataList.Add(randomGun.CreateData());
-                    Player.Instance.UseGun(gunDataList.Count - 1);
+                    var randomGun = availableGuns.RandomTakeOne();
+                    randomGun.Owned = true;
+                    Player.Instance.UseGun(-1); // 使用最后一把枪
                 }
                 else
                 {
                     var hp1 = PowerUpFactory.Instance.SingleGunFullBullet
-                       .Instantiate(this.GetPosition())
-                       .EnableGameObject();
+                        .Instantiate(this.GetPosition())
+                        .EnableGameObject();
 
                     hp1.Room = this.GetModel<LevelModel>().CurrentRoom;
                 }

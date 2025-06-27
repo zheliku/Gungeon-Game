@@ -14,7 +14,7 @@ namespace Framework.Toolkits.UIKit
     {
         Loaded,
         Shown,
-        Hide,
+        Hidden,
         Unloaded,
     }
 

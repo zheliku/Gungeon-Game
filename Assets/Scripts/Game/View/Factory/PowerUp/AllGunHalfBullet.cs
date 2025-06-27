@@ -21,7 +21,7 @@ namespace Game
             {
                 Room.PowerUps.Remove(this); // 从房间中移除
 
-                foreach (var gunData in this.GetSystem<GunSystem>().GunDataList)
+                foreach (var gunData in this.GetSystem<GunSystem>().OwnedGuns)
                 {
                     var bulletCountToAdd = gunData.Config.BagMaxBulletCount / 2;
                     gunData.AddBagBullet(bulletCountToAdd);

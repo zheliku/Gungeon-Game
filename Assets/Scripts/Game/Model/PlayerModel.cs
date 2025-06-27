@@ -32,7 +32,7 @@ namespace Game
             Property.Hp.SetValueWithoutEvent(6);
             Property.MaxHp.SetValueWithoutEvent(6);
             Coin.SetValueWithoutEvent(100);
-            Key.SetValueWithoutEvent(0);
+            Key.SetValueWithoutEvent(20);
             // Palette.SetValueWithoutEvent(0);
             Property.MoveSpeed = 5;
             Property.Armor.SetValueWithoutEvent(1);

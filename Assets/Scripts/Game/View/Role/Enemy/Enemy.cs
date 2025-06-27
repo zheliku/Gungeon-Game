@@ -81,7 +81,7 @@ namespace Game
                 {
                     AudioKit.PlaySound(AssetConfig.Sound.ENEMY_DIE);
 
-                    PowerUpFactory.GenPowerUp(this);
+                    PowerUpFactory.GenEnemyPowerUp(this);
 
                     this.DestroyGameObject();
                 }

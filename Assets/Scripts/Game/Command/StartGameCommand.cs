@@ -6,12 +6,13 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using Framework.Toolkits.FluentAPI;
+
 namespace Game
 {
     using Framework.Core;
     using Framework.Core.Command;
     using Framework.Toolkits.ResKit;
-    using Framework.Toolkits.UIKit;
     using UnityEngine;
 
     public class StartGameCommand : AbstractCommand
@@ -21,12 +22,13 @@ namespace Game
             this.GetModel<PlayerModel>().Reset();
             this.GetModel<LevelModel>().Reset();
             this.GetSystem<GunSystem>().Reset();
-            
+
             // this.GetSystem<ShopSystem>().Reset();
-            
+
             ResKit.LoadSceneAsync("Game", () =>
             {
                 Time.timeScale = 1;
+                EnemyFactory.Instance.Bosses.Shuffle(); // Shuffle the bosses for a new game
             });
         }
     }

@@ -16,11 +16,11 @@ namespace Game
     using Sirenix.OdinInspector;
     using UnityEngine;
 
-    public interface IBoss : IRole
+    public interface IBoss : IEnemy
     {
         Room Room { get; set; }
     }
-    
+
     public abstract class Boss : AbstractRole, IBoss
     {
         [HierarchyPath("Bullet")]
@@ -31,15 +31,16 @@ namespace Game
         public List<AudioClip> ShootSounds = new List<AudioClip>();
 
         [ShowInInspector]
-        public List<PathFindingHelper.NodeBase<Vector3Int>> MovementPath = new List<PathFindingHelper.NodeBase<Vector3Int>>();
+        public List<PathFindingHelper.NodeBase<Vector3Int>> MovementPath =
+            new List<PathFindingHelper.NodeBase<Vector3Int>>();
 
         [ShowInInspector]
-        public EnemyProperty Property = new EnemyProperty();
+        public EnemyProperty Property { get; } = new EnemyProperty();
 
         public Vector2 FollowTimeRange { get; private set; }
 
         public float BulletSpeed { get; private set; }
-        
+
         private Room _room;
 
         [ShowInInspector]
@@ -59,19 +60,21 @@ namespace Game
                 Property.Hp.SetValueWithoutEvent(bgConfig.Hp);
                 Property.MaxHp.SetValueWithoutEvent(bgConfig.Hp);
                 Property.MoveSpeed = bgConfig.MoveSpeed;
-                Property.Damage    = bgConfig.Damage;
-                BulletSpeed         = bgConfig.BulletSpeed;
+                Property.Damage = bgConfig.Damage;
+                BulletSpeed = bgConfig.BulletSpeed;
             }
 
             PlayerSpriteOriginLocalPos = SpriteRenderer.GetLocalPosition();
 
             Bullet.Disable();
-            
+
             Property.Hp.Register((oldValue, value) =>
             {
                 if (value <= 0)
                 {
                     AudioKit.PlaySound(AssetConfig.Sound.ENEMY_DIE);
+                    
+                    PowerUpFactory.GenBossPowerUp(this);
 
                     this.DestroyGameObject();
                 }
@@ -103,12 +106,12 @@ namespace Game
 
         public override void Hurt(float damage, HitInfo info)
         {
-            Property.Hp.Value -= (int) damage;
+            Property.Hp.Value -= (int)damage;
 
             FxFactory.PlayHurtFx(this.GetPosition(), Color.red);
 
             FxFactory.PlayEnemyBlood(this.GetPosition());
-            
+
             TypeEventSystem.GLOBAL.Send(new BossHpChangeEvent(Property.Hp.Value * 1f / Property.MaxHp.Value));
         }
 
@@ -124,7 +127,7 @@ namespace Game
             {
                 // 自动寻路计算
                 var pathPos = MovementPath.Last().Coords.Pos;
-                var moveVec = new Vector2(pathPos.x + 0.5f, pathPos.y + 0.5f) - (Vector2) this.GetPosition();
+                var moveVec = new Vector2(pathPos.x + 0.5f, pathPos.y + 0.5f) - (Vector2)this.GetPosition();
                 directionToPlayer = moveVec.normalized;
 
                 if (moveVec.magnitude < 0.1f) // 如果距离目标点小于等于0.1，则到达目标位置，删除上一个位置
@@ -138,8 +141,8 @@ namespace Game
 
         public void CalculateMovementPath()
         {
-            var grid          = LevelController.Instance.WallTilemap.layoutGrid;
-            var myCellPos     = grid.WorldToCell(this.GetPosition());
+            var grid = LevelController.Instance.WallTilemap.layoutGrid;
+            var myCellPos = grid.WorldToCell(this.GetPosition());
             var playerCellPos = grid.WorldToCell(Player.Instance.GetPosition());
 
             MovementPath = PathFindingHelper.FindPath(

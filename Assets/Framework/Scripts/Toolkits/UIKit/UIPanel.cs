@@ -58,7 +58,7 @@ namespace Framework.Toolkits.UIKit
 
         public void Hide()
         {
-            State = PanelState.Hide;
+            State = PanelState.Hidden;
             gameObject.SetActive(false);
             OnHide();
         }

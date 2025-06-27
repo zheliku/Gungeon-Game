@@ -21,6 +21,7 @@ namespace Game
         [ShowInInspector]
         public List<Enemy> Enemies = new List<Enemy>();
 
+        [ShowInInspector]
         public List<Boss> Bosses = new List<Boss>();
 
         public override void OnSingletonInit()
@@ -40,6 +41,8 @@ namespace Game
                     Bosses.Add(boss);
                 }
             }
+
+            Bosses.Shuffle(); // Randomize the order of bosses
         }
 
         public static Enemy GetEnemyByName(string name)

@@ -34,7 +34,7 @@ namespace Game
             {
                 if (CurrentRoom == e.Room)
                 {
-                    CurrentRoom = null;
+                    // CurrentRoom = null;
                 }
             });
             
