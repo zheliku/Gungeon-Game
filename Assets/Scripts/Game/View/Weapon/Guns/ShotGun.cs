@@ -36,7 +36,7 @@ namespace Game
 
         public override void Shooting(Vector2 direction) { }
 
-        public override void ShootUp(Vector2 direction)
+        public override void ShootUp()
         {
             IsShooting = false;
         }
@@ -70,7 +70,7 @@ namespace Game
             // 没有子弹，则抬枪
             if (Clip.IsEmpty)
             {
-                ShootUp(direction);
+                ShootUp();
                 IsShooting = false;
             }
         }

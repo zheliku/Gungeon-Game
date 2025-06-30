@@ -30,6 +30,7 @@ namespace Game
             public const string USE_ARMOR = "UseArmor";
             public const string POWER_UP_HALF_BULLET = "PowerUpHalfBullet";
             public const string UNLOCK_GUN = "UnlockGun";
+            public const string PLAYER_DIE = "PlayerDie";
 
             public static string BulletSound
             {
@@ -69,7 +70,6 @@ namespace Game
                         // 确保字段是const string类型
                         if (field.IsLiteral && !field.IsInitOnly && field.FieldType == typeof(string))
                         {
-                            string fieldName = field.Name;
                             string fieldValue = (string)field.GetValue(null); // const字段是static，传null
                             musicList.Add(fieldValue);
                         }

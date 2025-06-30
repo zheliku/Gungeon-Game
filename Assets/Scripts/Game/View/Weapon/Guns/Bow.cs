@@ -47,13 +47,13 @@ namespace Game
             }
         }
 
-        public override void ShootUp(Vector2 direction)
+        public override void ShootUp()
         {
             if (_CanShoot && _arrowPrepare.IsEnabled())
             {
                 _arrowPrepare.Disable();
 
-                ShootOnce(direction);
+                ShootOnce(ShootDirection);
 
                 AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.8f);
             }

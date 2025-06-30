@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using Sirenix.OdinInspector;
+
 namespace Game
 {
     using System;
@@ -21,11 +23,13 @@ namespace Game
     {
         public Gun Gun { get; } // 属于哪个枪
 
+        [ShowInInspector]
         public int RemainBulletCount // 当前子弹数量
         {
             get => Gun.Data.ClipRemainBulletCount;
         }
 
+        [ShowInInspector]
         public int MaxBulletCount
         {
             get => Gun.Data.Config.ClipMaxBulletCount;
@@ -81,8 +85,13 @@ namespace Game
             }
 
             // 重装子弹前首先抬枪
-            Gun.ShootUp(Gun.ShootDirection);
-
+            Gun.ShootUp();
+            
+            if (reloadBulletCount == 0)
+            {
+                return;
+            }
+            
             IsReloading = true;
 
             var targetCount = RemainBulletCount + reloadBulletCount;

@@ -107,6 +107,7 @@ namespace Game
                 if (value <= 0)
                 {
                     UIKit.ShowPanelAsync<GameOver>();
+                    AudioKit.PlaySound(AssetConfig.Sound.PLAYER_DIE);
                     this.DisableGameObject();
                 }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
@@ -138,6 +139,14 @@ namespace Game
                 .OnExit(() =>
                 {
                     GetComponent<Collider2D>().excludeLayers = 0; // 取消限制
+
+                    if (Mathf.Approximately(InputKit.ReadValue<float>(AssetConfig.Action.ATTACK), 1f))
+                    {
+                        if (CurrentGun)
+                        {
+                            CurrentGun.ShootDown(CurrentGun.ShootDirection);
+                        }
+                    }
                 });
 
             Fsm.StartState(State.Idle);
@@ -177,11 +186,6 @@ namespace Game
             {
                 Fsm.StartState(State.Rolling);
             }).UnBindAllPerformedWhenGameObjectDisabled(this);
-
-            InputKit.BindPerformed(AssetConfig.Action.ROLL, _ =>
-            {
-                UIKit.TogglePanelAsync<UIGunList>();
-            }).UnBindAllPerformedWhenGameObjectDisabled(this);
         }
 
         // Update is called once per frame
@@ -197,8 +201,6 @@ namespace Game
 
         public override void Hurt(float damage, HitInfo info)
         {
-            Debug.Log("Player Hurt");
-
             if (_Property.Armor.Value > 0)
             {
                 damage -= _Property.Armor;
@@ -218,7 +220,7 @@ namespace Game
                 return;
             }
 
-            // _Property.Hp.Value -= (int) damage;
+            _Property.Hp.Value -= (int)damage;
 
             FxFactory.PlayHurtFx(this.GetPosition(), Color.green);
             FxFactory.PlayPlayerBlood(this.GetPosition());
@@ -261,6 +263,12 @@ namespace Game
 
         private void OnRollEnter()
         {
+            if (CurrentGun)
+            {
+                CurrentGun.ShootUp();
+                // CurrentGun
+            }
+
             GetComponent<Collider2D>().excludeLayers = ~LayerMask.GetMask("Wall"); // 只和 Wall 层碰撞
 
             _rollDirection = _moveAction.ReadValue<Vector2>();

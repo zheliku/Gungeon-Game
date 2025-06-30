@@ -34,7 +34,7 @@ namespace Game
         public override void Shooting(Vector2 direction)
         { }
 
-        public override void ShootUp(Vector2 direction)
+        public override void ShootUp()
         {
             IsShooting = false;
         }

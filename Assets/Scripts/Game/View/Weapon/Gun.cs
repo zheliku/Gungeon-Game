@@ -150,7 +150,7 @@ namespace Game
                 // 松手时检查是否还在射击，如果还在射击，则抬枪
                 if (IsShooting)
                 {
-                    ShootUp(ShootDirection);
+                    ShootUp();
                 }
             }).UnBindAllWhenGameObjectDisabled(gameObject);
 
@@ -177,14 +177,14 @@ namespace Game
 
         protected virtual void OnDisable()
         {
-            ShootUp(Vector2.zero); // 销毁时抬枪，否则死后可能会一直播放射击声音
+            ShootUp(); // 销毁时抬枪，否则死后可能会一直播放射击声音
         }
 
         public abstract void ShootDown(Vector2 direction);
 
         public abstract void Shooting(Vector2 direction);
 
-        public abstract void ShootUp(Vector2 direction);
+        public abstract void ShootUp();
 
         public virtual void ShootOnce(Vector2 direction)
         {
@@ -243,7 +243,7 @@ namespace Game
         /// </summary>
         protected void TryAutoReload()
         {
-            if (_ShootInterval.CanShoot) // 射击间隔冷却完成
+            if (_ShootInterval.CanShoot && !Bag.IsEmpty) // 射击间隔冷却完成
             {
                 Reload(); // 自动装填
             }

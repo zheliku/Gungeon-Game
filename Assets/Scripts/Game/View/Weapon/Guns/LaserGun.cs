@@ -95,7 +95,7 @@ namespace Game
             }
         }
 
-        public override void ShootUp(Vector2 direction)
+        public override void ShootUp()
         {
             _audioPlayer?.Stop();
             LineRenderer.DisableGameObject();
