@@ -21,6 +21,8 @@ namespace Game
         public BindableProperty<int> Key = new BindableProperty<int>();
         
         public PlayerPrefsIntProperty Palette = new PlayerPrefsIntProperty(nameof(Palette));
+
+        public int CurrentGunIndex = 0;
         
         protected override void OnInit()
         {

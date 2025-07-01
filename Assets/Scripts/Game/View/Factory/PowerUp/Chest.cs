@@ -32,15 +32,19 @@ namespace Game
 
                 Room.PowerUps.Remove(this); // 从房间中移除
 
-                var ownedGuns = this.GetSystem<GunSystem>().OwnedGuns;
-                var unlockedGuns = this.GetSystem<GunSystem>().UnlockedGuns;
-                var availableGuns = unlockedGuns.Except(ownedGuns).ToList();
+                var unOwnedGuns = this.GetSystem<GunSystem>().UnOwnedGuns;
 
-                if (availableGuns.Count > 0) // 随机获取一把枪
+                if (unOwnedGuns.Count > 0) // 随机获取一把枪
                 {
-                    var randomGun = availableGuns.RandomTakeOne();
-                    randomGun.Owned = true;
-                    Player.Instance.UseGun(-1); // 使用最后一把枪
+                    var powerUpGun = PowerUpFactory.Instance.PowerUpGun
+                        .Instantiate(this.GetPosition())
+                        .Self(self =>
+                        {
+                            self.Data = unOwnedGuns.RandomTakeOne();
+                        })
+                        .EnableGameObject();
+                    
+                    powerUpGun.Room = this.GetModel<LevelModel>().CurrentRoom;
                 }
                 else
                 {

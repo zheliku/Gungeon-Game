@@ -12,7 +12,7 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using UnityEngine;
 
-    public class FullBounceEnemyBullet : Bullet
+    public class FullBounceEnemyBullet : EnemyBullet
     {
         public int ReflectCount = 3;
 
@@ -22,7 +22,7 @@ namespace Game
             set => GetComponent<SpriteRenderer>().color = value;
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        protected override void OnCollisionEnter2D(Collision2D other)
         {
             var player = other.gameObject.GetComponent<Player>();
             if (player)
@@ -37,7 +37,5 @@ namespace Game
                 this.DestroyGameObject();
             }
         }
-
-        protected override IArchitecture _Architecture { get => Game.Architecture; }
     }
 }

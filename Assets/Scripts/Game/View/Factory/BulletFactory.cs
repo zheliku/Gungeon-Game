@@ -15,21 +15,17 @@ namespace Game
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.SingletonKit;
     using UnityEngine;
-    using UnityEngine.Pool;
 
     public class BulletFactory : MonoSingleton<BulletFactory>
     {
-        public List<AudioClip> HitWallSounds  = new List<AudioClip>();
-        public List<AudioClip> HitEnemySounds = new List<AudioClip>();
-
         [HierarchyPath("GunBullet")]
         public PlayerBullet GunBullet;
 
         [HierarchyPath("RocketBullet")]
         public PlayerBullet RocketBullet;
-
-        [HierarchyPath("BowArrow")]
-        public PlayerBullet BowArrow;
+        
+        [HierarchyPath("ArrowBullet")]
+        public ArrowBullet ArrowBullet;
 
         [HierarchyPath("PistolShell")]
         public Rigidbody2D PistolShell;

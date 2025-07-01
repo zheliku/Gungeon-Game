@@ -177,7 +177,7 @@ namespace Game
 
         public void UpdateGunView(Gun gun)
         {
-            if (gun == null)
+            if (gun)
             {
                 return;
             }

@@ -131,7 +131,7 @@ namespace Game
                 radius: 0.5f,
                 direction: direction,
                 intervalAngle: IntervalAngle,
-                bulletPrefab: Bullet,
+                bullet: Bullet,
                 damage: 1f,
                 speed: BulletSpeed);
 

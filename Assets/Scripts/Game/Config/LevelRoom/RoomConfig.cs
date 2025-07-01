@@ -37,8 +37,8 @@ namespace Game
             "1                 1",
             "1                 1",
             "1                 1",
-            "1  ccccccccccccc  1",
-            "1  ccccccccccccc  1",
+            "1  c    c         1",
+            "1  c    c         1",
             "1                 1",
             "111111111d111111111",
         });

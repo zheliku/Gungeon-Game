@@ -56,7 +56,10 @@ namespace Game
 
         public float AdditionalCameraSize { get; set; }
 
-        public GunData Data { get; private set; }
+        public GunData Data
+        {
+            get => this.GetSystem<GunSystem>().AllGuns.Find(data => data.Key == GetType().Name);
+        }
 
         [ShowInInspector]
         protected GunShootInterval _ShootInterval { get; set; }
@@ -105,7 +108,7 @@ namespace Game
                             return e.GameObject.name.StartsWith("Enemy"); // 仅对小怪生效
                         });
 
-                    if (_TargetEnemy != null) // 自动瞄准
+                    if (_TargetEnemy) // 自动瞄准
                     {
                         Aim.CopyPositionFrom(_TargetEnemy);
                         Aim.EnableGameObject();
@@ -194,7 +197,7 @@ namespace Game
             BulletHelper.Shoot(
                 ShootPos.position,
                 direction,
-                BulletFactory.Instance.GunBullet.gameObject,
+                BulletFactory.Instance.GunBullet,
                 _bgGunEntity.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
@@ -218,11 +221,6 @@ namespace Game
             {
                 GunShootLight.DisableGameObject();
             }).StartCurrentScene();
-        }
-        
-        public void SetData(GunData gunData)
-        {
-            Data = gunData;
         }
 
         public void Reload()

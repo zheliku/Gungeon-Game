@@ -120,7 +120,7 @@ namespace Game
                         center: transform.position,
                         radius: 0.5f,
                         angleOffset: (0f, 360f).RandomSelect(),
-                        bulletPrefab: Bullet,
+                        bullet: Bullet,
                         damage: 1f,
                         speed: BulletSpeed);
                     AudioKit.PlaySound(ShootSounds.RandomTakeOne());

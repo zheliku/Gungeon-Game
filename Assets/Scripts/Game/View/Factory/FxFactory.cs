@@ -93,12 +93,12 @@ namespace Game
             }).Start(Instance);
         }
 
-        public static void PlayDieBody(Vector3 position, string dieBodyName, HitInfo hitInfo, float scale)
+        public static SpriteRenderer PlayDieBody(Vector3 position, string dieBodyName, HitInfo hitInfo, float scale)
         {
             var dieSprite = Instance.DieBodies.FirstOrDefault(b => b.name == dieBodyName);
             if (dieSprite == null)
             {
-                return;
+                return null;
             }
 
             var dieBody = dieSprite.Instantiate(position)
@@ -119,6 +119,8 @@ namespace Game
                 var targetPos = originPos.Lerp(originPos - (Vector3) (moveToDistance * hitInfo.HitNormal), f);
                 dieBody.SetPosition(targetPos);
             }).Start(Instance);
+
+            return dieBody;
         }
 
         protected override IArchitecture _Architecture { get => Game.Architecture; }

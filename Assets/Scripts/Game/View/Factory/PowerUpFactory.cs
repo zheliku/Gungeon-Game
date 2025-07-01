@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using System.Linq;
+
 namespace Game
 {
     using System.Collections.Generic;
@@ -21,6 +23,9 @@ namespace Game
 
         [HierarchyPath("Palette")]
         public Palette Palette;
+        
+        [HierarchyPath("PowerUpGun")]
+        public PowerUpGun PowerUpGun;
 
         [HierarchyPath("Key")]
         public Key Key;
@@ -87,7 +92,21 @@ namespace Game
                     .Room = Instance.GetModel<LevelModel>().CurrentRoom;
             }
 
-            // todo 枪械生成 
+            // 枪械生成 
+            var unOwnedGuns = Instance.GetSystem<GunSystem>().UnOwnedGuns;
+
+            if (unOwnedGuns.Count > 0) // 随机获取一把枪
+            {
+                var powerUpGun = Instance.PowerUpGun
+                    .Instantiate(boss.Position)
+                    .Self(self =>
+                    {
+                        self.Data = unOwnedGuns.RandomTakeOne();
+                    })
+                    .EnableGameObject();
+                    
+                powerUpGun.Room = Instance.GetModel<LevelModel>().CurrentRoom;
+            }
 
             // 补给生成
             var powerUpCount = (1, 3 + 1).RandomSelect();

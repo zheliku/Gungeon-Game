@@ -52,7 +52,7 @@ namespace Game
                 radius: 0f,
                 direction: direction,
                 intervalAngle: IntervalAngle,
-                bulletPrefab: BulletFactory.Instance.GunBullet.gameObject,
+                bullet: BulletFactory.Instance.GunBullet,
                 damage: 1f,
                 speed: _BulletSpeed,
                 _UnstableAngle);

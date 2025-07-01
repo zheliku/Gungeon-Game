@@ -7,6 +7,7 @@
 // ------------------------------------------------------------
 
 using System.Linq;
+using UnityEngine;
 
 namespace Game
 {
@@ -19,19 +20,27 @@ namespace Game
         [ShowInInspector]
         protected List<BG_GunTable> _bgGunConfigs;
 
+        public GunData CurrentGunData;
+
         [ShowInInspector]
         public List<GunData> AllGuns = new();
 
         [ShowInInspector]
         public List<GunData> UnlockedGuns
         {
-            get { return AllGuns.Where(gun => gun.IsUnlocked).ToList(); }
+            get { return AllGuns.FindAll(gun => gun.IsUnlocked); }
         }
 
         [ShowInInspector]
-        public List<GunData> OwnedGuns // All unlocked guns that are not yet owned
+        public List<GunData> OwnedGuns // All unlocked guns that are owned
         {
-            get { return AllGuns.Where(gun => gun.Owned).ToList(); }
+            get { return AllGuns.FindAll(gun => gun.Owned); }
+        }
+        
+        [ShowInInspector]
+        public List<GunData> UnOwnedGuns // All unlocked guns that are not yet owned
+        {
+            get { return AllGuns.FindAll(gun => gun.IsUnlocked && !gun.Owned); }
         }
 
         protected override void OnInit()
@@ -42,6 +51,10 @@ namespace Game
             {
                 AllGuns.Add(config.CreateData());
             }
+            
+            CurrentGunData = OwnedGuns[0];
+            
+            Debug.Log(CurrentGunData);
 
             Reset();
         }

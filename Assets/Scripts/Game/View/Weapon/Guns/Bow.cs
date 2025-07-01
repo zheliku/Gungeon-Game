@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game
 {
     using Framework.Core;
@@ -17,6 +19,10 @@ namespace Game
     {
         [HierarchyPath("ArrowPrepare")]
         private GameObject _arrowPrepare;
+
+        public List<AudioClip> PreparedSounds = new();
+        
+        private AudioPlayer _pullSoundPlayer;
 
         protected override void Awake()
         {
@@ -31,6 +37,10 @@ namespace Game
             {
                 _ShootInterval.Reset();
                 IsShooting = true;
+                _pullSoundPlayer = AudioKit.PlaySound(PreparedSounds.RandomTakeOne(), onPlayFinish: player =>
+                {
+                    _pullSoundPlayer = null;
+                });
             }
             else if (Clip.IsEmpty)
             {
@@ -57,19 +67,24 @@ namespace Game
 
                 AudioKit.PlaySound(ShootSounds.RandomTakeOne(), volume: 0.8f);
             }
+            else
+            {
+                _pullSoundPlayer?.Stop();
+                _pullSoundPlayer = null;
+            }
 
             IsShooting = false;
         }
-        
+
         public override void ShootOnce(Vector2 direction)
         {
-            Clip.Use();             // 弹夹使用子弹
+            Clip.Use(); // 弹夹使用子弹
             _ShootInterval.Reset(); // 射击间隔重置
 
             BulletHelper.Shoot(
                 ShootPos.position,
                 direction,
-                BulletFactory.Instance.BowArrow.gameObject,
+                BulletFactory.Instance.ArrowBullet,
                 _bgGunEntity.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);

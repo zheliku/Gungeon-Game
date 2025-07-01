@@ -9,11 +9,9 @@
 namespace Game
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Framework.Core;
     using Framework.Toolkits.ActionKit;
     using Framework.Toolkits.AudioKit;
-    using Framework.Toolkits.EventKit;
     using Framework.Toolkits.FluentAPI;
     using Framework.Toolkits.FSMKit;
     using Framework.Toolkits.InputKit;
@@ -87,15 +85,15 @@ namespace Game
 
         public Gun CurrentGun
         {
-            get;
-            private set;
+            get => GetGun(this.GetSystem<GunSystem>().CurrentGunData);
+            private set => this.GetSystem<GunSystem>().CurrentGunData = value.Data;
         }
 
         protected override void Awake()
         {
             base.Awake();
 
-            _playerSpriteOriginLocalPosY = SpriteRenderer.GetLocalPositionY();
+            _playerSpriteOriginLocalPosY    = SpriteRenderer.GetLocalPositionY();
             _weaponTransformOriginLocalPosY = WeaponTransform.GetLocalPositionY();
 
             FloatingText.DisableGameObject();
@@ -104,29 +102,18 @@ namespace Game
 
             _Property.Hp.Register((_, value) =>
             {
-                if (value <= 0)
-                {
-                    UIKit.ShowPanelAsync<GameOver>();
-                    AudioKit.PlaySound(AssetConfig.Sound.PLAYER_DIE);
-                    this.DisableGameObject();
-                }
+                // if (value <= 0)
+                // {
+                //     UIKit.ShowPanelAsync<GameOver>();
+                //     AudioKit.PlaySound(AssetConfig.Sound.PLAYER_DIE);
+                //     this.DisableGameObject();
+                // }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
-
-            UIKit.ShowPanelAsync<GamePlay>(play =>
-            {
-                play.UpdateGunView(CurrentGun);
-            });
-
-            UseGun(0);
         }
 
         private void Start()
         {
-            var gunData = this.GetSystem<GunSystem>().OwnedGuns.First();
-            if (gunData.Key == GunConfig.Pistol.Key)
-            {
-                UseGun(0);
-            }
+            UseGun(this.GetSystem<GunSystem>().CurrentGunData);
 
             Fsm.State(State.Idle)
                 .OnUpdate(OnIdleUpdate);
@@ -154,6 +141,11 @@ namespace Game
 
         private void OnEnable()
         {
+            UIKit.ShowPanelAsync<GamePlay>(play =>
+            {
+                play.UpdateGunView(CurrentGun);
+            });
+            
             InputKit.BindPerformed(AssetConfig.Action.CHANGE_GUN, context =>
             {
                 if (CurrentGun.IsShooting || CurrentGun.Clip.IsReloading) // 射击、切枪时不可切换 Gun
@@ -179,7 +171,7 @@ namespace Game
                     newIndex = 0;
                 }
 
-                UseGun(newIndex);
+                UseGun(gunList[newIndex]);
             }).UnBindAllWhenGameObjectDisabled(this);
 
             InputKit.BindPerformed(AssetConfig.Action.ROLL, _ =>
@@ -203,7 +195,7 @@ namespace Game
         {
             if (_Property.Armor.Value > 0)
             {
-                damage -= _Property.Armor;
+                damage                -= _Property.Armor;
                 _Property.Armor.Value -= ((int)damage).MaxWith(1);
 
                 if (_Property.Armor.Value < 0)
@@ -266,7 +258,6 @@ namespace Game
             if (CurrentGun)
             {
                 CurrentGun.ShootUp();
-                // CurrentGun
             }
 
             GetComponent<Collider2D>().excludeLayers = ~LayerMask.GetMask("Wall"); // 只和 Wall 层碰撞
@@ -299,7 +290,7 @@ namespace Game
                 .Start(this);
         }
 
-        public Gun GetGun(string key)
+        public Gun GetGun(GunData gunData)
         {
             for (int i = 0; i < WeaponTransform.childCount; i++)
             {
@@ -309,7 +300,7 @@ namespace Game
                     continue;
                 }
 
-                if (gun.name == key)
+                if (gun.name == gunData.Key)
                 {
                     return gun;
                 }
@@ -318,17 +309,15 @@ namespace Game
             return null;
         }
 
-        public void UseGun(int gunIndex)
+        public void UseGun(GunData gunData)
         {
             var oldGun = CurrentGun;
             CurrentGun?.DisableGameObject();
+            
+            print(gunData);
 
-            var newGunData = gunIndex >= 0
-                ? this.GetSystem<GunSystem>().OwnedGuns[gunIndex]
-                : this.GetSystem<GunSystem>().OwnedGuns[^-gunIndex];
-            CurrentGun = GetGun(newGunData.Key);
+            CurrentGun = GetGun(gunData);
             CurrentGun.EnableGameObject();
-            CurrentGun.SetData(newGunData);
 
             var gunChange = CurrentGun != oldGun;
 
@@ -340,8 +329,6 @@ namespace Game
 
             CameraController.AdditionalOrthographicSize = CurrentGun.AdditionalCameraSize;
         }
-
-        protected override IArchitecture _Architecture { get => Game.Architecture; }
 
         public void OnSingletonInit()
         {

@@ -35,7 +35,7 @@ namespace Game
                 var itemObj = _gunItemInfoTemplate.Instantiate(_gunItemRoot).EnableGameObject();
 
                 itemObj.TxtName.text = gunData.Config.Description;
-                itemObj.ImgIcon.sprite = Player.Instance.GetGun(gunData.Key).GunSprite.sprite;
+                itemObj.ImgIcon.sprite = Player.Instance.GetGun(gunData).GunSprite.sprite;
 
                 if (gunData.IsUnlocked)
                 {

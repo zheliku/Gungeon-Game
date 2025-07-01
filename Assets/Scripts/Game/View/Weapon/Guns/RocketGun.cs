@@ -44,7 +44,7 @@ namespace Game
             BulletHelper.Shoot(
                 ShootPos.position,
                 direction,
-                BulletFactory.Instance.RocketBullet.gameObject,
+                BulletFactory.Instance.RocketBullet,
                 _bgGunEntity.DamageRange.RandomSelect(),
                 _BulletSpeed,
                 _UnstableAngle);
