@@ -78,7 +78,7 @@ namespace Framework.Core
                     {
                         field.SetValue(view, component);
                     }
-                    else
+                    else if (attribute.LogErrorIfNotFound)
                     {
                         Debug.LogError($"Component resolve failed: {attribute.HierarchyPath}", view.gameObject);
                     }
@@ -92,14 +92,22 @@ namespace Framework.Core
                     // 获取 targetTransform 上的所有 MonoBehaviour 脚本
                     var scripts = targetTransform.GetComponents<MonoBehaviour>();
 
+                    var finded = false;
+                    
                     foreach (var script in scripts)
                     {
                         // 检查脚本是否实现了接口
                         if (fieldType.IsAssignableFrom(script.GetType()))
                         {
                             field.SetValue(view, script);
+                            finded = true;
                             break;
                         }
+                    }
+                    
+                    if (!finded && attribute.LogErrorIfNotFound)
+                    {
+                        Debug.LogError($"Interface resolve failed: {fieldType.Name} at {attribute.HierarchyPath}", view.gameObject);
                     }
                 }
             }

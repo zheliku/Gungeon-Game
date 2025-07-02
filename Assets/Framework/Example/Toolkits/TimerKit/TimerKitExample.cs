@@ -22,7 +22,7 @@ namespace Framework.Toolkits.TimerKit.Example
         {
             if (GUILayout.Button("Timer 1", GUILayout.Width(150), GUILayout.Height(50)))
             {
-                TimerMgr.Instance.CreateTimer(
+                TimerKit.Create(
                     (t) => Debug.Log("Timer 1: " + t.TickCount + " clicked"),
                     1,
                     -1);
@@ -30,7 +30,7 @@ namespace Framework.Toolkits.TimerKit.Example
 
             if (GUILayout.Button("Timer 2", GUILayout.Width(150), GUILayout.Height(50)))
             {
-                TimerMgr.Instance.CreateTimer(
+                TimerKit.Create(
                     (t) => Debug.Log("Timer 2: " + t.TickCount + " clicked"),
                     2,
                     3);
@@ -38,7 +38,7 @@ namespace Framework.Toolkits.TimerKit.Example
             
             if (GUILayout.Button("Timer 3", GUILayout.Width(150), GUILayout.Height(50)))
             {
-                TimerMgr.Instance.CreateTimer(
+                TimerKit.Create(
                     (t) => Debug.Log("Timer 3: " + t.TickCount + " clicked"),
                     3,
                     3);

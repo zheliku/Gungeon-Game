@@ -28,6 +28,9 @@ namespace Game
         [HierarchyPath("PlayerBlood")]
         public SpriteRenderer PlayerBlood;
 
+        [HierarchyPath("Explosion")]
+        public Explosion Explosion;
+
         public List<SpriteRenderer> DieBodies = new List<SpriteRenderer>();
 
         private void Awake()

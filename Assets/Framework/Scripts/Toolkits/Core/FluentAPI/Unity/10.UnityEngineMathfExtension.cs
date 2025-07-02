@@ -17,7 +17,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Lerp(a, b, self);
         }
-        
+
         public static float LerpAngle(this float self, float angle1, float angle2)
         {
             return Mathf.LerpAngle(angle1, angle2, self);
@@ -33,7 +33,7 @@ namespace Framework.Toolkits.FluentAPI
         {
             return Mathf.Lerp(self.start, self.target, 1f - Mathf.Exp(-speed));
         }
-        
+
         /// <summary>
         /// 平滑过渡（角度）
         /// </summary>
@@ -161,7 +161,7 @@ namespace Framework.Toolkits.FluentAPI
             {
                 < 0 => -1,
                 > 0 => 1,
-                _   => 0
+                _ => 0
             };
         }
 
@@ -171,7 +171,7 @@ namespace Framework.Toolkits.FluentAPI
             {
                 < 0 => -1,
                 > 0 => 1,
-                _   => 0
+                _ => 0
             };
         }
 
@@ -217,7 +217,7 @@ namespace Framework.Toolkits.FluentAPI
 
         public static float ToAngle(this Vector2 self)
         {
-            return Mathf.Atan2(self.y, self.x).Rad2Deg();
+            return Mathf.Atan2(self.y, self.x) * Mathf.Rad2Deg;
         }
 
         public static float Clamp(this float self, float min, float max)

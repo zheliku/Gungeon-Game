@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using Unity.VisualScripting;
+
 namespace Game
 {
     using Framework.Core;
@@ -26,6 +28,7 @@ namespace Game
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void AutoInit()
         {
+            // Player.Instance.SendCommand<StartGameCommand>();
             // this.GetModel<LevelModel>().PacingQueue = new Queue<int>(Level1.CONFIG.Pacing);
         }
     }

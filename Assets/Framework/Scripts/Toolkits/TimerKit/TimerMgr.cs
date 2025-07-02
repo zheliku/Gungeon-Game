@@ -18,7 +18,7 @@ namespace Framework.Toolkits.TimerKit
     [MonoSingletonPath("Framework/TimerKit/TimerMgr")]
     public class TimerMgr : MonoSingleton<TimerMgr>
     {
-    #region 字段
+        #region 字段
 
         [ShowInInspector]
         private readonly List<Timer> _timers = new List<Timer>();
@@ -35,7 +35,9 @@ namespace Framework.Toolkits.TimerKit
             get => Time.unscaledTime;
         }
 
-    #endregion
+        private readonly object _lock = new object();
+
+        #endregion
 
         [ShowInInspector]
         public SingletonObjectPool<Timer> TimerPool { get => SingletonObjectPool<Timer>.Instance; }
@@ -43,22 +45,52 @@ namespace Framework.Toolkits.TimerKit
         [ShowInInspector]
         public Dictionary<int, float> TimeDict { get; } = new Dictionary<int, float>();
 
-    #region 公共方法
+        #region 公共方法
 
-        public Timer CreateTimer(Action<Timer> onTick, float duration, int repeat = 1, TimerType timerType = TimerType.Scaled)
+        public Timer CreateTimer(Action<Timer> onTick, float duration, int repeat = 1,
+            TimerType timerType = TimerType.Scaled)
         {
-            var timer = Timer.Spawn(onTick, duration, repeat, timerType);
-            _timers.Add(timer);
-            return timer;
+            lock (_lock)
+            {
+                var timer = Timer.Spawn(onTick, duration, repeat, timerType);
+                _timers.Add(timer);
+                return timer;
+            }
         }
 
-    #endregion
+        #endregion
 
-    #region Unity 事件
+        #region Unity 事件
 
         protected override void Update()
         {
             base.Update();
+            
+            lock (_lock)
+            {
+                _timers.RemoveAll(timer =>
+                {
+                    if (!timer.Enabled)
+                    {
+                        if (!timer.IsInPool) timer.RecycleToCache();
+                        return true;
+                    }
+
+                    if (!timer.Paused && timer.TargetTime <= timer.CurrentTime)
+                    {
+                        timer.Tick();
+                        if (!timer.TryRepeat())
+                        {
+                            if (!timer.IsInPool) timer.RecycleToCache();
+                            return true;
+                        }
+                    }
+
+                    return false;
+                });
+            }
+
+            return;
 
             for (int i = _timers.Count - 1; i >= 0; i--)
             {
@@ -95,6 +127,6 @@ namespace Framework.Toolkits.TimerKit
             }
         }
 
-    #endregion
+        #endregion
     }
 }

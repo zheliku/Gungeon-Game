@@ -63,8 +63,10 @@ namespace Game
                     this.DestroyGameObjectGracefully(); // 可能重复删除
                 });
             }
-
-            this.DestroyGameObjectGracefully();
+            else
+            {
+                this.DestroyGameObjectGracefully();
+            }
         }
     }
 }

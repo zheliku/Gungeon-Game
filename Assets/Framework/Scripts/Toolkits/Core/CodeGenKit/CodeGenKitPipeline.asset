@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: CodeGenKitPipeline
   m_EditorClassIdentifier: 
   GlobalNameSpace: Game
-  GlobalFolderPath: Assets/Scripts
-  GlobalFileName: 
+  GlobalFolderPath: Assets/Scripts/Game/View/Weapon
+  GlobalFileName: Explosion
   GlobalArchitecture: Game
   IsGenerating: 0
   LastSelectedGameObject: {fileID: 0}
   NameSpace: Game
-  FolderPath: Assets/Scripts
-  FileName: 
+  FolderPath: Assets/Scripts/Game/View/Weapon
+  FileName: Explosion
   Architecture: Game

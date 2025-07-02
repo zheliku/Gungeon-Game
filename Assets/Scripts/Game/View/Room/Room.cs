@@ -55,7 +55,7 @@ namespace Game
             get => _grid;
         }
 
-        private List<Enemy> _enemiesInRoom = new List<Enemy>();
+        private List<IEnemy> _enemiesInRoom = new List<IEnemy>();
 
         private List<EnemyWaveData> _enemyWaves = new List<EnemyWaveData>();
 
@@ -74,7 +74,7 @@ namespace Game
         public Final Final;
 
         [ShowInInspector]
-        public List<Enemy> EnemiesInRoom
+        public List<IEnemy> EnemiesInRoom
         {
             get => _enemiesInRoom;
         }
@@ -113,6 +113,8 @@ namespace Game
 
             TypeEventSystem.GLOBAL.Register<BossDieEvent>(e =>
             {
+                _enemiesInRoom.Remove(e.Boss);
+                
                 if (Final != null)
                 {
                     Final.EnableGameObject();
@@ -151,8 +153,8 @@ namespace Game
                     {
                         State = RoomState.PlayerIn;
 
-                        var levelIndex = this.GetModel<LevelModel>().CurrentLevel.LevelId - 1;
-                        var boss = EnemyFactory.Instance.Bosses[levelIndex].GameObject.Instantiate()
+                        var bossIndex = this.GetModel<PlayerModel>().BossList.RandomTakeOneAndRemove();
+                        var boss = EnemyFactory.Instance.Bosses[bossIndex].GameObject.Instantiate()
                            .SetPosition(EnemyGeneratePoses.RandomTakeOne())
                            .Enable()
                            .GetComponent<Boss>();

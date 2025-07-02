@@ -65,7 +65,7 @@ namespace Game
             
             AudioKit.PlayMusic(AssetConfig.Music.ALL.RandomTakeOne(), 0.4f);
             
-            // UpdateGunView(Player.Instance.CurrentGun);
+            UpdateGunView(Player.Instance.CurrentGun);
         }
 
         protected override void OnShow()
@@ -177,7 +177,7 @@ namespace Game
 
         public void UpdateGunView(Gun gun)
         {
-            if (gun)
+            if (!gun || gun.Clip == null || gun.Bag == null)
             {
                 return;
             }

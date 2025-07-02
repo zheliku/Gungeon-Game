@@ -19,10 +19,10 @@ namespace Game
     public class BulletFactory : MonoSingleton<BulletFactory>
     {
         [HierarchyPath("GunBullet")]
-        public PlayerBullet GunBullet;
+        public GunBullet GunBullet;
 
         [HierarchyPath("RocketBullet")]
-        public PlayerBullet RocketBullet;
+        public RocketBullet RocketBullet;
         
         [HierarchyPath("ArrowBullet")]
         public ArrowBullet ArrowBullet;

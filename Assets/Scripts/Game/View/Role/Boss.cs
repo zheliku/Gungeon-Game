@@ -47,7 +47,11 @@ namespace Game
         public Room Room
         {
             get => _room;
-            set => _room = value;
+            set
+            {
+                _room = value;
+                _room.EnemiesInRoom.Add(this);
+            }
         }
 
         protected override void Awake()

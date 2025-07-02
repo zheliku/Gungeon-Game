@@ -15,7 +15,7 @@ namespace Game
 
     public class LaserGun : Gun
     {
-        public float Distance = 10;
+        public float Distance = 25;
 
         [HierarchyPath("Laser")]
         public LineRenderer LineRenderer;

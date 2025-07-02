@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Game
 {
     using Framework.Core;
@@ -22,7 +24,14 @@ namespace Game
         
         public PlayerPrefsIntProperty Palette = new PlayerPrefsIntProperty(nameof(Palette));
 
-        public int CurrentGunIndex = 0;
+        public List<int> BossList = new List<int>() // 剩余待击败的 Boss 下标
+        {
+            0, // Level1
+            1, // Level2
+            2, // Level3
+            3, // Level4
+            4, // Level5
+        };
         
         protected override void OnInit()
         {

@@ -126,7 +126,7 @@ namespace Game
                 .OnExit(() =>
                 {
                     GetComponent<Collider2D>().excludeLayers = 0; // 取消限制
-
+                    
                     if (Mathf.Approximately(InputKit.ReadValue<float>(AssetConfig.Action.ATTACK), 1f))
                     {
                         if (CurrentGun)
@@ -145,7 +145,7 @@ namespace Game
             {
                 play.UpdateGunView(CurrentGun);
             });
-            
+
             InputKit.BindPerformed(AssetConfig.Action.CHANGE_GUN, context =>
             {
                 if (CurrentGun.IsShooting || CurrentGun.Clip.IsReloading) // 射击、切枪时不可切换 Gun
@@ -259,7 +259,7 @@ namespace Game
             {
                 CurrentGun.ShootUp();
             }
-
+            
             GetComponent<Collider2D>().excludeLayers = ~LayerMask.GetMask("Wall"); // 只和 Wall 层碰撞
 
             _rollDirection = _moveAction.ReadValue<Vector2>();
@@ -313,7 +313,7 @@ namespace Game
         {
             var oldGun = CurrentGun;
             CurrentGun?.DisableGameObject();
-            
+
             print(gunData);
 
             CurrentGun = GetGun(gunData);

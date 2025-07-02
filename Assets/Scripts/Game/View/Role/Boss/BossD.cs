@@ -86,8 +86,6 @@ namespace Game
 
                 newBullet.Damage = Property.Damage;
                 
-                Debug.Log($"relativeVelocity: {collision2D.relativeVelocity}, normal: {collision2D.contacts[0].normal}, reflectedVelocity: {reflectedVelocity}");
-
                 // 可选：旋转子弹使其朝向运动方向
                 // float angle = Mathf.Atan2(reflectedVelocity.y, reflectedVelocity.x) * Mathf.Rad2Deg;
                 // playerBullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);

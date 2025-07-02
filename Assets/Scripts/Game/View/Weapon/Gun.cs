@@ -6,6 +6,8 @@
 // @Copyright  Copyright (c) 2025, zheliku
 // ------------------------------------------------------------
 
+using System;
+
 namespace Game
 {
     using System.Collections.Generic;
@@ -38,13 +40,13 @@ namespace Game
         [HierarchyPath("/Player/Weapon/GunShootLight")]
         public SpriteRenderer GunShootLight;
 
-        [HierarchyPath("/Player/Weapon/Aim")]
+        [HierarchyPath("/FxFactory/Aim")]
         public Transform Aim;
 
         public InputAction AttackAction { get; private set; }
-        
+
         [ShowInInspector]
-        protected Enemy _TargetEnemy { get; set; }
+        protected IEnemy _TargetEnemy { get; set; }
 
         public bool IsShooting { get; protected set; }
 
@@ -93,27 +95,17 @@ namespace Game
         {
             get
             {
-                var currentRoom = this.GetModel<LevelModel>().CurrentRoom;
-                if (currentRoom && currentRoom.EnemiesInRoom.Count > 0)
+                _TargetEnemy = AimHelper.GetClosestEnemy(transform, MousePosition);
+                if (_TargetEnemy is IBoss)
                 {
-                    _TargetEnemy = currentRoom.EnemiesInRoom
-                       .OrderBy(e => e.Distance2D(MousePosition))
-                       .FirstOrDefault(e =>
-                        {
-                            var vector2 = this.Position2DTo(e);
-                            if (Physics2D.Raycast(this.GetPosition(), vector2.normalized, vector2.magnitude, LayerMask.GetMask("Wall")))
-                            {
-                                return false;
-                            }
-                            return e.GameObject.name.StartsWith("Enemy"); // 仅对小怪生效
-                        });
-
-                    if (_TargetEnemy) // 自动瞄准
-                    {
-                        Aim.CopyPositionFrom(_TargetEnemy);
-                        Aim.EnableGameObject();
-                        return this.Direction2DTo(_TargetEnemy);
-                    }
+                    _TargetEnemy = null;
+                }
+                
+                if (_TargetEnemy != null) // 自动瞄准
+                {
+                    Aim.CopyPositionFrom(_TargetEnemy.GameObject);
+                    Aim.EnableGameObject();
+                    return this.Direction2DTo(_TargetEnemy.GameObject);
                 }
 
                 Aim.DisableGameObject();
@@ -128,8 +120,8 @@ namespace Game
             // 依据子类类名获取 BG 中的数据
             _bgGunEntity = BG_GunTable.GetEntity(GetType().Name);
 
-            _BulletSpeed          = _bgGunEntity.BulletSpeed;
-            _UnstableAngle        = _bgGunEntity.UnstableAngle;
+            _BulletSpeed         = _bgGunEntity.BulletSpeed;
+            _UnstableAngle       = _bgGunEntity.UnstableAngle;
             AdditionalCameraSize = _bgGunEntity.AdditionalCameraSize;
 
             _ShootInterval = new GunShootInterval(_bgGunEntity.ShootInterval);
@@ -174,7 +166,7 @@ namespace Game
             BackForce.Update();
 
             var angle = Mathf.Atan2(ShootDirection.y, ShootDirection.x).Rad2Deg();
-            this.SetLocalEulerAngles(z: angle);             // 使 Weapon 方向跟手
+            this.SetLocalEulerAngles(z: angle); // 使 Weapon 方向跟手
             this.SetLocalScale(y: ShootDirection.x.Sign()); // 使 Weapon 随鼠标左右翻转
         }
 
@@ -191,7 +183,7 @@ namespace Game
 
         public virtual void ShootOnce(Vector2 direction)
         {
-            Clip.Use();             // 弹夹使用子弹
+            Clip.Use(); // 弹夹使用子弹
             _ShootInterval.Reset(); // 射击间隔重置
 
             BulletHelper.Shoot(
@@ -214,8 +206,8 @@ namespace Game
         protected void ShowGunShootLight(Vector2 direction)
         {
             GunShootLight.SetPosition(ShootPos.position)
-               .SetTransformRight(direction)
-               .EnableGameObject();
+                .SetTransformRight(direction)
+                .EnableGameObject();
 
             ActionKit.DelayFrame(3, () =>
             {

@@ -41,8 +41,6 @@ namespace Game
                     Bosses.Add(boss);
                 }
             }
-
-            Bosses.Shuffle(); // Randomize the order of bosses
         }
 
         public static Enemy GetEnemyByName(string name)
